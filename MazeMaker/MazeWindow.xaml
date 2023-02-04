@@ -1,0 +1,57 @@
+﻿<Window x:Class="MazeMaker.MazeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MazeMaker"
+        mc:Ignorable="d"
+        Title="MazeWindow" Height="700" Width="1050" WindowStartupLocation="CenterScreen" Background="LightGray">
+    <Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="auto"/>
+		</Grid.ColumnDefinitions>
+		
+		<DockPanel Grid.Row="0" Grid.ColumnSpan="2">
+			<Menu DockPanel.Dock="Top">
+				<MenuItem Header="_File">
+					<MenuItem Header="_Save" Click="MenuItem_Click" />
+				</MenuItem>
+			</Menu>
+		</DockPanel>
+
+		<Grid Name="grdMain" Grid.Row="1">
+
+		</Grid>
+
+		<Grid Grid.Column="1" Grid.Row="1" Name="grdControls">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="auto"/>
+				<RowDefinition Height="auto"/>
+			</Grid.RowDefinitions>
+			
+			<StackPanel Margin="10" Name="btnsVertical">
+				<Label FontWeight="Bold">Vertical Walls</Label>
+				<RadioButton Name="btnVerticalWall" IsChecked="True">Wall</RadioButton>
+				<RadioButton Name="btnVerticalSingleDoor" Foreground="Blue">Single Door</RadioButton>
+				<RadioButton Name="btnVerticalDoubleDoor" Foreground="Crimson">Double Door</RadioButton>
+				<RadioButton Name="btnVerticalWindow" Foreground="DarkGreen">Window</RadioButton>
+				<RadioButton Name="btnVerticalNone" Foreground="DarkGray">None</RadioButton>
+			</StackPanel>
+
+			<StackPanel Margin="10" Name="btnsHorizontal" Grid.Row="1">
+				<Label FontWeight="Bold">Horizontal Walls</Label>
+				<RadioButton Name="btnHorizontalWall" IsChecked="True" >Wall</RadioButton>
+				<RadioButton Name="btnHorizontalSingleDoor" Foreground="Blue">Single Door</RadioButton>
+				<RadioButton Name="btnHorizontalDoubleDoor" Foreground="Crimson">Double Door</RadioButton>
+				<RadioButton Name="btnHorizontalWindow" Foreground="DarkGreen">Window</RadioButton>
+				<RadioButton Name="btnHorizontalNone" Foreground="DarkGray">None</RadioButton>
+			</StackPanel>
+		</Grid>
+	</Grid>
+</Window>
