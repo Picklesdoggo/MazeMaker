@@ -131,9 +131,9 @@ namespace MazeMaker
                 YHorizontalStart = 0;
 
             }
-            wallColumns = gridColumns * 2 + 1;            
-            wallRows =  gridRows * 2 + 1;
-            
+            wallColumns = gridColumns * 2 + 1;
+            wallRows = gridRows * 2 + 1;
+
         }
 
         private void displayControls()
@@ -266,8 +266,6 @@ namespace MazeMaker
 
         private void generateWallGrid()
         {
-            //generateWallHorizontals();
-            // generateWallVerticals(); 
 
             float startingXHorizontals = XHorizontalStart;
             float startingYHorizontals = YHorizontalStart;
@@ -285,10 +283,10 @@ namespace MazeMaker
 
                 for (int c = 0; c < wallColumns; c++)
                 {
-                    
+
                     Wall wall = new Wall();
                     wall.render = false;
-                   
+
                     if (r == 0 || r % 2 == 0)
                     {
                         if (c != 0 && c % 2 != 0)
@@ -344,15 +342,15 @@ namespace MazeMaker
                                 "True",
                                 "False"
                             };
-                            
+
                             wall.element = e;
                             startingZHorizontals = startingZHorizontals - ZHorizontalOffset;
                         }
-                        
+
                     }
                     else
                     {
-                        
+
                         if (c == 0 || c % 2 == 0)
                         {
                             wall.render = true;
@@ -400,20 +398,20 @@ namespace MazeMaker
                                 "QuickBeltSpecialStateEngaged"
                             };
 
-                                    e.Flags._values = new List<string>()
+                            e.Flags._values = new List<string>()
                             {
                                 "True",
                                 "True",
                                 "False"
                             };
-                             startingZVerticals = startingZVerticals - ZVerticalOffset;
+                            startingZVerticals = startingZVerticals - ZVerticalOffset;
 
                             wall.element = e;
-                            
+
                         }
                     }
 
-                    
+
                     row.Add(wall);
                 }
                 if (r == 0 || r % 2 == 0)
@@ -423,163 +421,12 @@ namespace MazeMaker
                 else
                 {
                     startingXVerticals = startingXVerticals - XVerticalOffset;
-                    
-                }
-
-                    maze.Add(row);
-            }
-
-        }
-
-        private void generateWallHorizontals()
-        {
-            float startingXHorizontals = XHorizontalStart;
-            float startingYHorizontals = YHorizontalStart;
-            float startingZHorizontals;
-
-            for (int r = 0; r < horizontalRows; r++)
-            {
-                startingZHorizontals = ZHorizontalStart;
-                List<Wall> row = new List<Wall>();
-                for (int c = 0; c < horizontalColumns; c++)
-                {
-
-                    Wall w = new Wall();
-                    w.render = true;
-
-                    Element wall = new Element();
-
-                    wall.Index = 0;
-                    wall.ObjectID = "ShoothouseBarrierWall";
-                    wall.Type = "object";
-
-                    wall.PosOffset = new Posoffset();
-                    wall.PosOffset.x = startingXHorizontals;
-                    wall.PosOffset.y = startingYHorizontals;
-                    wall.PosOffset.z = startingZHorizontals;
-
-                    wall.OrientationForward = new Orientationforward();
-                    wall.OrientationForward.x = 1;
-                    wall.OrientationForward.y = 0;
-                    wall.OrientationForward.z = 0;
-
-                    wall.OrientationUp = new Orientationup();
-                    wall.OrientationUp.x = 0;
-                    wall.OrientationUp.y = 1;
-                    wall.OrientationUp.z = 0;
-
-                    wall.ObjectAttachedTo = -1;
-                    wall.MountAttachedTo = -1;
-                    wall.LoadedRoundsInChambers = new List<string>();
-                    wall.LoadedRoundsInMag = new List<string>();
-                    wall.GenericInts = new List<string>();
-                    wall.GenericStrings = new List<string>();
-                    wall.GenericVector3s = new List<string>();
-                    wall.GenericRotations = new List<string>();
-                    wall.Flags = new Flags();
-                    wall.Flags._keys = new List<string>()
-                {
-                    "IsKinematicLocked",
-                    "IsPickupLocked",
-                    "QuickBeltSpecialStateEngaged"
-                };
-
-                    wall.Flags._values = new List<string>()
-                {
-                    "True",
-                    "True",
-                    "False"
-                };
-                    w.element = wall;
-                    row.Add(w);
-
-                    startingZHorizontals = startingZHorizontals - ZHorizontalOffset;
 
                 }
 
-                startingXHorizontals = startingXHorizontals - XHorizontalOffset;
-                horizontals.Add(row);
+                maze.Add(row);
             }
-        }
 
-        private void generateWallVerticals()
-        {
-            float startingXVerticals;
-            float startingYVerticals = YVerticalStart;
-            float startingZVerticals = ZVerticalStart;
-
-            // 36
-            for (int r = 0; r < verticalColumns; r++)
-            {
-                startingXVerticals = XVerticalStart;
-                List<Wall> column = new List<Wall>();
-                // 24
-                for (int c = 0; c < verticalRows; c++)
-                {
-
-                    Wall w = new Wall();
-                    w.render = true;
-
-                    Element wall = new Element();
-
-                    wall.Index = 0;
-                    if (verticalWide)
-                    {
-                        wall.ObjectID = "ShoothouseBarrierWall";
-                    }
-                    else
-                    {
-                        wall.ObjectID = "ShoothouseBarrierWallNarrow";
-                    }
-                    wall.Type = "object";
-
-                    wall.PosOffset = new Posoffset();
-                    wall.PosOffset.x = startingXVerticals;
-                    wall.PosOffset.y = startingYVerticals;
-                    wall.PosOffset.z = startingZVerticals;
-
-                    wall.OrientationForward = new Orientationforward();
-                    wall.OrientationForward.x = 0;
-                    wall.OrientationForward.y = 0;
-                    wall.OrientationForward.z = 1;
-
-                    wall.OrientationUp = new Orientationup();
-                    wall.OrientationUp.x = 0;
-                    wall.OrientationUp.y = 1;
-                    wall.OrientationUp.z = 0;
-
-                    wall.ObjectAttachedTo = -1;
-                    wall.MountAttachedTo = -1;
-                    wall.LoadedRoundsInChambers = new List<string>();
-                    wall.LoadedRoundsInMag = new List<string>();
-                    wall.GenericInts = new List<string>();
-                    wall.GenericStrings = new List<string>();
-                    wall.GenericVector3s = new List<string>();
-                    wall.GenericRotations = new List<string>();
-                    wall.Flags = new Flags();
-                    wall.Flags._keys = new List<string>()
-                    {
-                        "IsKinematicLocked",
-                        "IsPickupLocked",
-                        "QuickBeltSpecialStateEngaged"
-                    };
-
-                        wall.Flags._values = new List<string>()
-                    {
-                        "True",
-                        "True",
-                        "False"
-                    };
-
-                    w.element = wall;
-                    column.Add(w);
-                    startingXVerticals = startingXVerticals - XVerticalOffset;
-
-                }
-
-                startingZVerticals = startingZVerticals - ZVerticalOffset;
-                verticals.Add(column);
-            }
         }
 
         private void generateJson()
