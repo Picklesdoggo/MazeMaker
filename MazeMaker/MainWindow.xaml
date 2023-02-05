@@ -25,7 +25,7 @@
 
 		<StackPanel Margin="10" Grid.Row="2">
 			<Label FontWeight="Bold">Map Name</Label>
-			<TextBox Name="txtName" Background="DarkGray" Text="ShootHouseSingleGrid4"/>
+			<TextBox Name="txtName" Background="DarkGray" Text="ShootHouseSingleGrid7"/>
 		</StackPanel>
 
 		<Button Name="btnStart" Content="Start" Grid.Row="3" Click="btnStart_Click"/>
