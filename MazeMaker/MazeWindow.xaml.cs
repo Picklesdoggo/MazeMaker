@@ -198,8 +198,10 @@ namespace MazeMaker
                 // Loop through gridRows
                 for (int r = 0; r < gridRows; r++)
                 {
-                    DockPanel panel = new DockPanel();
-                    panel.LastChildFill = true;
+                    DockPanel panel = new DockPanel
+                    {
+                        LastChildFill = true
+                    };
 
                     // Only top row should have TOP element
                     if (r == 0)
@@ -252,8 +254,10 @@ namespace MazeMaker
                     panel.Children.Add(verticalRight);
 
                     // Add middle cell
-                    Rectangle middleCell = new Rectangle();
-                    middleCell.Fill = new SolidColorBrush(Colors.LightGray);
+                    Rectangle middleCell = new Rectangle
+                    {
+                        Fill = new SolidColorBrush(Colors.LightGray)
+                    };
                     panel.Children.Add(middleCell);
 
                     panel.SetValue(Grid.RowProperty, r);
@@ -273,7 +277,7 @@ namespace MazeMaker
 
             float startingXVerticals = XVerticalStart;
             float startingYVerticals = YVerticalStart;
-            float startingZVerticals = ZVerticalStart;
+            float startingZVerticals;
 
             for (int r = 0; r < wallRows; r++)
             {
@@ -284,17 +288,20 @@ namespace MazeMaker
                 for (int c = 0; c < wallColumns; c++)
                 {
 
-                    Wall wall = new Wall();
-                    wall.render = false;
+                    Wall wall = new Wall
+                    {
+                        render = false
+                    };
 
                     if (r == 0 || r % 2 == 0)
                     {
                         if (c != 0 && c % 2 != 0)
                         {
                             wall.render = true;
-                            Element e = new Element();
-
-                            e.Index = 0;
+                            Element e = new Element
+                            {
+                                Index = 0
+                            };
                             if (horizontalWide)
                             {
                                 e.ObjectID = "ShoothouseBarrierWall";
@@ -305,20 +312,26 @@ namespace MazeMaker
                             }
                             e.Type = "object";
 
-                            e.PosOffset = new Posoffset();
-                            e.PosOffset.x = startingXHorizontals;
-                            e.PosOffset.y = startingYHorizontals;
-                            e.PosOffset.z = startingZHorizontals;
+                            e.PosOffset = new Posoffset
+                            {
+                                x = startingXHorizontals,
+                                y = startingYHorizontals,
+                                z = startingZHorizontals
+                            };
 
-                            e.OrientationForward = new Orientationforward();
-                            e.OrientationForward.x = 1;
-                            e.OrientationForward.y = 0;
-                            e.OrientationForward.z = 0;
+                            e.OrientationForward = new Orientationforward
+                            {
+                                x = 1,
+                                y = 0,
+                                z = 0
+                            };
 
-                            e.OrientationUp = new Orientationup();
-                            e.OrientationUp.x = 0;
-                            e.OrientationUp.y = 1;
-                            e.OrientationUp.z = 0;
+                            e.OrientationUp = new Orientationup
+                            {
+                                x = 0,
+                                y = 1,
+                                z = 0
+                            };
 
                             e.ObjectAttachedTo = -1;
                             e.MountAttachedTo = -1;
@@ -328,23 +341,25 @@ namespace MazeMaker
                             e.GenericStrings = new List<string>();
                             e.GenericVector3s = new List<string>();
                             e.GenericRotations = new List<string>();
-                            e.Flags = new Flags();
-                            e.Flags._keys = new List<string>()
+                            e.Flags = new Flags
+                            {
+                                _keys = new List<string>()
                             {
                                 "IsKinematicLocked",
                                 "IsPickupLocked",
                                 "QuickBeltSpecialStateEngaged"
-                            };
+                            },
 
-                            e.Flags._values = new List<string>()
+                                _values = new List<string>()
                             {
                                 "True",
                                 "True",
                                 "False"
+                            }
                             };
 
                             wall.element = e;
-                            startingZHorizontals = startingZHorizontals - ZHorizontalOffset;
+                            startingZHorizontals -= ZHorizontalOffset;
                         }
 
                     }
@@ -354,9 +369,10 @@ namespace MazeMaker
                         if (c == 0 || c % 2 == 0)
                         {
                             wall.render = true;
-                            Element e = new Element();
-
-                            e.Index = 0;
+                            Element e = new Element
+                            {
+                                Index = 0
+                            };
                             if (verticalWide)
                             {
                                 e.ObjectID = "ShoothouseBarrierWall";
@@ -367,20 +383,26 @@ namespace MazeMaker
                             }
                             e.Type = "object";
 
-                            e.PosOffset = new Posoffset();
-                            e.PosOffset.x = startingXVerticals;
-                            e.PosOffset.y = startingYVerticals;
-                            e.PosOffset.z = startingZVerticals;
+                            e.PosOffset = new Posoffset
+                            {
+                                x = startingXVerticals,
+                                y = startingYVerticals,
+                                z = startingZVerticals
+                            };
 
-                            e.OrientationForward = new Orientationforward();
-                            e.OrientationForward.x = 0;
-                            e.OrientationForward.y = 0;
-                            e.OrientationForward.z = 1;
+                            e.OrientationForward = new Orientationforward
+                            {
+                                x = 0,
+                                y = 0,
+                                z = 1
+                            };
 
-                            e.OrientationUp = new Orientationup();
-                            e.OrientationUp.x = 0;
-                            e.OrientationUp.y = 1;
-                            e.OrientationUp.z = 0;
+                            e.OrientationUp = new Orientationup
+                            {
+                                x = 0,
+                                y = 1,
+                                z = 0
+                            };
 
                             e.ObjectAttachedTo = -1;
                             e.MountAttachedTo = -1;
@@ -390,21 +412,23 @@ namespace MazeMaker
                             e.GenericStrings = new List<string>();
                             e.GenericVector3s = new List<string>();
                             e.GenericRotations = new List<string>();
-                            e.Flags = new Flags();
-                            e.Flags._keys = new List<string>()
+                            e.Flags = new Flags
+                            {
+                                _keys = new List<string>()
                             {
                                 "IsKinematicLocked",
                                 "IsPickupLocked",
                                 "QuickBeltSpecialStateEngaged"
-                            };
+                            },
 
-                            e.Flags._values = new List<string>()
+                                _values = new List<string>()
                             {
                                 "True",
                                 "True",
                                 "False"
+                            }
                             };
-                            startingZVerticals = startingZVerticals - ZVerticalOffset;
+                            startingZVerticals -= ZVerticalOffset;
 
                             wall.element = e;
 
@@ -416,12 +440,11 @@ namespace MazeMaker
                 }
                 if (r == 0 || r % 2 == 0)
                 {
-                    startingXHorizontals = startingXHorizontals - XHorizontalOffset;
+                    startingXHorizontals -= XHorizontalOffset;
                 }
                 else
                 {
-                    startingXVerticals = startingXVerticals - XVerticalOffset;
-
+                    startingXVerticals -= XVerticalOffset;
                 }
 
                 maze.Add(row);
@@ -438,10 +461,7 @@ namespace MazeMaker
             generatedOutput.Objects = new List<Object>();
 
             int index = 0;
-            // Add horizontals
-
-
-
+          
             for (int i = 0; i < maze.Count; i++)
             {
 
@@ -449,13 +469,15 @@ namespace MazeMaker
                 {
                     if (maze[i][ii].render)
                     {
-                        Object rowObject = new Object();
-                        rowObject.IsContainedIn = -1;
-                        rowObject.QuickbeltSlotIndex = -1;
-                        rowObject.InSlotOfRootObjectIndex = -1;
-                        rowObject.InSlotOfElementIndex = -1;
-                        rowObject.Elements = new List<Element>();
-                        rowObject.Index = index;
+                        Object rowObject = new Object
+                        {
+                            IsContainedIn = -1,
+                            QuickbeltSlotIndex = -1,
+                            InSlotOfRootObjectIndex = -1,
+                            InSlotOfElementIndex = -1,
+                            Elements = new List<Element>(),
+                            Index = index
+                        };
                         rowObject.Elements.Add(maze[i][ii].element);
                         generatedOutput.Objects.Add(rowObject);
                         index++;
