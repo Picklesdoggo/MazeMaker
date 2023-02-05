@@ -16,7 +16,7 @@ namespace MazeMaker
     /// </summary>
     public partial class MazeWindow : Window
     {
-        
+
         public static int horizontalRows;
         public static int horizontalColumns;
         public static List<List<Wall>> horizontals = new List<List<Wall>>();
@@ -39,6 +39,9 @@ namespace MazeMaker
 
         public static int gridColumns;
         public static int gridRows;
+        public static int wallRows;
+        public static int wallColumns;
+
         public static int horizontalLineThickness = 4;
         public static int verticalLineThickness = 4;
 
@@ -46,6 +49,8 @@ namespace MazeMaker
         public static bool verticalWide;
 
         public static Output generatedOutput = new Output();
+
+        public static List<List<Wall>> maze = new List<List<Wall>>();
         public MazeWindow()
         {
             InitializeComponent();
@@ -106,9 +111,9 @@ namespace MazeMaker
                 XHorizontalOffset = 3.2F;
 
                 ZHorizontalStart = 12.8F;
-                ZHorizontalOffset  = 3;
+                ZHorizontalOffset = 3.2F;
 
-                YHorizontalStart  = 0;
+                YHorizontalStart = 0;
 
             }
             else
@@ -126,6 +131,8 @@ namespace MazeMaker
                 YHorizontalStart = 0;
 
             }
+            wallColumns = gridColumns * 2 + 1;            
+            wallRows =  gridRows * 2 + 1;
         }
 
         private void displayControls()
@@ -193,7 +200,7 @@ namespace MazeMaker
                     DockPanel panel = new DockPanel();
                     panel.LastChildFill = true;
 
-                    // Only top row should have TOP wall
+                    // Only top row should have TOP element
                     if (r == 0)
                     {
                         Rectangle horizontalTop = new Rectangle();
@@ -205,7 +212,7 @@ namespace MazeMaker
                         panel.Children.Add(horizontalTop);
                     }
 
-                    // Add bottom wall
+                    // Add bottom element
                     Rectangle horizontalBottom = new Rectangle();
                     horizontalBottom.MouseDown += WallClicked;
                     horizontalBottom.Height = verticalLineThickness;
@@ -214,7 +221,7 @@ namespace MazeMaker
                     DockPanel.SetDock(horizontalBottom, Dock.Bottom);
                     panel.Children.Add(horizontalBottom);
 
-                    // Only left column should have LEFT wall
+                    // Only left column should have LEFT element
                     if (c == 0)
                     {
                         Rectangle verticalLeft = new Rectangle();
@@ -227,7 +234,7 @@ namespace MazeMaker
 
                     }
 
-                    // Add right wall
+                    // Add right element
                     Rectangle verticalRight = new Rectangle();
                     verticalRight.MouseDown += WallClicked;
                     verticalRight.Width = horizontalLineThickness;
@@ -258,8 +265,92 @@ namespace MazeMaker
 
         private void generateWallGrid()
         {
-            generateWallHorizontals();
-            generateWallVerticals();
+            //generateWallHorizontals();
+            // generateWallVerticals(); 
+
+            float startingXHorizontals = XHorizontalStart;
+            float startingYHorizontals = YHorizontalStart;
+            float startingZHorizontals;
+
+            float startingXVerticals;
+            float startingYVerticals = YVerticalStart;
+            float startingZVerticals = ZVerticalStart;
+
+            for (int r = 0; r < wallRows; r++)
+            {
+                List<Wall> row = new List<Wall>();
+                startingZHorizontals = ZHorizontalStart;
+                for (int c = 0; c < wallColumns; c++)
+                {
+                    
+                    Wall wall = new Wall();
+                    wall.render = false;
+                    // Horizontal pieces
+                    if (r == 0 || r % 2 == 0)
+                    {
+                        if (c != 0 && c % 2 != 0)
+                        {
+                            wall.render = true;
+                            Element e = new Element();
+
+                            e.Index = 0;
+                            e.ObjectID = "ShoothouseBarrierWall";
+                            e.Type = "object";
+
+                            e.PosOffset = new Posoffset();
+                            e.PosOffset.x = startingXHorizontals;
+                            e.PosOffset.y = startingYHorizontals;
+                            e.PosOffset.z = startingZHorizontals;
+
+                            e.OrientationForward = new Orientationforward();
+                            e.OrientationForward.x = 1;
+                            e.OrientationForward.y = 0;
+                            e.OrientationForward.z = 0;
+
+                            e.OrientationUp = new Orientationup();
+                            e.OrientationUp.x = 0;
+                            e.OrientationUp.y = 1;
+                            e.OrientationUp.z = 0;
+
+                            e.ObjectAttachedTo = -1;
+                            e.MountAttachedTo = -1;
+                            e.LoadedRoundsInChambers = new List<string>();
+                            e.LoadedRoundsInMag = new List<string>();
+                            e.GenericInts = new List<string>();
+                            e.GenericStrings = new List<string>();
+                            e.GenericVector3s = new List<string>();
+                            e.GenericRotations = new List<string>();
+                            e.Flags = new Flags();
+                            e.Flags._keys = new List<string>()
+                            {
+                                "IsKinematicLocked",
+                                "IsPickupLocked",
+                                "QuickBeltSpecialStateEngaged"
+                            };
+
+                            e.Flags._values = new List<string>()
+                            {
+                                "True",
+                                "True",
+                                "False"
+                            };
+                            
+                            wall.element = e;
+                            startingZHorizontals = startingZHorizontals - ZHorizontalOffset;
+                        }
+                        
+                    }
+                    
+                    row.Add(wall);
+                }
+                if (r == 0 || r % 2 == 0)
+                {
+                    startingXHorizontals = startingXHorizontals - XHorizontalOffset;
+                }
+                    
+                maze.Add(row);
+            }
+
         }
 
         private void generateWallHorizontals()
@@ -321,7 +412,7 @@ namespace MazeMaker
                     "True",
                     "False"
                 };
-                    w.wall = wall;
+                    w.element = wall;
                     row.Add(w);
 
                     startingZHorizontals = startingZHorizontals - ZHorizontalOffset;
@@ -389,20 +480,20 @@ namespace MazeMaker
                     wall.GenericRotations = new List<string>();
                     wall.Flags = new Flags();
                     wall.Flags._keys = new List<string>()
-                {
-                    "IsKinematicLocked",
-                    "IsPickupLocked",
-                    "QuickBeltSpecialStateEngaged"
-                };
+                    {
+                        "IsKinematicLocked",
+                        "IsPickupLocked",
+                        "QuickBeltSpecialStateEngaged"
+                    };
 
-                    wall.Flags._values = new List<string>()
-                {
-                    "True",
-                    "True",
-                    "False"
-                };
+                        wall.Flags._values = new List<string>()
+                    {
+                        "True",
+                        "True",
+                        "False"
+                    };
 
-                    w.wall = wall;
+                    w.element = wall;
                     column.Add(w);
                     startingXVerticals = startingXVerticals - XVerticalOffset;
 
@@ -423,12 +514,15 @@ namespace MazeMaker
 
             int index = 0;
             // Add horizontals
-            for (int i = 0; i < horizontals.Count; i++)
+
+
+
+            for (int i = 0; i < maze.Count; i++)
             {
 
-                for (int ii = 0; ii < horizontals[i].Count; ii++)
+                for (int ii = 0; ii < maze[i].Count; ii++)
                 {
-                    if (horizontals[i][ii].render)
+                    if (maze[i][ii].render)
                     {
                         Object rowObject = new Object();
                         rowObject.IsContainedIn = -1;
@@ -437,34 +531,14 @@ namespace MazeMaker
                         rowObject.InSlotOfElementIndex = -1;
                         rowObject.Elements = new List<Element>();
                         rowObject.Index = index;
-                        rowObject.Elements.Add(horizontals[i][ii].wall);
+                        rowObject.Elements.Add(maze[i][ii].element);
                         generatedOutput.Objects.Add(rowObject);
                         index++;
                     }
                 }
             }
 
-            // Add verticals
-            for (int i = 0; i < verticals.Count; i++)
-            {
 
-                for (int ii = 0; ii < verticals[i].Count; ii++)
-                {
-                    if (verticals[i][ii].render)
-                    {
-                        Object columnObject = new Object();
-                        columnObject.IsContainedIn = -1;
-                        columnObject.QuickbeltSlotIndex = -1;
-                        columnObject.InSlotOfRootObjectIndex = -1;
-                        columnObject.InSlotOfElementIndex = -1;
-                        columnObject.Elements = new List<Element>();
-                        columnObject.Index = index;
-                        columnObject.Elements.Add(verticals[i][ii].wall);
-                        generatedOutput.Objects.Add(columnObject);
-                        index++;
-                    }
-                }
-            }
 
             string jsonUpdated = JsonConvert.SerializeObject(generatedOutput, Formatting.Indented);
             File.WriteAllText("C:\\Users\\John\\Documents\\My Games\\H3VR\\Vault\\SceneConfigs\\gp_hangar\\" + mapName + "_gp_hangar_VFS.json", jsonUpdated);
@@ -499,22 +573,22 @@ namespace MazeMaker
                         if (btnVerticalSingleDoor.IsChecked == true)
                         {
                             selected.Fill = btnVerticalSingleDoor.Foreground;
-                            verticals[r][c].wall.ObjectID = "ShoothouseBarrierDoorSingle";
+                            verticals[r][c].element.ObjectID = "ShoothouseBarrierDoorSingle";
                         }
                         else if (btnVerticalDoubleDoor.IsChecked == true)
                         {
                             selected.Fill = btnVerticalDoubleDoor.Foreground;
-                            verticals[r][c].wall.ObjectID = "ShoothouseBarrierDoorDouble";
+                            verticals[r][c].element.ObjectID = "ShoothouseBarrierDoorDouble";
                         }
                         else if (btnVerticalWindow.IsChecked == true)
                         {
                             selected.Fill = btnVerticalWindow.Foreground;
-                            verticals[r][c].wall.ObjectID = "ShoothouseBarrierWindowNarrow";
+                            verticals[r][c].element.ObjectID = "ShoothouseBarrierWindowNarrow";
                         }
                         else if (btnVerticalWall.IsChecked == true)
                         {
                             selected.Fill = btnVerticalWall.Foreground;
-                            verticals[r][c].wall.ObjectID = "ShoothouseBarrierWall";
+                            verticals[r][c].element.ObjectID = "ShoothouseBarrierWall";
                         }
                     }
 
@@ -527,7 +601,7 @@ namespace MazeMaker
                         selected.Fill = new SolidColorBrush(Colors.Black);
                         selected.Width = verticalLineThickness;
                         verticals[r][c].render = true;
-                        verticals[r][c].wall.ObjectID = "ShoothouseBarrierWallNarrow";
+                        verticals[r][c].element.ObjectID = "ShoothouseBarrierWallNarrow";
                     }
                     else
                     {
@@ -556,22 +630,22 @@ namespace MazeMaker
                         if (btnHorizontalSingleDoor.IsChecked == true)
                         {
                             selected.Fill = btnHorizontalSingleDoor.Foreground;
-                            horizontals[r][c].wall.ObjectID = "ShoothouseBarrierDoorSingle";
+                            horizontals[r][c].element.ObjectID = "ShoothouseBarrierDoorSingle";
                         }
                         else if (btnHorizontalDoubleDoor.IsChecked == true)
                         {
                             selected.Fill = btnHorizontalDoubleDoor.Foreground;
-                            horizontals[r][c].wall.ObjectID = "ShoothouseBarrierDoorDouble";
+                            horizontals[r][c].element.ObjectID = "ShoothouseBarrierDoorDouble";
                         }
                         else if (btnHorizontalWindow.IsChecked == true)
                         {
                             selected.Fill = btnHorizontalWindow.Foreground;
-                            horizontals[r][c].wall.ObjectID = "ShoothouseBarrierWindowNarrow";
+                            horizontals[r][c].element.ObjectID = "ShoothouseBarrierWindowNarrow";
                         }
                         else if (btnHorizontalWall.IsChecked == true)
                         {
                             selected.Fill = btnHorizontalWall.Foreground;
-                            horizontals[r][c].wall.ObjectID = "ShoothouseBarrierWall";
+                            horizontals[r][c].element.ObjectID = "ShoothouseBarrierWall";
                         }
                     }
 
@@ -584,7 +658,7 @@ namespace MazeMaker
                         selected.Fill = new SolidColorBrush(Colors.Black);
                         selected.Height = horizontalLineThickness;
                         horizontals[r][c].render = true;
-                        horizontals[r][c].wall.ObjectID = "ShoothouseBarrierWallNarrow";
+                        horizontals[r][c].element.ObjectID = "ShoothouseBarrierWallNarrow";
                     }
                     else
                     {
