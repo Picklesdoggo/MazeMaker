@@ -3,15 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace MazeMaker
@@ -21,18 +16,29 @@ namespace MazeMaker
     /// </summary>
     public partial class MazeWindow : Window
     {
-        public static List<string> horizontalsToRemove = new List<string>();
-        public static int horizontalRows = 10; // 25
-        public static int horizontalColumns = 9; // 28
-        public static List<List<Wall>> horizontals = new List<List<Wall>>();
-
         
-        public static int verticalRows = 10; // 36
-        public static int verticalColumns = 9;//24        
-        public static List<List<Wall>> verticals = new List<List<Wall>>();
+        public static int horizontalRows;
+        public static int horizontalColumns;
+        public static List<List<Wall>> horizontals = new List<List<Wall>>();
+        public static float XHorizontalStart;
+        public static float XHorizontalOffset;
+        public static float ZHorizontalStart;
+        public static float ZHorizontalOffset;
+        public static float YHorizontalStart;
 
-        public static int gridColumns = 6;
-        public static int gridRows = 5;
+        public static int verticalRows;
+        public static int verticalColumns;
+        public static List<List<Wall>> verticals = new List<List<Wall>>();
+        public static float XVerticalStart;
+        public static float XVerticalOffset;
+        public static float ZVerticalStart;
+        public static float ZVerticalOffset;
+        public static float YVerticalStart;
+
+        public static string mapName;
+
+        public static int gridColumns;
+        public static int gridRows;
         public static int horizontalLineThickness = 4;
         public static int verticalLineThickness = 4;
 
@@ -46,14 +52,80 @@ namespace MazeMaker
 
         }
 
-        public MazeWindow(bool verticalWideInput, bool horizontalWideInput)
+        public MazeWindow(bool verticalWideInput, bool horizontalWideInput, string mapNameInput)
         {
             InitializeComponent();
-            verticalWide = verticalWideInput;
-            horizontalWide = horizontalWideInput;
+            seedValues(verticalWideInput, horizontalWideInput, mapNameInput);
             displayControls();
             generateGrid();
             generateWallGrid();
+        }
+
+        private void seedValues(bool verticalWideInput, bool horizontalWideInput, string mapNameInput)
+        {
+            verticalWide = verticalWideInput;
+            horizontalWide = horizontalWideInput;
+            mapName = mapNameInput;
+
+            if (verticalWide)
+            {
+                gridRows = 9;
+                horizontalRows = 10;
+                verticalRows = 9;
+
+                XVerticalStart = 12.5F;
+                XVerticalOffset = 3.2F;
+
+                ZVerticalStart = 14.2F;
+                ZVerticalOffset = 3.0F;
+
+                YVerticalStart = 0;
+            }
+            else
+            {
+                gridRows = 5;
+                horizontalRows = 6;
+                verticalRows = 5;
+
+                XVerticalStart = 13.1F;
+                XVerticalOffset = 1.2F;
+
+                ZVerticalStart = 14.2F;
+                ZVerticalOffset = 1.0F;
+
+                YVerticalStart = 0;
+            }
+
+            if (horizontalWide)
+            {
+                gridColumns = 9;
+                horizontalColumns = 9;
+                verticalColumns = 10;
+
+                XHorizontalStart = 14.1F;
+                XHorizontalOffset = 3.2F;
+
+                ZHorizontalStart = 12.8F;
+                ZHorizontalOffset  = 3;
+
+                YHorizontalStart  = 0;
+
+            }
+            else
+            {
+                gridColumns = 5;
+                horizontalColumns = 5;
+                verticalColumns = 6;
+
+                XHorizontalStart = 12.5F;
+                XHorizontalOffset = 1.2F;
+
+                ZHorizontalStart = 13.9F;
+                ZHorizontalOffset = 0.8F;
+
+                YHorizontalStart = 0;
+
+            }
         }
 
         private void displayControls()
@@ -192,13 +264,13 @@ namespace MazeMaker
 
         private void generateWallHorizontals()
         {
-            float startingXHorizontals = 14.1F;
-            float startingYHorizontals = 0;
+            float startingXHorizontals = XHorizontalStart;
+            float startingYHorizontals = YHorizontalStart;
             float startingZHorizontals;
 
             for (int r = 0; r < horizontalRows; r++)
             {
-                startingZHorizontals = 12.8F;
+                startingZHorizontals = ZHorizontalStart;
                 List<Wall> row = new List<Wall>();
                 for (int c = 0; c < horizontalColumns; c++)
                 {
@@ -252,11 +324,11 @@ namespace MazeMaker
                     w.wall = wall;
                     row.Add(w);
 
-                    startingZHorizontals = startingZHorizontals - 3;
+                    startingZHorizontals = startingZHorizontals - ZHorizontalOffset;
 
                 }
 
-                startingXHorizontals = startingXHorizontals - 3.2F;
+                startingXHorizontals = startingXHorizontals - XHorizontalOffset;
                 horizontals.Add(row);
             }
         }
@@ -264,16 +336,16 @@ namespace MazeMaker
         private void generateWallVerticals()
         {
             float startingXVerticals;
-            float startingYVerticals = 0;
-            float startingZVerticals = 14.2F; //14.1
+            float startingYVerticals = YVerticalStart;
+            float startingZVerticals = ZVerticalStart;
 
             // 36
-            for (int r = 0; r < verticalRows; r++)
+            for (int r = 0; r < verticalColumns; r++)
             {
-                startingXVerticals = 12.5F;
+                startingXVerticals = XVerticalStart;
                 List<Wall> column = new List<Wall>();
                 // 24
-                for (int c = 0; c < verticalColumns; c++)
+                for (int c = 0; c < verticalRows; c++)
                 {
 
                     Wall w = new Wall();
@@ -282,7 +354,14 @@ namespace MazeMaker
                     Element wall = new Element();
 
                     wall.Index = 0;
-                    wall.ObjectID = "ShoothouseBarrierWall";
+                    if (verticalWide)
+                    {
+                        wall.ObjectID = "ShoothouseBarrierWall";
+                    }
+                    else
+                    {
+                        wall.ObjectID = "ShoothouseBarrierWallNarrow";
+                    }
                     wall.Type = "object";
 
                     wall.PosOffset = new Posoffset();
@@ -325,19 +404,19 @@ namespace MazeMaker
 
                     w.wall = wall;
                     column.Add(w);
-                    startingXVerticals = startingXVerticals - 3.2F;
+                    startingXVerticals = startingXVerticals - XVerticalOffset;
 
                 }
 
-                startingZVerticals = startingZVerticals - 3.0F; //1.2
+                startingZVerticals = startingZVerticals - ZVerticalOffset;
                 verticals.Add(column);
             }
         }
 
         private void generateJson()
         {
-            generatedOutput.FileName = "TEST1";
-            generatedOutput.ReferencePath = @"Vault\SceneConfigs\gp_hangar\TEST1_gp_hangar_VFS.json";
+            generatedOutput.FileName = mapName;
+            generatedOutput.ReferencePath = @"Vault\SceneConfigs\gp_hangar\" + mapName + "gp_hangar_VFS.json";
             generatedOutput.Creator = "picklesDoggo";
             generatedOutput.ModsUsed = new List<string>();
             generatedOutput.Objects = new List<Object>();
@@ -388,7 +467,7 @@ namespace MazeMaker
             }
 
             string jsonUpdated = JsonConvert.SerializeObject(generatedOutput, Formatting.Indented);
-            File.WriteAllText("C:\\Users\\John\\Documents\\My Games\\H3VR\\Vault\\SceneConfigs\\gp_hangar\\TEST1_gp_hangar_VFS.json", jsonUpdated);
+            File.WriteAllText("C:\\Users\\John\\Documents\\My Games\\H3VR\\Vault\\SceneConfigs\\gp_hangar\\" + mapName + "_gp_hangar_VFS.json", jsonUpdated);
         }
 
         private void WallClicked(object sender, MouseButtonEventArgs e)
@@ -413,7 +492,7 @@ namespace MazeMaker
                         verticals[r][c].render = false;
                         selected.Fill = btnVerticalNone.Foreground;
                     }
-                    else 
+                    else
                     {
                         verticals[r][c].render = true;
 
@@ -448,7 +527,7 @@ namespace MazeMaker
                         selected.Fill = new SolidColorBrush(Colors.Black);
                         selected.Width = verticalLineThickness;
                         verticals[r][c].render = true;
-                        verticals[r][c].wall.ObjectID = "ShoothouseBarrierWallNarrow"; 
+                        verticals[r][c].wall.ObjectID = "ShoothouseBarrierWallNarrow";
                     }
                     else
                     {
@@ -457,7 +536,7 @@ namespace MazeMaker
                         verticals[r][c].render = false;
                     }
 
-                }    
+                }
             }
             if (selected.Name.Contains("Horizontal"))
             {
@@ -517,22 +596,12 @@ namespace MazeMaker
                 }
             }
 
-            
+
 
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            // Remove gridRows
-            foreach (string w in horizontalsToRemove)
-            {
-                List<string> split = w.Split('_').ToList();
-                int r = Convert.ToInt32(split[1]);
-                int c = Convert.ToInt32(split[2]);
-                horizontals[r][c].render = false;
-            }
-
-
             generateJson();
         }
     }

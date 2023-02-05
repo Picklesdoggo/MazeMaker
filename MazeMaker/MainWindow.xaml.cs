@@ -35,9 +35,16 @@ namespace MazeMaker
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            MazeWindow mazeWindow = new MazeWindow((bool)btnVerticalWide.IsChecked, (bool)btnHorizontalWide.IsChecked);
-            mazeWindow.Show();
-            this.Close();
+            if (string.IsNullOrEmpty(txtName.Text))
+            {
+                MessageBox.Show("You must enter a map name","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+            }
+            else
+            {
+                MazeWindow mazeWindow = new MazeWindow((bool)btnVerticalWide.IsChecked, (bool)btnHorizontalWide.IsChecked, txtName.Text);
+                mazeWindow.Show();
+                this.Close();
+            }
         }
     }
 }

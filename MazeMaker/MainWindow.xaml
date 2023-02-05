@@ -1,10 +1,11 @@
 ﻿<Window x:Class="MazeMaker.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="250" Width="400" WindowStartupLocation="CenterScreen" Background="LightGray">
+        Title="Shoot House Generator" Height="300" Width="400" WindowStartupLocation="CenterScreen" Background="LightGray">
 
 	<Grid>
 		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="auto"/>
@@ -22,7 +23,12 @@
 			<RadioButton Name="btnHorizontalNarrow">Narrow</RadioButton>
 		</StackPanel>
 
-		<Button Name="btnStart" Content="Start" Grid.Row="2" Click="btnStart_Click"/>
+		<StackPanel Margin="10" Grid.Row="2">
+			<Label FontWeight="Bold">Map Name</Label>
+			<TextBox Name="txtName" Background="DarkGray" Text="ShootHouse"/>
+		</StackPanel>
+
+		<Button Name="btnStart" Content="Start" Grid.Row="3" Click="btnStart_Click"/>
 	</Grid>
 	
    
