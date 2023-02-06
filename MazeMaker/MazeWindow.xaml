@@ -41,6 +41,7 @@
 				<RadioButton Name="btnVerticalSingleDoor" Foreground="Blue">Single Door</RadioButton>
 				<RadioButton Name="btnVerticalDoubleDoor" Foreground="Crimson">Double Door</RadioButton>
 				<RadioButton Name="btnVerticalWindow" Foreground="DarkGreen">Window</RadioButton>
+				<RadioButton Name="btnVerticalCompBarrierLow" Foreground="White">Low Barrier</RadioButton>
 				<RadioButton Name="btnVerticalNone" Foreground="DarkGray">None</RadioButton>
 			</StackPanel>
 
@@ -50,6 +51,7 @@
 				<RadioButton Name="btnHorizontalSingleDoor" Foreground="Blue">Single Door</RadioButton>
 				<RadioButton Name="btnHorizontalDoubleDoor" Foreground="Crimson">Double Door</RadioButton>
 				<RadioButton Name="btnHorizontalWindow" Foreground="DarkGreen">Window</RadioButton>
+				<RadioButton Name="btnHorizontalCompBarrierLow" Foreground="White">Low Barrier</RadioButton>
 				<RadioButton Name="btnHorizontalNone" Foreground="DarkGray">None</RadioButton>
 			</StackPanel>
 		</Grid>

@@ -524,6 +524,11 @@ namespace MazeMaker
                             selected.Fill = btnVerticalWall.Foreground;
                             maze[r][c].element.ObjectID = "ShoothouseBarrierWall";
                         }
+                        else if (btnVerticalCompBarrierLow.IsChecked == true)
+                        {
+                            selected.Fill = btnVerticalCompBarrierLow.Foreground;
+                            maze[r][c].element.ObjectID = "CompBarrierLow";
+                        }
                     }
 
                     selected.Width = verticalLineThickness;
@@ -580,6 +585,11 @@ namespace MazeMaker
                         {
                             selected.Fill = btnHorizontalWall.Foreground;
                             maze[r][c].element.ObjectID = "ShoothouseBarrierWall";
+                        }
+                        else if (btnHorizontalCompBarrierLow.IsChecked == true)
+                        {
+                            selected.Fill = btnHorizontalCompBarrierLow.Foreground;
+                            maze[r][c].element.ObjectID = "CompBarrierLow";
                         }
                     }
 
