@@ -195,6 +195,7 @@ namespace MazeMaker
                     {
                         Rectangle horizontalTop = new Rectangle();
                         horizontalTop.MouseDown += WallClicked;
+                        horizontalTop.MouseEnter += WallHover;
                         horizontalTop.Height = verticalLineThickness;
                         horizontalTop.Fill = new SolidColorBrush(Colors.Black);
                         horizontalTop.Name = "Horizontal_" + r + "_" + (c * 2 + 1);
@@ -205,6 +206,7 @@ namespace MazeMaker
                     // Add bottom element
                     Rectangle horizontalBottom = new Rectangle();
                     horizontalBottom.MouseDown += WallClicked;
+                    horizontalBottom.MouseEnter += WallHover;
                     horizontalBottom.Height = verticalLineThickness;
                     horizontalBottom.Fill = new SolidColorBrush(Colors.Black);
                     horizontalBottom.Name = "Horizontal_" + (r * 2 + 2) + "_" + (c * 2 + 1);
@@ -216,6 +218,7 @@ namespace MazeMaker
                     {
                         Rectangle verticalLeft = new Rectangle();
                         verticalLeft.MouseDown += WallClicked;
+                        verticalLeft.MouseEnter += WallHover;
                         verticalLeft.Width = horizontalLineThickness;
                         verticalLeft.Fill = new SolidColorBrush(Colors.Black);
                         verticalLeft.Name = "Vertical_" + (r * 2 + 1) + "_" + c;
@@ -227,6 +230,7 @@ namespace MazeMaker
                     // Add right element
                     Rectangle verticalRight = new Rectangle();
                     verticalRight.MouseDown += WallClicked;
+                    verticalRight.MouseEnter += WallHover;
                     verticalRight.Width = horizontalLineThickness;
                     verticalRight.Fill = new SolidColorBrush(Colors.Black);
                     if (r != 0)
@@ -475,12 +479,11 @@ namespace MazeMaker
 
 
             string jsonUpdated = JsonConvert.SerializeObject(generatedOutput, Formatting.Indented);
-            File.WriteAllText("C:\\Users\\John\\Documents\\My Games\\H3VR\\Vault\\SceneConfigs\\gp_hangar\\" + mapName + "_gp_hangar_VFS.json", jsonUpdated);
+            File.WriteAllText(mapName + "_gp_hangar_VFS.json", jsonUpdated);
         }
 
-        private void WallClicked(object sender, MouseButtonEventArgs e)
+        private void fillRectangle(Rectangle selected)
         {
-            Rectangle selected = (Rectangle)sender;
             Color selectedColor = ((SolidColorBrush)selected.Fill).Color;
 
             // find the name of the piece
@@ -613,9 +616,23 @@ namespace MazeMaker
 
                 }
             }
+        }
 
+        private void WallClicked(object sender, MouseButtonEventArgs e)
+        {
+            Rectangle selected = (Rectangle)sender;
+            fillRectangle(selected);
+        }
 
-
+        private void WallHover(object sender, MouseEventArgs e)
+        {
+            if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                e.Handled = true;
+                return;
+            }
+            Rectangle selected = (Rectangle)sender;
+            fillRectangle(selected);
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
