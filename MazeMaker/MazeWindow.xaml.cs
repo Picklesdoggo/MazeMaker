@@ -188,184 +188,184 @@ namespace MazeMaker
         private void generateWallGrid()
         {
 
-            float startingXHorizontals = parameters.XHorizontalStart;
-            float startingYHorizontals = parameters.YHorizontalStart;
-            float startingZHorizontals;
+            //float startingXHorizontals = parameters.XHorizontalStart;
+            //float startingYHorizontals = parameters.YHorizontalStart;
+            //float startingZHorizontals;
 
-            float startingXVerticals = parameters.XVerticalStart;
-            float startingYVerticals = parameters.YVerticalStart;
-            float startingZVerticals;
+            //float startingXVerticals = parameters.XVerticalStart;
+            //float startingYVerticals = parameters.YVerticalStart;
+            //float startingZVerticals;
 
-            for (int r = 0; r < parameters.wallRows; r++)
-            {
-                List<Wall> row = new List<Wall>();
-                startingZHorizontals = parameters.ZHorizontalStart;
-                startingZVerticals = parameters.ZVerticalStart;
+            //for (int r = 0; r < parameters.wallRows; r++)
+            //{
+            //    List<Wall> row = new List<Wall>();
+            //    startingZHorizontals = parameters.ZHorizontalStart;
+            //    startingZVerticals = parameters.ZVerticalStart;
 
-                for (int c = 0; c < parameters.wallColumns; c++)
-                {
+            //    for (int c = 0; c < parameters.wallColumns; c++)
+            //    {
 
-                    Wall wall = new Wall
-                    {
-                        render = false
-                    };
+            //        Wall wall = new Wall
+            //        {
+            //            render = false
+            //        };
 
-                    if (r == 0 || r % 2 == 0)
-                    {
-                        if (c != 0 && c % 2 != 0)
-                        {
-                            wall.render = true;
-                            Element e = new Element
-                            {
-                                Index = 0
-                            };
-                            if (parameters.horizontalWide)
-                            {
-                                e.ObjectID = "ShoothouseBarrierWall";
-                            }
-                            else
-                            {
-                                e.ObjectID = "ShoothouseBarrierWallNarrow";
-                            }
-                            e.Type = "object";
+            //        if (r == 0 || r % 2 == 0)
+            //        {
+            //            if (c != 0 && c % 2 != 0)
+            //            {
+            //                wall.render = true;
+            //                Element e = new Element
+            //                {
+            //                    Index = 0
+            //                };
+            //                if (parameters.horizontalWide)
+            //                {
+            //                    e.ObjectID = "ShoothouseBarrierWall";
+            //                }
+            //                else
+            //                {
+            //                    e.ObjectID = "ShoothouseBarrierWallNarrow";
+            //                }
+            //                e.Type = "object";
 
-                            e.PosOffset = new Posoffset
-                            {
-                                x = startingXHorizontals,
-                                y = startingYHorizontals,
-                                z = startingZHorizontals
-                            };
+            //                e.PosOffset = new Posoffset
+            //                {
+            //                    x = startingXHorizontals,
+            //                    y = startingYHorizontals,
+            //                    z = startingZHorizontals
+            //                };
 
-                            e.OrientationForward = new Orientationforward
-                            {
-                                x = 1,
-                                y = 0,
-                                z = 0
-                            };
+            //                e.OrientationForward = new Orientationforward
+            //                {
+            //                    x = 1,
+            //                    y = 0,
+            //                    z = 0
+            //                };
 
-                            e.OrientationUp = new Orientationup
-                            {
-                                x = 0,
-                                y = 1,
-                                z = 0
-                            };
+            //                e.OrientationUp = new Orientationup
+            //                {
+            //                    x = 0,
+            //                    y = 1,
+            //                    z = 0
+            //                };
 
-                            e.ObjectAttachedTo = -1;
-                            e.MountAttachedTo = -1;
-                            e.LoadedRoundsInChambers = new List<string>();
-                            e.LoadedRoundsInMag = new List<string>();
-                            e.GenericInts = new List<string>();
-                            e.GenericStrings = new List<string>();
-                            e.GenericVector3s = new List<string>();
-                            e.GenericRotations = new List<string>();
-                            e.Flags = new Flags
-                            {
-                                _keys = new List<string>()
-                            {
-                                "IsKinematicLocked",
-                                "IsPickupLocked",
-                                "QuickBeltSpecialStateEngaged"
-                            },
+            //                e.ObjectAttachedTo = -1;
+            //                e.MountAttachedTo = -1;
+            //                e.LoadedRoundsInChambers = new List<string>();
+            //                e.LoadedRoundsInMag = new List<string>();
+            //                e.GenericInts = new List<string>();
+            //                e.GenericStrings = new List<string>();
+            //                e.GenericVector3s = new List<string>();
+            //                e.GenericRotations = new List<string>();
+            //                e.Flags = new Flags
+            //                {
+            //                    _keys = new List<string>()
+            //                {
+            //                    "IsKinematicLocked",
+            //                    "IsPickupLocked",
+            //                    "QuickBeltSpecialStateEngaged"
+            //                },
 
-                                _values = new List<string>()
-                            {
-                                "True",
-                                "True",
-                                "False"
-                            }
-                            };
+            //                    _values = new List<string>()
+            //                {
+            //                    "True",
+            //                    "True",
+            //                    "False"
+            //                }
+            //                };
 
-                            wall.element = e;
-                            startingZHorizontals -= parameters.ZHorizontalOffset;
-                        }
+            //                wall.element = e;
+            //                startingZHorizontals -= parameters.ZHorizontalOffset;
+            //            }
 
-                    }
-                    else
-                    {
+            //        }
+            //        else
+            //        {
 
-                        if (c == 0 || c % 2 == 0)
-                        {
-                            wall.render = true;
-                            Element e = new Element
-                            {
-                                Index = 0
-                            };
-                            if (parameters.verticalWide)
-                            {
-                                e.ObjectID = "ShoothouseBarrierWall";
-                            }
-                            else
-                            {
-                                e.ObjectID = "ShoothouseBarrierWallNarrow";
-                            }
-                            e.Type = "object";
+            //            if (c == 0 || c % 2 == 0)
+            //            {
+            //                wall.render = true;
+            //                Element e = new Element
+            //                {
+            //                    Index = 0
+            //                };
+            //                if (parameters.verticalWide)
+            //                {
+            //                    e.ObjectID = "ShoothouseBarrierWall";
+            //                }
+            //                else
+            //                {
+            //                    e.ObjectID = "ShoothouseBarrierWallNarrow";
+            //                }
+            //                e.Type = "object";
 
-                            e.PosOffset = new Posoffset
-                            {
-                                x = startingXVerticals,
-                                y = startingYVerticals,
-                                z = startingZVerticals
-                            };
+            //                e.PosOffset = new Posoffset
+            //                {
+            //                    x = startingXVerticals,
+            //                    y = startingYVerticals,
+            //                    z = startingZVerticals
+            //                };
 
-                            e.OrientationForward = new Orientationforward
-                            {
-                                x = 0,
-                                y = 0,
-                                z = 1
-                            };
+            //                e.OrientationForward = new Orientationforward
+            //                {
+            //                    x = 0,
+            //                    y = 0,
+            //                    z = 1
+            //                };
 
-                            e.OrientationUp = new Orientationup
-                            {
-                                x = 0,
-                                y = 1,
-                                z = 0
-                            };
+            //                e.OrientationUp = new Orientationup
+            //                {
+            //                    x = 0,
+            //                    y = 1,
+            //                    z = 0
+            //                };
 
-                            e.ObjectAttachedTo = -1;
-                            e.MountAttachedTo = -1;
-                            e.LoadedRoundsInChambers = new List<string>();
-                            e.LoadedRoundsInMag = new List<string>();
-                            e.GenericInts = new List<string>();
-                            e.GenericStrings = new List<string>();
-                            e.GenericVector3s = new List<string>();
-                            e.GenericRotations = new List<string>();
-                            e.Flags = new Flags
-                            {
-                                _keys = new List<string>()
-                            {
-                                "IsKinematicLocked",
-                                "IsPickupLocked",
-                                "QuickBeltSpecialStateEngaged"
-                            },
+            //                e.ObjectAttachedTo = -1;
+            //                e.MountAttachedTo = -1;
+            //                e.LoadedRoundsInChambers = new List<string>();
+            //                e.LoadedRoundsInMag = new List<string>();
+            //                e.GenericInts = new List<string>();
+            //                e.GenericStrings = new List<string>();
+            //                e.GenericVector3s = new List<string>();
+            //                e.GenericRotations = new List<string>();
+            //                e.Flags = new Flags
+            //                {
+            //                    _keys = new List<string>()
+            //                {
+            //                    "IsKinematicLocked",
+            //                    "IsPickupLocked",
+            //                    "QuickBeltSpecialStateEngaged"
+            //                },
 
-                                _values = new List<string>()
-                            {
-                                "True",
-                                "True",
-                                "False"
-                            }
-                            };
-                            startingZVerticals -= parameters.ZVerticalOffset;
+            //                    _values = new List<string>()
+            //                {
+            //                    "True",
+            //                    "True",
+            //                    "False"
+            //                }
+            //                };
+            //                startingZVerticals -= parameters.ZVerticalOffset;
 
-                            wall.element = e;
+            //                wall.element = e;
 
-                        }
-                    }
+            //            }
+            //        }
 
 
-                    row.Add(wall);
-                }
-                if (r == 0 || r % 2 == 0)
-                {
-                    startingXHorizontals -= parameters.XHorizontalOffset;
-                }
-                else
-                {
-                    startingXVerticals -= parameters.XVerticalOffset;
-                }
+            //        row.Add(wall);
+            //    }
+            //    if (r == 0 || r % 2 == 0)
+            //    {
+            //        startingXHorizontals -= parameters.XHorizontalOffset;
+            //    }
+            //    else
+            //    {
+            //        startingXVerticals -= parameters.XVerticalOffset;
+            //    }
 
-                maze.Add(row);
-            }
+            //    maze.Add(row);
+            //}
 
         }
 

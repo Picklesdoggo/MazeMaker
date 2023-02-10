@@ -62,25 +62,13 @@ namespace MazeMaker
 
                     };
 
-                    Element top = new Element();
-                    
-                    if (parameters.horizontalWide)
-                    {
-                        top.ObjectID = "ShoothouseBarrierWall";
-                    }
-                    else
-                    {
-                        top.ObjectID = "ShoothouseBarrierWallNarrow";
-                    }
-                    top.Type = "object";
-
+                    Element top = new Element(parameters);
                     top.PosOffset = new Posoffset
                     {
                         x = startingXHorizontals,
                         y = startingYHorizontals,
                         z = startingZHorizontals
                     };
-
                     top.OrientationForward = new Orientationforward
                     {
                         x = 1,
@@ -88,40 +76,21 @@ namespace MazeMaker
                         z = 0
                     };
 
-                    top.OrientationUp = new Orientationup
+
+                    Element bottom = new Element(parameters);
+                    bottom.PosOffset = new Posoffset
                     {
-                        x = 0,
-                        y = 1,
+                        x = startingXHorizontals,
+                        y = startingYHorizontals,
+                        z = startingZHorizontals
+                    };
+                    bottom.OrientationForward = new Orientationforward
+                    {
+                        x = 1,
+                        y = 0,
                         z = 0
                     };
-
-                    top.ObjectAttachedTo = -1;
-                    top.MountAttachedTo = -1;
-                    top.LoadedRoundsInChambers = new List<string>();
-                    top.LoadedRoundsInMag = new List<string>();
-                    top.GenericInts = new List<string>();
-                    top.GenericStrings = new List<string>();
-                    top.GenericVector3s = new List<string>();
-                    top.GenericRotations = new List<string>();
-                    top.Flags = new Flags
-                    {
-                        _keys = new List<string>()
-                            {
-                                "IsKinematicLocked",
-                                "IsPickupLocked",
-                                "QuickBeltSpecialStateEngaged"
-                            },
-
-                        _values = new List<string>()
-                            {
-                                "True",
-                                "True",
-                                "False"
-                            }
-                    };
-
-                    Element bottom = top;
-                    bottom.PosOffset.x -= parameters.XVerticalOffset;
+                    bottom.PosOffset.x = top.PosOffset.x - parameters.XHorizontalOffset;
 
                     // Render bottom wall
                     if (r == parameters.gridRows - 1)
@@ -133,7 +102,7 @@ namespace MazeMaker
                     room.top.element = top;
 
                     row.Add(room);
-                    startingZVerticals -= parameters.ZVerticalOffset;
+                    startingZHorizontals -= parameters.ZHorizontalOffset;
                 }
 
                 startingXHorizontals -= parameters.XHorizontalOffset;

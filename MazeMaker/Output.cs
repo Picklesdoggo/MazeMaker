@@ -77,7 +77,7 @@ namespace MazeMaker
 
 
             string jsonUpdated = JsonConvert.SerializeObject(generatedOutput, Formatting.Indented);
-            File.WriteAllText(mapName + "_gp_hangar_VFS.json", jsonUpdated);
+            File.WriteAllText("C:\\Users\\John\\Documents\\My Games\\H3VR\\Vault\\SceneConfigs\\gp_hangar\\" + mapName + "_gp_hangar_VFS.json", jsonUpdated);
         }
     }
 
@@ -95,19 +95,53 @@ namespace MazeMaker
     {
         public int Index { get; set; }
         public string ObjectID { get; set; }
-        public string Type { get; set; }
+        public string Type = "object";
         public Posoffset PosOffset { get; set; }
         public Orientationforward OrientationForward { get; set; }
-        public Orientationup OrientationUp { get; set; }
-        public int ObjectAttachedTo { get; set; }
-        public int MountAttachedTo { get; set; }
-        public List<string> LoadedRoundsInChambers { get; set; }
-        public List<string> LoadedRoundsInMag { get; set; }
-        public List<string> GenericInts { get; set; }
-        public List<string> GenericStrings { get; set; }
-        public List<string> GenericVector3s { get; set; }
-        public List<string> GenericRotations { get; set; }
-        public Flags Flags { get; set; }
+
+        public Orientationup OrientationUp = new Orientationup
+        {
+            x = 0,
+            y = 1,
+            z = 0
+        };
+        public int ObjectAttachedTo = -1;
+        public int MountAttachedTo = -1;
+        public List<string> LoadedRoundsInChambers = new List<string>();
+        public List<string> LoadedRoundsInMag = new List<string>();
+        public List<string> GenericInts = new List<string>();
+        public List<string> GenericStrings = new List<string>();
+        public List<string> GenericVector3s = new List<string>();
+        public List<string> GenericRotations = new List<string>();
+        public Flags Flags = new Flags
+        {
+            _keys = new List<string>()
+                            {
+                                "IsKinematicLocked",
+                                "IsPickupLocked",
+                                "QuickBeltSpecialStateEngaged"
+                            },
+
+            _values = new List<string>()
+                            {
+                                "True",
+                                "True",
+                                "False"
+                            }
+        };
+
+        public Element(Parameters parameters)
+        {
+            if (parameters.horizontalWide)
+            {
+                ObjectID = "ShoothouseBarrierWall";
+            }
+            else
+            {
+                ObjectID = "ShoothouseBarrierWallNarrow";
+            }
+        }
+
     }
 
     public class Posoffset
