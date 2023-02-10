@@ -20,8 +20,7 @@ namespace MazeMaker
         public float YVerticalStart { get; set; }
         public int gridColumns { get; set; }
         public int gridRows { get; set; }
-        public int wallRows { get; set; }
-        public int wallColumns { get; set; }
+        
         public string mapName { get; set; }
         public bool horizontalWide { get; set; }
         public bool verticalWide { get; set; }
@@ -84,8 +83,7 @@ namespace MazeMaker
                 parameters.YHorizontalStart = 0;
 
             }
-            parameters.wallColumns = parameters.gridColumns * 2 + 1;
-            parameters.wallRows = parameters.gridRows * 2 + 1;
+
             return parameters;
         }
     }

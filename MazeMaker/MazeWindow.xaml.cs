@@ -324,9 +324,11 @@ namespace MazeMaker
             fillRectangle(selected);
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void Save_Click(object sender, RoutedEventArgs e)
         {
             Output.saveMap(maze, parameters.mapName);
         }
+
+
     }
 }

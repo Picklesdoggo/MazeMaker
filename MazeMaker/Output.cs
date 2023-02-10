@@ -108,7 +108,7 @@ namespace MazeMaker
 
 
             string jsonUpdated = JsonConvert.SerializeObject(generatedOutput, Formatting.Indented);
-            File.WriteAllText("C:\\Users\\John\\Documents\\My Games\\H3VR\\Vault\\SceneConfigs\\gp_hangar\\" + mapName + "_gp_hangar_VFS.json", jsonUpdated);
+            File.WriteAllText(mapName + "_gp_hangar_VFS.json", jsonUpdated);
         }
     }
 
