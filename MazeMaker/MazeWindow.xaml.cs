@@ -1,7 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,17 +16,11 @@ namespace MazeMaker
     {
 
 
-        public static Parameters parameters = new Parameters();
-
-        
+        public static Parameters parameters = new Parameters();        
         public static int horizontalLineThickness = 4;
-        public static int verticalLineThickness = 4;
+        public static int verticalLineThickness = 4;             
 
-        public static Output generatedOutput = new Output();
-
-        public static List<List<Wall>> maze = new List<List<Wall>>();
-
-        public static List<List<Room>> mazeRooms;
+        public static List<List<Room>> maze;
         public MazeWindow()
         {
             InitializeComponent();
@@ -41,11 +33,10 @@ namespace MazeMaker
 
             parameters = Parameters.generateParameters(verticalWideInput, horizontalWideInput, mapNameInput);
 
-            mazeRooms = Room.generateRooms(parameters);
+            maze = Room.generateRooms(parameters);
 
             displayControls();
             generateGrid();
-            generateWallGrid();
         }
 
 
@@ -124,7 +115,7 @@ namespace MazeMaker
                         horizontalTop.MouseEnter += WallHover;
                         horizontalTop.Height = verticalLineThickness;
                         horizontalTop.Fill = new SolidColorBrush(Colors.Black);
-                        horizontalTop.Name = "Horizontal_" + r + "_" + (c * 2 + 1);
+                        horizontalTop.Name = "Top_" + r + "_" + c;
                         DockPanel.SetDock(horizontalTop, Dock.Top);
                         panel.Children.Add(horizontalTop);
                     }
@@ -135,7 +126,7 @@ namespace MazeMaker
                     horizontalBottom.MouseEnter += WallHover;
                     horizontalBottom.Height = verticalLineThickness;
                     horizontalBottom.Fill = new SolidColorBrush(Colors.Black);
-                    horizontalBottom.Name = "Horizontal_" + (r * 2 + 2) + "_" + (c * 2 + 1);
+                    horizontalBottom.Name = "Bottom_" + r + "_" + c;
                     DockPanel.SetDock(horizontalBottom, Dock.Bottom);
                     panel.Children.Add(horizontalBottom);
 
@@ -147,7 +138,7 @@ namespace MazeMaker
                         verticalLeft.MouseEnter += WallHover;
                         verticalLeft.Width = horizontalLineThickness;
                         verticalLeft.Fill = new SolidColorBrush(Colors.Black);
-                        verticalLeft.Name = "Vertical_" + (r * 2 + 1) + "_" + c;
+                        verticalLeft.Name = "Left_" + r + "_" + c;
                         DockPanel.SetDock(verticalLeft, Dock.Left);
                         panel.Children.Add(verticalLeft);
 
@@ -159,14 +150,8 @@ namespace MazeMaker
                     verticalRight.MouseEnter += WallHover;
                     verticalRight.Width = horizontalLineThickness;
                     verticalRight.Fill = new SolidColorBrush(Colors.Black);
-                    if (r != 0)
-                    {
-                        verticalRight.Name = "Vertical_" + (r * 2 + 1) + "_" + (c * 2 + 2);
-                    }
-                    else
-                    {
-                        verticalRight.Name = "Vertical_" + (r * 2 + 1) + "_" + (c * 2 + 2);
-                    }
+                    verticalRight.Name = "Right_" + r + "_" + c;
+
                     DockPanel.SetDock(verticalRight, Dock.Right);
                     panel.Children.Add(verticalRight);
 
@@ -185,363 +170,141 @@ namespace MazeMaker
 
         }
 
-        private void generateWallGrid()
-        {
-
-            //float startingXHorizontals = parameters.XHorizontalStart;
-            //float startingYHorizontals = parameters.YHorizontalStart;
-            //float startingZHorizontals;
-
-            //float startingXVerticals = parameters.XVerticalStart;
-            //float startingYVerticals = parameters.YVerticalStart;
-            //float startingZVerticals;
-
-            //for (int r = 0; r < parameters.wallRows; r++)
-            //{
-            //    List<Wall> row = new List<Wall>();
-            //    startingZHorizontals = parameters.ZHorizontalStart;
-            //    startingZVerticals = parameters.ZVerticalStart;
-
-            //    for (int c = 0; c < parameters.wallColumns; c++)
-            //    {
-
-            //        Wall wall = new Wall
-            //        {
-            //            render = false
-            //        };
-
-            //        if (r == 0 || r % 2 == 0)
-            //        {
-            //            if (c != 0 && c % 2 != 0)
-            //            {
-            //                wall.render = true;
-            //                Element e = new Element
-            //                {
-            //                    Index = 0
-            //                };
-            //                if (parameters.horizontalWide)
-            //                {
-            //                    e.ObjectID = "ShoothouseBarrierWall";
-            //                }
-            //                else
-            //                {
-            //                    e.ObjectID = "ShoothouseBarrierWallNarrow";
-            //                }
-            //                e.Type = "object";
-
-            //                e.PosOffset = new Posoffset
-            //                {
-            //                    x = startingXHorizontals,
-            //                    y = startingYHorizontals,
-            //                    z = startingZHorizontals
-            //                };
-
-            //                e.OrientationForward = new Orientationforward
-            //                {
-            //                    x = 1,
-            //                    y = 0,
-            //                    z = 0
-            //                };
-
-            //                e.OrientationUp = new Orientationup
-            //                {
-            //                    x = 0,
-            //                    y = 1,
-            //                    z = 0
-            //                };
-
-            //                e.ObjectAttachedTo = -1;
-            //                e.MountAttachedTo = -1;
-            //                e.LoadedRoundsInChambers = new List<string>();
-            //                e.LoadedRoundsInMag = new List<string>();
-            //                e.GenericInts = new List<string>();
-            //                e.GenericStrings = new List<string>();
-            //                e.GenericVector3s = new List<string>();
-            //                e.GenericRotations = new List<string>();
-            //                e.Flags = new Flags
-            //                {
-            //                    _keys = new List<string>()
-            //                {
-            //                    "IsKinematicLocked",
-            //                    "IsPickupLocked",
-            //                    "QuickBeltSpecialStateEngaged"
-            //                },
-
-            //                    _values = new List<string>()
-            //                {
-            //                    "True",
-            //                    "True",
-            //                    "False"
-            //                }
-            //                };
-
-            //                wall.element = e;
-            //                startingZHorizontals -= parameters.ZHorizontalOffset;
-            //            }
-
-            //        }
-            //        else
-            //        {
-
-            //            if (c == 0 || c % 2 == 0)
-            //            {
-            //                wall.render = true;
-            //                Element e = new Element
-            //                {
-            //                    Index = 0
-            //                };
-            //                if (parameters.verticalWide)
-            //                {
-            //                    e.ObjectID = "ShoothouseBarrierWall";
-            //                }
-            //                else
-            //                {
-            //                    e.ObjectID = "ShoothouseBarrierWallNarrow";
-            //                }
-            //                e.Type = "object";
-
-            //                e.PosOffset = new Posoffset
-            //                {
-            //                    x = startingXVerticals,
-            //                    y = startingYVerticals,
-            //                    z = startingZVerticals
-            //                };
-
-            //                e.OrientationForward = new Orientationforward
-            //                {
-            //                    x = 0,
-            //                    y = 0,
-            //                    z = 1
-            //                };
-
-            //                e.OrientationUp = new Orientationup
-            //                {
-            //                    x = 0,
-            //                    y = 1,
-            //                    z = 0
-            //                };
-
-            //                e.ObjectAttachedTo = -1;
-            //                e.MountAttachedTo = -1;
-            //                e.LoadedRoundsInChambers = new List<string>();
-            //                e.LoadedRoundsInMag = new List<string>();
-            //                e.GenericInts = new List<string>();
-            //                e.GenericStrings = new List<string>();
-            //                e.GenericVector3s = new List<string>();
-            //                e.GenericRotations = new List<string>();
-            //                e.Flags = new Flags
-            //                {
-            //                    _keys = new List<string>()
-            //                {
-            //                    "IsKinematicLocked",
-            //                    "IsPickupLocked",
-            //                    "QuickBeltSpecialStateEngaged"
-            //                },
-
-            //                    _values = new List<string>()
-            //                {
-            //                    "True",
-            //                    "True",
-            //                    "False"
-            //                }
-            //                };
-            //                startingZVerticals -= parameters.ZVerticalOffset;
-
-            //                wall.element = e;
-
-            //            }
-            //        }
-
-
-            //        row.Add(wall);
-            //    }
-            //    if (r == 0 || r % 2 == 0)
-            //    {
-            //        startingXHorizontals -= parameters.XHorizontalOffset;
-            //    }
-            //    else
-            //    {
-            //        startingXVerticals -= parameters.XVerticalOffset;
-            //    }
-
-            //    maze.Add(row);
-            //}
-
-        }
-
-        private void generateJson()
-        {
-            generatedOutput.FileName = parameters.mapName;
-            generatedOutput.ReferencePath = @"Vault\SceneConfigs\gp_hangar\" + parameters.mapName + "gp_hangar_VFS.json";
-            generatedOutput.Creator = "picklesDoggo";
-            generatedOutput.ModsUsed = new List<string>();
-            generatedOutput.Objects = new List<Object>();
-
-            int index = 0;
-          
-            for (int i = 0; i < maze.Count; i++)
-            {
-
-                for (int ii = 0; ii < maze[i].Count; ii++)
-                {
-                    if (maze[i][ii].render)
-                    {
-                        Object rowObject = new Object
-                        {
-                            IsContainedIn = -1,
-                            QuickbeltSlotIndex = -1,
-                            InSlotOfRootObjectIndex = -1,
-                            InSlotOfElementIndex = -1,
-                            Elements = new List<Element>(),
-                            Index = index
-                        };
-                        rowObject.Elements.Add(maze[i][ii].element);
-                        generatedOutput.Objects.Add(rowObject);
-                        index++;
-                    }
-                }
-            }
-
-
-
-            string jsonUpdated = JsonConvert.SerializeObject(generatedOutput, Formatting.Indented);
-            File.WriteAllText(parameters.mapName + "_gp_hangar_VFS.json", jsonUpdated);
-        }
-
         private void fillRectangle(Rectangle selected)
         {
             Color selectedColor = ((SolidColorBrush)selected.Fill).Color;
+                       
 
             // find the name of the piece
             List<string> split = selected.Name.Split('_').ToList();
             int r = Convert.ToInt32(split[1]);
             int c = Convert.ToInt32(split[2]);
-
-            // Was a vertical clicked?
-            if (selected.Name.Contains("Vertical"))
+           
+            if (selected.Name.Contains("Right") || selected.Name.Contains("Left"))
             {
-                // is Vertical a wide piece?
-                if (parameters.verticalWide)
+                Tuple<SolidColorBrush, string> selectedValues = GetSelectedVerticalValues();
+                selected.Fill = selectedValues.Item1;
+                if (selectedValues.Item2 != "None")
                 {
-                    // determine selected radio button
-                    if (btnVerticalNone.IsChecked == true)
+                    if (selected.Name.Contains("Right"))
                     {
-                        maze[r][c].render = false;
-                        selected.Fill = btnVerticalNone.Foreground;
+                        maze[r][c].right.element.ObjectID = selectedValues.Item2;
                     }
                     else
                     {
-                        maze[r][c].render = true;
-
-                        if (btnVerticalSingleDoor.IsChecked == true)
-                        {
-                            selected.Fill = btnVerticalSingleDoor.Foreground;
-                            maze[r][c].element.ObjectID = "ShoothouseBarrierDoorSingle";
-                        }
-                        else if (btnVerticalDoubleDoor.IsChecked == true)
-                        {
-                            selected.Fill = btnVerticalDoubleDoor.Foreground;
-                            maze[r][c].element.ObjectID = "ShoothouseBarrierDoorDouble";
-                        }
-                        else if (btnVerticalWindow.IsChecked == true)
-                        {
-                            selected.Fill = btnVerticalWindow.Foreground;
-                            maze[r][c].element.ObjectID = "ShoothouseBarrierWindowNarrow";
-                        }
-                        else if (btnVerticalWall.IsChecked == true)
-                        {
-                            selected.Fill = btnVerticalWall.Foreground;
-                            maze[r][c].element.ObjectID = "ShoothouseBarrierWall";
-                        }
-                        else if (btnVerticalCompBarrierLow.IsChecked == true)
-                        {
-                            selected.Fill = btnVerticalCompBarrierLow.Foreground;
-                            maze[r][c].element.ObjectID = "CompBarrierLow";
-                        }
+                        maze[r][c].left.element.ObjectID = selectedValues.Item2;
                     }
-
-                    selected.Width = verticalLineThickness;
+                    
                 }
                 else
                 {
-                    if (selectedColor == Colors.Gray)
+                    if (selected.Name.Contains("Right"))
                     {
-                        selected.Fill = new SolidColorBrush(Colors.Black);
-                        selected.Width = verticalLineThickness;
-                        maze[r][c].render = true;
-                        maze[r][c].element.ObjectID = "ShoothouseBarrierWallNarrow";
+                        maze[r][c].right.render = false;
                     }
                     else
                     {
-                        selected.Fill = new SolidColorBrush(Colors.Gray);
-                        selected.Width = verticalLineThickness;
-                        maze[r][c].render = false;
+                        maze[r][c].left.render = false;
                     }
-
-                }
+                }                
             }
-            if (selected.Name.Contains("Horizontal"))
+            else if (selected.Name.Contains("Top") || selected.Name.Contains("Bottom"))
             {
-                // is horizontal a wide piece?
-                if (parameters.horizontalWide)
+                Tuple<SolidColorBrush, string> selectedValues = GetSelectedHorizontalValues();
+                selected.Fill = selectedValues.Item1;
+                if (selectedValues.Item2 != "None")
                 {
-                    // determine selected radio button
-                    if (btnHorizontalNone.IsChecked == true)
+                    if (selected.Name.Contains("Top"))
                     {
-                        maze[r][c].render = false;
-                        selected.Fill = btnHorizontalNone.Foreground;
+                        maze[r][c].top.element.ObjectID = selectedValues.Item2;
                     }
                     else
                     {
-                        maze[r][c].render = true;
-
-                        if (btnHorizontalSingleDoor.IsChecked == true)
-                        {
-                            selected.Fill = btnHorizontalSingleDoor.Foreground;
-                            maze[r][c].element.ObjectID = "ShoothouseBarrierDoorSingle";
-                        }
-                        else if (btnHorizontalDoubleDoor.IsChecked == true)
-                        {
-                            selected.Fill = btnHorizontalDoubleDoor.Foreground;
-                            maze[r][c].element.ObjectID = "ShoothouseBarrierDoorDouble";
-                        }
-                        else if (btnHorizontalWindow.IsChecked == true)
-                        {
-                            selected.Fill = btnHorizontalWindow.Foreground;
-                            maze[r][c].element.ObjectID = "ShoothouseBarrierWindowNarrow";
-                        }
-                        else if (btnHorizontalWall.IsChecked == true)
-                        {
-                            selected.Fill = btnHorizontalWall.Foreground;
-                            maze[r][c].element.ObjectID = "ShoothouseBarrierWall";
-                        }
-                        else if (btnHorizontalCompBarrierLow.IsChecked == true)
-                        {
-                            selected.Fill = btnHorizontalCompBarrierLow.Foreground;
-                            maze[r][c].element.ObjectID = "CompBarrierLow";
-                        }
+                        maze[r][c].bottom.element.ObjectID = selectedValues.Item2;
                     }
 
-                    selected.Height = horizontalLineThickness;
                 }
                 else
                 {
-                    if (selectedColor == Colors.Gray)
+                    if (selected.Name.Contains("Top"))
                     {
-                        selected.Fill = new SolidColorBrush(Colors.Black);
-                        selected.Height = horizontalLineThickness;
-                        maze[r][c].render = true;
-                        maze[r][c].element.ObjectID = "ShoothouseBarrierWallNarrow";
+                        maze[r][c].top.render = false;
                     }
                     else
                     {
-                        selected.Fill = new SolidColorBrush(Colors.Gray);
-                        selected.Height = horizontalLineThickness;
-                        maze[r][c].render = false;
+                        maze[r][c].bottom.render = false;
                     }
-
                 }
+
             }
+
+
+        }
+
+        public Tuple<SolidColorBrush, string> GetSelectedVerticalValues()
+        {
+            SolidColorBrush solidColor = new SolidColorBrush();
+            string objectID = "None";
+            if (btnVerticalSingleDoor.IsChecked == true)
+            {
+                solidColor = (SolidColorBrush)btnVerticalSingleDoor.Foreground;
+                objectID = "ShoothouseBarrierDoorSingle";                
+            }
+            else if (btnVerticalDoubleDoor.IsChecked == true)
+            {
+                solidColor = (SolidColorBrush)btnVerticalDoubleDoor.Foreground;
+                objectID = "ShoothouseBarrierDoorDouble";
+            }
+            else if (btnVerticalWindow.IsChecked == true)
+            {
+                solidColor = (SolidColorBrush)btnVerticalWindow.Foreground;
+                objectID = "ShoothouseBarrierWindowNarrow";
+            }
+            else if (btnVerticalWall.IsChecked == true)
+            {
+                solidColor = (SolidColorBrush)btnVerticalWall.Foreground;
+                objectID = "ShoothouseBarrierWall";
+            }
+            else if (btnVerticalCompBarrierLow.IsChecked == true)
+            {
+                solidColor = (SolidColorBrush)btnVerticalCompBarrierLow.Foreground;
+                objectID = "CompBarrierLow";
+            }
+
+            return Tuple.Create(solidColor, objectID);
+        }
+
+        public Tuple<SolidColorBrush, string> GetSelectedHorizontalValues()
+        {
+            SolidColorBrush solidColor = new SolidColorBrush();
+            string objectID = "None";
+            if (btnHorizontalSingleDoor.IsChecked == true)
+            {
+                solidColor = (SolidColorBrush)btnHorizontalSingleDoor.Foreground;
+                objectID = "ShoothouseBarrierDoorSingle";
+            }
+            else if (btnHorizontalDoubleDoor.IsChecked == true)
+            {
+                solidColor = (SolidColorBrush)btnHorizontalDoubleDoor.Foreground;
+                objectID = "ShoothouseBarrierDoorDouble";
+            }
+            else if (btnHorizontalWindow.IsChecked == true)
+            {
+                solidColor = (SolidColorBrush)btnHorizontalWindow.Foreground;
+                objectID = "ShoothouseBarrierWindowNarrow";
+            }
+            else if (btnHorizontalWall.IsChecked == true)
+            {
+                solidColor = (SolidColorBrush)btnHorizontalWall.Foreground;
+                objectID = "ShoothouseBarrierWall";
+            }
+            else if (btnHorizontalCompBarrierLow.IsChecked == true)
+            {
+                solidColor = (SolidColorBrush)btnHorizontalCompBarrierLow.Foreground;
+                objectID = "CompBarrierLow";
+            }
+
+            return Tuple.Create(solidColor, objectID);
         }
 
         private void WallClicked(object sender, MouseButtonEventArgs e)
@@ -563,8 +326,7 @@ namespace MazeMaker
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            // generateJson();
-            Output.saveMap(mazeRooms, parameters.mapName);
+            Output.saveMap(maze, parameters.mapName);
         }
     }
 }

@@ -53,22 +53,53 @@ namespace MazeMaker
                         index++;
                     }
 
+                    if (mazeRooms[r][c].bottom.render)
+                    {
+                        Object bottom = new Object
+                        {
+                            IsContainedIn = -1,
+                            QuickbeltSlotIndex = -1,
+                            InSlotOfRootObjectIndex = -1,
+                            InSlotOfElementIndex = -1,
+                            Elements = new List<Element>(),
+                            Index = index
+                        };
+                        bottom.Elements.Add(mazeRooms[r][c].bottom.element);
+                        generatedOutput.Objects.Add(bottom);
+                        index++;
+                    }
 
-                    //if (mazeRooms[r][c].bottom.render)
-                    //{
-                    //    Object bottom = new Object
-                    //    {
-                    //        IsContainedIn = -1,
-                    //        QuickbeltSlotIndex = -1,
-                    //        InSlotOfRootObjectIndex = -1,
-                    //        InSlotOfElementIndex = -1,
-                    //        Elements = new List<Element>(),
-                    //        Index = index
-                    //    };
-                    //    bottom.Elements.Add(mazeRooms[r][c].bottom.element);
-                    //    generatedOutput.Objects.Add(bottom);
-                    //    index++;
-                    //}
+                    if (mazeRooms[r][c].left.render)
+                    {
+                        Object left = new Object
+                        {
+                            IsContainedIn = -1,
+                            QuickbeltSlotIndex = -1,
+                            InSlotOfRootObjectIndex = -1,
+                            InSlotOfElementIndex = -1,
+                            Elements = new List<Element>(),
+                            Index = index
+                        };
+                        left.Elements.Add(mazeRooms[r][c].left.element);
+                        generatedOutput.Objects.Add(left);
+                        index++;
+                    }
+
+                    if (mazeRooms[r][c].right.render)
+                    {
+                        Object right = new Object
+                        {
+                            IsContainedIn = -1,
+                            QuickbeltSlotIndex = -1,
+                            InSlotOfRootObjectIndex = -1,
+                            InSlotOfElementIndex = -1,
+                            Elements = new List<Element>(),
+                            Index = index
+                        };
+                        right.Elements.Add(mazeRooms[r][c].right.element);
+                        generatedOutput.Objects.Add(right);
+                        index++;
+                    }
 
                 }
             }

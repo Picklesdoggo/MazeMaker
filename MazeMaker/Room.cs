@@ -98,14 +98,52 @@ namespace MazeMaker
                         room.bottom.render = true;
                     }
 
+                    Element left = new Element(parameters);
+                    left.PosOffset = new Posoffset
+                    {
+                        x = startingXVerticals,
+                        y = startingYVerticals,
+                        z = startingZVerticals
+                    };
+                    left.OrientationForward = new Orientationforward
+                    {
+                        x = 0,
+                        y = 0,
+                        z = 1
+                    };
+
+                    if (c == parameters.gridColumns - 1)
+                    {
+                        room.right.render = true;
+                    }
+
+                    Element right = new Element(parameters);
+                    right.PosOffset = new Posoffset
+                    {
+                        x = startingXVerticals,
+                        y = startingYVerticals,
+                        z = startingZVerticals
+                    };
+                    right.OrientationForward = new Orientationforward
+                    {
+                        x = 0,
+                        y = 0,
+                        z = 1
+                    };
+                    right.PosOffset.z = left.PosOffset.z - parameters.ZHorizontalOffset;
 
                     room.top.element = top;
+                    room.bottom.element = bottom;
+                    room.left.element = left;
+                    room.right.element = right;
 
                     row.Add(room);
                     startingZHorizontals -= parameters.ZHorizontalOffset;
+                    startingZVerticals -= parameters.ZVerticalOffset;
                 }
 
                 startingXHorizontals -= parameters.XHorizontalOffset;
+                startingXVerticals -= parameters.XVerticalOffset;
 
                 mazeRooms.Add(row);
             }
