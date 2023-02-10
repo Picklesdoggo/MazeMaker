@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +17,68 @@ namespace MazeMaker
         public List<string> ModsUsed { get; set; }
         public List<Object> Objects { get; set; }
         public string QuickbeltLayoutName { get; set; }
+
+
+
+        public static void saveMap(List<List<Room>> mazeRooms, string mapName)
+        {
+            Output generatedOutput = new Output();
+
+            generatedOutput.FileName = mapName;
+            generatedOutput.ReferencePath = @"Vault\SceneConfigs\gp_hangar\" + mapName + "gp_hangar_VFS.json";
+            generatedOutput.Creator = "picklesDoggo";
+            generatedOutput.ModsUsed = new List<string>();
+            generatedOutput.Objects = new List<Object>();
+
+            int index = 0;
+
+            for (int r = 0; r < mazeRooms.Count; r++)
+            {
+                for (int c = 0; c < mazeRooms[r].Count;c++)
+                {
+
+                    if (mazeRooms[r][c].top.render)
+                    {
+                        Object top = new Object
+                        {
+                            IsContainedIn = -1,
+                            QuickbeltSlotIndex = -1,
+                            InSlotOfRootObjectIndex = -1,
+                            InSlotOfElementIndex = -1,
+                            Elements = new List<Element>(),
+                            Index = index
+                        };
+                        top.Elements.Add(mazeRooms[r][c].top.element);
+                        generatedOutput.Objects.Add(top);
+                        index++;
+                    }
+
+
+                    //if (mazeRooms[r][c].bottom.render)
+                    //{
+                    //    Object bottom = new Object
+                    //    {
+                    //        IsContainedIn = -1,
+                    //        QuickbeltSlotIndex = -1,
+                    //        InSlotOfRootObjectIndex = -1,
+                    //        InSlotOfElementIndex = -1,
+                    //        Elements = new List<Element>(),
+                    //        Index = index
+                    //    };
+                    //    bottom.Elements.Add(mazeRooms[r][c].bottom.element);
+                    //    generatedOutput.Objects.Add(bottom);
+                    //    index++;
+                    //}
+
+                }
+            }
+
+
+
+
+            string jsonUpdated = JsonConvert.SerializeObject(generatedOutput, Formatting.Indented);
+            File.WriteAllText(mapName + "_gp_hangar_VFS.json", jsonUpdated);
+        }
     }
 
     public class Object

@@ -60,6 +60,8 @@
     <Compile Include="MazeWindow.xaml.cs">
       <DependentUpon>MazeWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Parameters.cs" />
+    <Compile Include="Room.cs" />
     <Compile Include="Wall.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -18,34 +18,17 @@ namespace MazeMaker
     {
 
 
-        public static float XHorizontalStart;
-        public static float XHorizontalOffset;
-        public static float ZHorizontalStart;
-        public static float ZHorizontalOffset;
-        public static float YHorizontalStart;
+        public static Parameters parameters = new Parameters();
 
-        public static float XVerticalStart;
-        public static float XVerticalOffset;
-        public static float ZVerticalStart;
-        public static float ZVerticalOffset;
-        public static float YVerticalStart;
-
-        public static string mapName;
-
-        public static int gridColumns;
-        public static int gridRows;
-        public static int wallRows;
-        public static int wallColumns;
-
+        
         public static int horizontalLineThickness = 4;
         public static int verticalLineThickness = 4;
-
-        public static bool horizontalWide;
-        public static bool verticalWide;
 
         public static Output generatedOutput = new Output();
 
         public static List<List<Wall>> maze = new List<List<Wall>>();
+
+        public static List<List<Room>> mazeRooms;
         public MazeWindow()
         {
             InitializeComponent();
@@ -55,84 +38,27 @@ namespace MazeMaker
         public MazeWindow(bool verticalWideInput, bool horizontalWideInput, string mapNameInput)
         {
             InitializeComponent();
-            seedValues(verticalWideInput, horizontalWideInput, mapNameInput);
+
+            parameters = Parameters.generateParameters(verticalWideInput, horizontalWideInput, mapNameInput);
+
+            mazeRooms = Room.generateRooms(parameters);
+
             displayControls();
             generateGrid();
             generateWallGrid();
         }
 
-        private void seedValues(bool verticalWideInput, bool horizontalWideInput, string mapNameInput)
-        {
-            verticalWide = verticalWideInput;
-            horizontalWide = horizontalWideInput;
-            mapName = mapNameInput;
-
-            if (verticalWide)
-            {
-                gridRows = 9;
-
-                XVerticalStart = 12.5F;
-                XVerticalOffset = 3.2F;
-
-                ZVerticalStart = 14.2F;
-                ZVerticalOffset = 3.0F;
-
-                YVerticalStart = 0;
-            }
-            else
-            {
-                gridRows = 5;
-
-                XVerticalStart = 13.1F;
-                XVerticalOffset = 1.2F;
-
-                ZVerticalStart = 14.2F;
-                ZVerticalOffset = 1.0F;
-
-                YVerticalStart = 0;
-            }
-
-            if (horizontalWide)
-            {
-                gridColumns = 9;
-
-                XHorizontalStart = 14.1F;
-                XHorizontalOffset = 3.2F;
-
-                ZHorizontalStart = 12.8F;
-                ZHorizontalOffset = 3F;
-
-                YHorizontalStart = 0;
-
-            }
-            else
-            {
-                gridColumns = 5;
-
-                XHorizontalStart = 12.5F;
-                XHorizontalOffset = 1.2F;
-
-                ZHorizontalStart = 13.9F;
-                ZHorizontalOffset = 0.8F;
-
-                YHorizontalStart = 0;
-
-            }
-            wallColumns = gridColumns * 2 + 1;
-            wallRows = gridRows * 2 + 1;
-
-        }
 
         private void displayControls()
         {
-            if (!verticalWide && !horizontalWide)
+            if (!parameters.verticalWide && !parameters.horizontalWide)
             {
                 grdControls.Visibility = Visibility.Collapsed;
             }
             else
             {
                 // Display vertical controls?
-                if (verticalWide)
+                if (parameters.verticalWide)
                 {
                     btnsVertical.Visibility = Visibility.Visible;
                 }
@@ -142,7 +68,7 @@ namespace MazeMaker
                 }
 
                 // Display horizontal controls
-                if (horizontalWide)
+                if (parameters.horizontalWide)
                 {
                     btnsHorizontal.Visibility = Visibility.Visible;
                 }
@@ -166,24 +92,24 @@ namespace MazeMaker
             grdMain.Margin = margin;
 
             // Add gridColumns
-            for (int c = 0; c < gridColumns; c++)
+            for (int c = 0; c < parameters.gridColumns; c++)
             {
                 ColumnDefinition column = new ColumnDefinition();
                 grdMain.ColumnDefinitions.Add(column);
             }
 
             // Add gridRows
-            for (int r = 0; r < gridRows; r++)
+            for (int r = 0; r < parameters.gridRows; r++)
             {
                 RowDefinition row = new RowDefinition();
                 grdMain.RowDefinitions.Add(row);
             }
 
             // Loop through columnns
-            for (int c = 0; c < gridColumns; c++)
+            for (int c = 0; c < parameters.gridColumns; c++)
             {
                 // Loop through gridRows
-                for (int r = 0; r < gridRows; r++)
+                for (int r = 0; r < parameters.gridRows; r++)
                 {
                     DockPanel panel = new DockPanel
                     {
@@ -262,21 +188,21 @@ namespace MazeMaker
         private void generateWallGrid()
         {
 
-            float startingXHorizontals = XHorizontalStart;
-            float startingYHorizontals = YHorizontalStart;
+            float startingXHorizontals = parameters.XHorizontalStart;
+            float startingYHorizontals = parameters.YHorizontalStart;
             float startingZHorizontals;
 
-            float startingXVerticals = XVerticalStart;
-            float startingYVerticals = YVerticalStart;
+            float startingXVerticals = parameters.XVerticalStart;
+            float startingYVerticals = parameters.YVerticalStart;
             float startingZVerticals;
 
-            for (int r = 0; r < wallRows; r++)
+            for (int r = 0; r < parameters.wallRows; r++)
             {
                 List<Wall> row = new List<Wall>();
-                startingZHorizontals = ZHorizontalStart;
-                startingZVerticals = ZVerticalStart;
+                startingZHorizontals = parameters.ZHorizontalStart;
+                startingZVerticals = parameters.ZVerticalStart;
 
-                for (int c = 0; c < wallColumns; c++)
+                for (int c = 0; c < parameters.wallColumns; c++)
                 {
 
                     Wall wall = new Wall
@@ -293,7 +219,7 @@ namespace MazeMaker
                             {
                                 Index = 0
                             };
-                            if (horizontalWide)
+                            if (parameters.horizontalWide)
                             {
                                 e.ObjectID = "ShoothouseBarrierWall";
                             }
@@ -350,7 +276,7 @@ namespace MazeMaker
                             };
 
                             wall.element = e;
-                            startingZHorizontals -= ZHorizontalOffset;
+                            startingZHorizontals -= parameters.ZHorizontalOffset;
                         }
 
                     }
@@ -364,7 +290,7 @@ namespace MazeMaker
                             {
                                 Index = 0
                             };
-                            if (verticalWide)
+                            if (parameters.verticalWide)
                             {
                                 e.ObjectID = "ShoothouseBarrierWall";
                             }
@@ -419,7 +345,7 @@ namespace MazeMaker
                                 "False"
                             }
                             };
-                            startingZVerticals -= ZVerticalOffset;
+                            startingZVerticals -= parameters.ZVerticalOffset;
 
                             wall.element = e;
 
@@ -431,11 +357,11 @@ namespace MazeMaker
                 }
                 if (r == 0 || r % 2 == 0)
                 {
-                    startingXHorizontals -= XHorizontalOffset;
+                    startingXHorizontals -= parameters.XHorizontalOffset;
                 }
                 else
                 {
-                    startingXVerticals -= XVerticalOffset;
+                    startingXVerticals -= parameters.XVerticalOffset;
                 }
 
                 maze.Add(row);
@@ -445,8 +371,8 @@ namespace MazeMaker
 
         private void generateJson()
         {
-            generatedOutput.FileName = mapName;
-            generatedOutput.ReferencePath = @"Vault\SceneConfigs\gp_hangar\" + mapName + "gp_hangar_VFS.json";
+            generatedOutput.FileName = parameters.mapName;
+            generatedOutput.ReferencePath = @"Vault\SceneConfigs\gp_hangar\" + parameters.mapName + "gp_hangar_VFS.json";
             generatedOutput.Creator = "picklesDoggo";
             generatedOutput.ModsUsed = new List<string>();
             generatedOutput.Objects = new List<Object>();
@@ -479,7 +405,7 @@ namespace MazeMaker
 
 
             string jsonUpdated = JsonConvert.SerializeObject(generatedOutput, Formatting.Indented);
-            File.WriteAllText(mapName + "_gp_hangar_VFS.json", jsonUpdated);
+            File.WriteAllText(parameters.mapName + "_gp_hangar_VFS.json", jsonUpdated);
         }
 
         private void fillRectangle(Rectangle selected)
@@ -495,7 +421,7 @@ namespace MazeMaker
             if (selected.Name.Contains("Vertical"))
             {
                 // is Vertical a wide piece?
-                if (verticalWide)
+                if (parameters.verticalWide)
                 {
                     // determine selected radio button
                     if (btnVerticalNone.IsChecked == true)
@@ -557,7 +483,7 @@ namespace MazeMaker
             if (selected.Name.Contains("Horizontal"))
             {
                 // is horizontal a wide piece?
-                if (horizontalWide)
+                if (parameters.horizontalWide)
                 {
                     // determine selected radio button
                     if (btnHorizontalNone.IsChecked == true)
@@ -637,7 +563,8 @@ namespace MazeMaker
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            generateJson();
+            // generateJson();
+            Output.saveMap(mazeRooms, parameters.mapName);
         }
     }
 }
