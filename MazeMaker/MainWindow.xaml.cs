@@ -58,6 +58,7 @@ namespace MazeMaker
                Parameters parameters = Parameters.generateParameters((bool)btnVerticalWide.IsChecked, (bool)btnHorizontalWide.IsChecked, txtName.Text);
                List<List<Room>> maze = Room.makeMaze(parameters);
                Output.saveMap(maze, parameters.mapName);
+                MessageBox.Show("Maze Saved");
             }
         }
     }
