@@ -46,12 +46,12 @@ namespace MazeMaker
             }
             else
             {
-                parameters.gridRows = 5;
+                parameters.gridRows = 25;
 
-                parameters.XVerticalStart = 13.1F;
+                parameters.XVerticalStart = 13.5F;
                 parameters.XVerticalOffset = 1.2F;
 
-                parameters.ZVerticalStart = 14.2F;
+                parameters.ZVerticalStart = 14.7F;
                 parameters.ZVerticalOffset = 1.0F;
 
                 parameters.YVerticalStart = 0;
@@ -72,13 +72,13 @@ namespace MazeMaker
             }
             else
             {
-                parameters.gridColumns = 5;
+                parameters.gridColumns = 28;
 
-                parameters.XHorizontalStart = 12.5F;
+                parameters.XHorizontalStart = 14.1F;
                 parameters.XHorizontalOffset = 1.2F;
 
-                parameters.ZHorizontalStart = 13.9F;
-                parameters.ZHorizontalOffset = 0.8F;
+                parameters.ZHorizontalStart = 14.3F;
+                parameters.ZHorizontalOffset = 1F;
 
                 parameters.YHorizontalStart = 0;
 
