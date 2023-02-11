@@ -3,11 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using Formatting = Newtonsoft.Json.Formatting;
 
-namespace MazeMaker
+namespace MazeMakerUtilities
 {
     public class Output
     {
@@ -34,7 +35,7 @@ namespace MazeMaker
 
             for (int r = 0; r < mazeRooms.Count; r++)
             {
-                for (int c = 0; c < mazeRooms[r].Count;c++)
+                for (int c = 0; c < mazeRooms[r].Count; c++)
                 {
 
                     if (mazeRooms[r][c].top.render)
@@ -103,12 +104,8 @@ namespace MazeMaker
 
                 }
             }
-
-
-
-
             string jsonUpdated = JsonConvert.SerializeObject(generatedOutput, Formatting.Indented);
-            File.WriteAllText(mapName + "_gp_hangar_VFS.json", jsonUpdated);
+            File.WriteAllText(mapName + "_gp_hangar_VFS.json", jsonUpdated);            
         }
     }
 

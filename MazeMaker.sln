@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeMaker", "MazeMaker\MazeMaker.csproj", "{E935E78D-6851-42D0-8F63-CD257219C6E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MazeMakerUtilities", "MazeMakerUtilities\MazeMakerUtilities.csproj", "{D3BDBC03-1A57-45E5-B6E1-3EAC0163D773}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{E935E78D-6851-42D0-8F63-CD257219C6E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E935E78D-6851-42D0-8F63-CD257219C6E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E935E78D-6851-42D0-8F63-CD257219C6E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3BDBC03-1A57-45E5-B6E1-3EAC0163D773}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3BDBC03-1A57-45E5-B6E1-3EAC0163D773}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3BDBC03-1A57-45E5-B6E1-3EAC0163D773}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3BDBC03-1A57-45E5-B6E1-3EAC0163D773}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {62006FDF-7C9F-4F8D-A494-1F6FA0646418}
 	EndGlobalSection
 EndGlobal

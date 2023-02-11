@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MazeMaker
+namespace MazeMakerUtilities
 {
     public class Parameters
     {
@@ -20,7 +20,7 @@ namespace MazeMaker
         public float YVerticalStart { get; set; }
         public int gridColumns { get; set; }
         public int gridRows { get; set; }
-        
+
         public string mapName { get; set; }
         public bool horizontalWide { get; set; }
         public bool verticalWide { get; set; }

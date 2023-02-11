@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MazeMaker
+namespace MazeMakerUtilities
 {
     public class Room
     {
@@ -168,7 +165,7 @@ namespace MazeMaker
 
             Stack<Room> rooms = new Stack<Room>();
             int numberOfRooms = parameters.gridColumns * parameters.gridRows;
-            
+
             Random random = new Random();
 
             Room startingRoom = maze[0][0];
@@ -186,7 +183,7 @@ namespace MazeMaker
                     if (validNeighbours[newRoomIndex].Item2 == "Up")
                     {
                         startingRoom.top.element.ObjectID = "ShoothouseBarrierDoorDouble";
-                        
+
                     }
                     else if (validNeighbours[newRoomIndex].Item2 == "Down")
                     {
@@ -195,15 +192,16 @@ namespace MazeMaker
                     else if (validNeighbours[newRoomIndex].Item2 == "Left")
                     {
                         startingRoom.left.element.ObjectID = "ShoothouseBarrierDoorDouble";
-                        
+
                     }
-                    else if (validNeighbours[newRoomIndex].Item2 == "Right")                    {
-                        
+                    else if (validNeighbours[newRoomIndex].Item2 == "Right")
+                    {
+
                         maze[newRoom.row][newRoom.column].left.element.ObjectID = "ShoothouseBarrierDoorDouble";
                     }
                     startingRoom = maze[newRoom.row][newRoom.column];
                     rooms.Push(startingRoom);
-                    
+
                 }
                 else
                 {
@@ -214,7 +212,7 @@ namespace MazeMaker
 
             // Remove entrance and exit walls
             maze[0][0].left.element.ObjectID = "ShoothouseBarrierDoorSingle";
-            if(parameters.verticalWide && parameters.horizontalWide)
+            if (parameters.verticalWide && parameters.horizontalWide)
             {
                 maze[8][7].bottom.element.ObjectID = "ShoothouseBarrierDoorSingle";
             }
@@ -268,7 +266,4 @@ namespace MazeMaker
             return validRooms;
         }
     }
-
-
-
 }
