@@ -8,16 +8,19 @@ namespace MazeMakerUtilities
 {
     public class Parameters
     {
-        public float XHorizontalStart { get; set; }
-        public float XHorizontalOffset { get; set; }
-        public float ZHorizontalStart { get; set; }
-        public float ZHorizontalOffset { get; set; }
-        public float YHorizontalStart { get; set; }
+        public float XHorizontalAStart { get; set; }
+        public float XHorizontalAOffset { get; set; }
+        public float ZHorizontalAStart { get; set; }
+        public float ZHorizontalAOffset { get; set; }
+        public float YHorizontalAStart { get; set; }
+
+
         public float XVerticalStart { get; set; }
         public float XVerticalOffset { get; set; }
         public float ZVerticalStart { get; set; }
         public float ZVerticalOffset { get; set; }
         public float YVerticalStart { get; set; }
+
         public int gridColumns { get; set; }
         public int gridRows { get; set; }
 
@@ -32,56 +35,68 @@ namespace MazeMakerUtilities
             parameters.horizontalWide = horizontalWideInput;
             parameters.mapName = mapNameInput;
 
-            if (parameters.verticalWide)
-            {
-                parameters.gridRows = 9;
-
-                parameters.XVerticalStart = 12.5F;
-                parameters.XVerticalOffset = 3.2F;
-
-                parameters.ZVerticalStart = 14.2F;
-                parameters.ZVerticalOffset = 3.0F;
-
-                parameters.YVerticalStart = 0;
-            }
-            else
-            {
-                parameters.gridRows = 25;
-
-                parameters.XVerticalStart = 13.5F;
-                parameters.XVerticalOffset = 1.2F;
-
-                parameters.ZVerticalStart = 14.7F;
-                parameters.ZVerticalOffset = 1.0F;
-
-                parameters.YVerticalStart = 0;
-            }
-
-            if (parameters.horizontalWide)
+            // 4 possible scenarios
+            // 1. Wide x Wide
+            if (parameters.horizontalWide && parameters.verticalWide)
             {
                 parameters.gridColumns = 9;
+                parameters.XVerticalStart = 12.5F;
+                parameters.XVerticalOffset = 3.2F;
+                parameters.ZVerticalStart = 14.2F;
+                parameters.ZVerticalOffset = 3.0F;
+                parameters.YVerticalStart = 0;
 
-                parameters.XHorizontalStart = 14.1F;
-                parameters.XHorizontalOffset = 3.2F;
+                parameters.gridRows = 9;
+                parameters.XHorizontalAStart = 14.1F;
+                parameters.XHorizontalAOffset = 3.2F;
+                parameters.ZHorizontalAStart = 12.8F;
+                parameters.ZHorizontalAOffset = 3F;
+                parameters.YHorizontalAStart = 0;
+            }
+            // 2. Narrow x Narrow
+            else if (!parameters.horizontalWide && !parameters.verticalWide)
+            {
+                parameters.gridColumns = 28;
+                parameters.XVerticalStart = 13.5F;
+                parameters.XVerticalOffset = 1.2F;
+                parameters.ZVerticalStart = 14.7F;
+                parameters.ZVerticalOffset = 1.0F;
+                parameters.YVerticalStart = 0;
 
-                parameters.ZHorizontalStart = 12.8F;
-                parameters.ZHorizontalOffset = 3F;
+                parameters.gridRows = 25;
+                parameters.XHorizontalAStart = 14.1F;
+                parameters.XHorizontalAOffset = 1.2F;
+                parameters.ZHorizontalAStart = 14.3F;
+                parameters.ZHorizontalAOffset = 1F;
+                parameters.YHorizontalAStart = 0;
+            }
+            // 3. Wide x Narrow
+            else if (parameters.horizontalWide &&  !parameters.verticalWide)
+            {
+                parameters.gridRows = 25;
+                parameters.XVerticalStart = 13.5F;
+                parameters.XVerticalOffset = 1.2F;
+                parameters.ZVerticalStart = 14.0F;
+                parameters.ZVerticalOffset = 3.0F;
+                parameters.YVerticalStart = 0;
 
-                parameters.YHorizontalStart = 0;
+                parameters.gridColumns = 9;
+                parameters.XHorizontalAStart = 14.1F;
+                parameters.XHorizontalAOffset = 1.2F;
+                parameters.ZHorizontalAStart = 12.6F;
+                parameters.ZHorizontalAOffset = 3F;
+                parameters.YHorizontalAStart = 0;
+
+            }
+            // 4. Narrow x Wide
+            else if (!parameters.horizontalWide && parameters.verticalWide)
+            {
+                
 
             }
             else
             {
-                parameters.gridColumns = 28;
-
-                parameters.XHorizontalStart = 14.1F;
-                parameters.XHorizontalOffset = 1.2F;
-
-                parameters.ZHorizontalStart = 14.3F;
-                parameters.ZHorizontalOffset = 1F;
-
-                parameters.YHorizontalStart = 0;
-
+                // Do nothing
             }
 
             return parameters;

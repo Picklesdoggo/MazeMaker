@@ -12,21 +12,21 @@
 			<RowDefinition Height="auto"/>
 		</Grid.RowDefinitions>
 
-		<StackPanel Margin="10">
-			<Label FontWeight="Bold">Vertical Walls</Label>
-			<RadioButton Name="btnVerticalWide" IsChecked="True">Wide</RadioButton>
-			<RadioButton Name="btnVerticalNarrow" >Narrow</RadioButton>
-		</StackPanel>
-
-		<StackPanel Margin="10" Grid.Row="1">
+		<StackPanel Margin="10" >
 			<Label FontWeight="Bold">Horizontal Walls</Label>
 			<RadioButton Name="btnHorizontalWide" IsChecked="True">Wide</RadioButton>
 			<RadioButton Name="btnHorizontalNarrow" >Narrow</RadioButton>
 		</StackPanel>
 
+		<StackPanel Margin="10" Grid.Row="1">
+			<Label FontWeight="Bold">Vertical Walls</Label>
+			<RadioButton Name="btnVerticalWide" >Wide</RadioButton>
+			<RadioButton Name="btnVerticalNarrow" IsChecked="True">Narrow</RadioButton>
+		</StackPanel>
+
 		<StackPanel Margin="10" Grid.Row="2">
 			<Label FontWeight="Bold">Map Name</Label>
-			<TextBox Name="txtName" Background="DarkGray" Text="Shoot House"/>
+			<TextBox Name="txtName" Background="DarkGray" Text="Shoot House W X N"/>
 		</StackPanel>
 
 		<Button Name="btnStart" Content="Manually Edit Maze" Grid.Row="3" Click="btnStart_Click" Margin="10"/>

@@ -31,8 +31,8 @@ namespace MazeMakerUtilities
             maze = new List<List<Room>>();
             parameters = parametersInput;
 
-            float startingXHorizontals = parameters.XHorizontalStart;
-            float startingYHorizontals = parameters.YHorizontalStart;
+            float startingXHorizontals = parameters.XHorizontalAStart;
+            float startingYHorizontals = parameters.YHorizontalAStart;
             float startingZHorizontals;
 
             float startingXVerticals = parameters.XVerticalStart;
@@ -42,7 +42,7 @@ namespace MazeMakerUtilities
             for (int r = 0; r < parameters.gridRows; r++)
             {
                 List<Room> row = new List<Room>();
-                startingZHorizontals = parameters.ZHorizontalStart;
+                startingZHorizontals = parameters.ZHorizontalAStart;
                 startingZVerticals = parameters.ZVerticalStart;
 
                 for (int c = 0; c < parameters.gridColumns; c++)
@@ -69,7 +69,7 @@ namespace MazeMakerUtilities
                         column = c
                     };
 
-                    Element top = new Element(parameters);
+                    Element top = new Element(parameters.horizontalWide);
                     top.PosOffset = new Posoffset
                     {
                         x = startingXHorizontals,
@@ -84,7 +84,7 @@ namespace MazeMakerUtilities
                     };
 
 
-                    Element bottom = new Element(parameters);
+                    Element bottom = new Element(parameters.horizontalWide);
                     bottom.PosOffset = new Posoffset
                     {
                         x = startingXHorizontals,
@@ -97,7 +97,7 @@ namespace MazeMakerUtilities
                         y = 0,
                         z = 0
                     };
-                    bottom.PosOffset.x = top.PosOffset.x - parameters.XHorizontalOffset;
+                    bottom.PosOffset.x = top.PosOffset.x - parameters.XHorizontalAOffset;
 
                     // Render bottom wall
                     if (r == parameters.gridRows - 1)
@@ -105,7 +105,7 @@ namespace MazeMakerUtilities
                         room.bottom.render = true;
                     }
 
-                    Element left = new Element(parameters);
+                    Element left = new Element(parameters.verticalWide);
                     left.PosOffset = new Posoffset
                     {
                         x = startingXVerticals,
@@ -124,7 +124,7 @@ namespace MazeMakerUtilities
                         room.right.render = true;
                     }
 
-                    Element right = new Element(parameters);
+                    Element right = new Element(parameters.verticalWide);
                     right.PosOffset = new Posoffset
                     {
                         x = startingXVerticals,
@@ -137,7 +137,7 @@ namespace MazeMakerUtilities
                         y = 0,
                         z = 1
                     };
-                    right.PosOffset.z = left.PosOffset.z - parameters.ZHorizontalOffset;
+                    right.PosOffset.z = left.PosOffset.z - parameters.ZHorizontalAOffset;
 
                     room.top.element = top;
                     room.bottom.element = bottom;
@@ -145,11 +145,11 @@ namespace MazeMakerUtilities
                     room.right.element = right;
 
                     row.Add(room);
-                    startingZHorizontals -= parameters.ZHorizontalOffset;
+                    startingZHorizontals -= parameters.ZHorizontalAOffset;
                     startingZVerticals -= parameters.ZVerticalOffset;
                 }
 
-                startingXHorizontals -= parameters.XHorizontalOffset;
+                startingXHorizontals -= parameters.XHorizontalAOffset;
                 startingXVerticals -= parameters.XVerticalOffset;
 
                 maze.Add(row);

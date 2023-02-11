@@ -1,11 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using Formatting = Newtonsoft.Json.Formatting;
 
 namespace MazeMakerUtilities
@@ -105,7 +100,8 @@ namespace MazeMakerUtilities
                 }
             }
             string jsonUpdated = JsonConvert.SerializeObject(generatedOutput, Formatting.Indented);
-            File.WriteAllText(mapName + "_gp_hangar_VFS.json", jsonUpdated);            
+            File.WriteAllText(mapName + "_gp_hangar_VFS.json", jsonUpdated);
+            
         }
     }
 
@@ -158,9 +154,10 @@ namespace MazeMakerUtilities
                             }
         };
 
-        public Element(Parameters parameters)
+
+        public Element(bool wide)
         {
-            if (parameters.horizontalWide)
+            if (wide)
             {
                 ObjectID = "ShoothouseBarrierWall";
             }
