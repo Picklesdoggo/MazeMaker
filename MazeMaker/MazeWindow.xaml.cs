@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -330,18 +331,26 @@ namespace MazeMaker
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
-        {
-            var dialog = new FolderBrowserDialog();
-
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+        {            
+            // Check for config file
+            if (File.Exists("config.txt"))
             {
-                string selectedFolder = dialog.SelectedPath;                
+                string selectedFolder = File.ReadAllText("config.txt");
                 List<List<Room>> maze = Room.makeMaze(parameters);
                 Output.saveMap(maze, parameters.mapName, selectedFolder);
                 MessageBox.Show("Maze Saved");
             }
+            else
+            {
+                var dialog = new FolderBrowserDialog();
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    string selectedFolder = dialog.SelectedPath;
+                    List<List<Room>> maze = Room.makeMaze(parameters);
+                    Output.saveMap(maze, parameters.mapName, selectedFolder);
+                    MessageBox.Show("Maze Saved");
+                }
+            }           
         }
-
-
     }
 }
