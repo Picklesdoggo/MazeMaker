@@ -188,57 +188,122 @@ namespace MazeMaker
            
             if (selected.Name.Contains("Right") || selected.Name.Contains("Left"))
             {
-                Tuple<SolidColorBrush, string> selectedValues = GetSelectedVerticalValues();
-                selected.Fill = selectedValues.Item1;
-                if (selectedValues.Item2 != "None")
+                if (parameters.verticalWide)
                 {
-                    if (selected.Name.Contains("Right"))
+                    Tuple<SolidColorBrush, string> selectedValues = GetSelectedVerticalValues();
+                    selected.Fill = selectedValues.Item1;
+                    if (selectedValues.Item2 != "None")
                     {
-                        maze[r][c].right.element.ObjectID = selectedValues.Item2;
+                        if (selected.Name.Contains("Right"))
+                        {
+                            maze[r][c].right.element.ObjectID = selectedValues.Item2;
+                        }
+                        else
+                        {
+                            maze[r][c].left.element.ObjectID = selectedValues.Item2;
+                        }
+
                     }
                     else
                     {
-                        maze[r][c].left.element.ObjectID = selectedValues.Item2;
+                        if (selected.Name.Contains("Right"))
+                        {
+                            maze[r][c].right.render = false;
+                        }
+                        else
+                        {
+                            maze[r][c].left.render = false;
+                        }
                     }
-                    
                 }
                 else
                 {
-                    if (selected.Name.Contains("Right"))
+                    if (selectedColor == Colors.Black)
                     {
-                        maze[r][c].right.render = false;
+                        if (selected.Name.Contains("Right"))
+                        {
+                            selected.Fill = new SolidColorBrush(Colors.LightGray);
+                            maze[r][c].right.render = false;
+                        }
+                        else
+                        {
+                            selected.Fill = new SolidColorBrush(Colors.LightGray);
+                            maze[r][c].left.render = false;
+                        }
                     }
                     else
                     {
-                        maze[r][c].left.render = false;
+                        if (selected.Name.Contains("Right"))
+                        {
+                            selected.Fill = new SolidColorBrush(Colors.Black);
+                            maze[r][c].right.render = true;
+                        }
+                        else
+                        {
+                            selected.Fill = new SolidColorBrush(Colors.Black);
+                            maze[r][c].left.render = true;
+                        }
                     }
-                }                
+                }
+                            
             }
             else if (selected.Name.Contains("Top") || selected.Name.Contains("Bottom"))
             {
-                Tuple<SolidColorBrush, string> selectedValues = GetSelectedHorizontalValues();
-                selected.Fill = selectedValues.Item1;
-                if (selectedValues.Item2 != "None")
+                if (parameters.horizontalWide)
                 {
-                    if (selected.Name.Contains("Top"))
+                    Tuple<SolidColorBrush, string> selectedValues = GetSelectedHorizontalValues();
+                    selected.Fill = selectedValues.Item1;
+                    if (selectedValues.Item2 != "None")
                     {
-                        maze[r][c].top.element.ObjectID = selectedValues.Item2;
+                        if (selected.Name.Contains("Top"))
+                        {
+                            maze[r][c].top.element.ObjectID = selectedValues.Item2;
+                        }
+                        else
+                        {
+                            maze[r][c].bottom.element.ObjectID = selectedValues.Item2;
+                        }
+
                     }
                     else
                     {
-                        maze[r][c].bottom.element.ObjectID = selectedValues.Item2;
+                        if (selected.Name.Contains("Top"))
+                        {
+                            maze[r][c].top.render = false;
+                        }
+                        else
+                        {
+                            maze[r][c].bottom.render = false;
+                        }
                     }
-
                 }
                 else
                 {
-                    if (selected.Name.Contains("Top"))
+                    if (selectedColor == Colors.Black)
                     {
-                        maze[r][c].top.render = false;
+                        if (selected.Name.Contains("Top"))
+                        {
+                            selected.Fill = new SolidColorBrush(Colors.LightGray);
+                            maze[r][c].top.render = false;
+                        }
+                        else
+                        {
+                            selected.Fill = new SolidColorBrush(Colors.LightGray);
+                            maze[r][c].bottom.render = false;
+                        }
                     }
                     else
                     {
-                        maze[r][c].bottom.render = false;
+                        if (selected.Name.Contains("Top"))
+                        {
+                            selected.Fill = new SolidColorBrush(Colors.Black);
+                            maze[r][c].top.render = true;
+                        }
+                        else
+                        {
+                            selected.Fill = new SolidColorBrush(Colors.Black);
+                            maze[r][c].bottom.render = true;
+                        }
                     }
                 }
 
