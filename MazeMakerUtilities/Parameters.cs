@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MazeMakerUtilities
+﻿namespace MazeMakerUtilities
 {
     public class Parameters
     {
@@ -98,7 +92,7 @@ namespace MazeMakerUtilities
                 parameters.ZVerticalOffset = 1.2F;
                 parameters.YVerticalStart = 0;
 
-                parameters.gridRows = 9;
+                parameters.gridRows = 10;
                 parameters.XHorizontalAStart = 14.3F;
                 parameters.XHorizontalAOffset = 3.0F;
                 parameters.ZHorizontalAStart = 14.1F;

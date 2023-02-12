@@ -164,7 +164,6 @@ namespace MazeMakerUtilities
             maze = generateRooms(parameters);
 
             Stack<Room> rooms = new Stack<Room>();
-            int numberOfRooms = parameters.gridColumns * parameters.gridRows;
 
             Random random = new Random();
 
@@ -182,22 +181,49 @@ namespace MazeMakerUtilities
                     // Remove wall
                     if (validNeighbours[newRoomIndex].Item2 == "Up")
                     {
-                        startingRoom.top.element.ObjectID = "ShoothouseBarrierDoorDouble";
+                        if (parameters.horizontalWide)
+                        {
+                            startingRoom.top.element.ObjectID = "ShoothouseBarrierDoorDouble";
+                        }
+                        else
+                        {
+                            startingRoom.top.render = false;
+                        }
 
                     }
                     else if (validNeighbours[newRoomIndex].Item2 == "Down")
                     {
-                        maze[newRoom.row][newRoom.column].top.element.ObjectID = "ShoothouseBarrierDoorDouble";
+                        if (parameters.horizontalWide)
+                        {
+                            maze[newRoom.row][newRoom.column].top.element.ObjectID = "ShoothouseBarrierDoorDouble";
+                        }
+                        else
+                        {
+                            maze[newRoom.row][newRoom.column].top.render = false;
+                        }
                     }
                     else if (validNeighbours[newRoomIndex].Item2 == "Left")
                     {
-                        startingRoom.left.element.ObjectID = "ShoothouseBarrierDoorDouble";
+                        if (parameters.verticalWide)
+                        {
+                            startingRoom.left.element.ObjectID = "ShoothouseBarrierDoorDouble";
+                        }
+                        else
+                        {
+                            startingRoom.left.render = false;
+                        }
 
                     }
                     else if (validNeighbours[newRoomIndex].Item2 == "Right")
                     {
-
-                        maze[newRoom.row][newRoom.column].left.element.ObjectID = "ShoothouseBarrierDoorDouble";
+                        if (parameters.verticalWide)
+                        {
+                            maze[newRoom.row][newRoom.column].left.element.ObjectID = "ShoothouseBarrierDoorDouble";
+                        }
+                        else
+                        {
+                            maze[newRoom.row][newRoom.column].left.render = false;
+                        }
                     }
                     startingRoom = maze[newRoom.row][newRoom.column];
                     rooms.Push(startingRoom);
@@ -211,12 +237,45 @@ namespace MazeMakerUtilities
             }
 
             // Remove entrance and exit walls
-            maze[0][0].left.element.ObjectID = "ShoothouseBarrierDoorSingle";
-            if (parameters.verticalWide && parameters.horizontalWide)
-            {
-                maze[8][7].bottom.element.ObjectID = "ShoothouseBarrierDoorSingle";
-            }
 
+            // 4 possible exit scenarios
+            // 1. Wide X Wide
+            if (parameters.horizontalWide && parameters.verticalWide)
+            {
+                // Entrance
+                maze[8][7].bottom.element.ObjectID = "ShoothouseBarrierDoorSingle";
+                // Exit
+                maze[0][0].left.element.ObjectID = "ShoothouseBarrierDoorSingle";            
+                
+            }
+            // 2. Narrow X Narrow
+            else if (!parameters.horizontalWide && !parameters.verticalWide)
+            {
+                // Entrance
+                maze[24][23].bottom.render = false;
+                // Exit
+                maze[1][0].left.render = false;
+            }
+            // 3. Wide x Narrow
+            else if (parameters.horizontalWide && !parameters.verticalWide)
+            {
+                // Entrance
+                maze[24][7].bottom.element.ObjectID = "ShoothouseBarrierDoorSingle";
+                // Exit
+                maze[1][0].left.render = false;
+            }
+            // 4. Narrow x Wide
+            else if (!parameters.horizontalWide && parameters.verticalWide)
+            {
+
+                maze[9][18].bottom.render = false;
+                // Exit
+                maze[0][0].left.element.ObjectID = "ShoothouseBarrierDoorSingle";
+            }
+            else
+            {
+                // Do nothing
+            }
             return maze;
 
         }

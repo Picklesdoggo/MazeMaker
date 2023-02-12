@@ -14,8 +14,8 @@
 
 		<StackPanel Margin="10" >
 			<Label FontWeight="Bold">Horizontal Walls</Label>
-			<RadioButton Name="btnHorizontalWide">Wide</RadioButton>
-			<RadioButton Name="btnHorizontalNarrow" IsChecked="True" >Narrow</RadioButton>
+			<RadioButton Name="btnHorizontalWide"  IsChecked="True">Wide</RadioButton>
+			<RadioButton Name="btnHorizontalNarrow" >Narrow</RadioButton>
 		</StackPanel>
 
 		<StackPanel Margin="10" Grid.Row="1">
