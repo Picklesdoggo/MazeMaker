@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 using MazeMakerUtilities;
+using MessageBox = System.Windows.MessageBox;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 namespace MazeMaker
 {
@@ -327,7 +331,15 @@ namespace MazeMaker
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            Output.saveMap(maze, parameters.mapName);
+            var dialog = new FolderBrowserDialog();
+
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string selectedFolder = dialog.SelectedPath;                
+                List<List<Room>> maze = Room.makeMaze(parameters);
+                Output.saveMap(maze, parameters.mapName, selectedFolder);
+                MessageBox.Show("Maze Saved");
+            }
         }
 
 

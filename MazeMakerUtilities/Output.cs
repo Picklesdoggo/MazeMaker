@@ -14,9 +14,7 @@ namespace MazeMakerUtilities
         public List<Object> Objects { get; set; }
         public string QuickbeltLayoutName { get; set; }
 
-
-
-        public static void saveMap(List<List<Room>> mazeRooms, string mapName)
+        public static void saveMap(List<List<Room>> mazeRooms, string mapName, string folderName)
         {
             Output generatedOutput = new Output();
 
@@ -100,8 +98,18 @@ namespace MazeMakerUtilities
                 }
             }
             string jsonUpdated = JsonConvert.SerializeObject(generatedOutput, Formatting.Indented);
-            File.WriteAllText(mapName + "_gp_hangar_VFS.json", jsonUpdated);
-            
+            // Did user select file path
+            if (folderName != "Default")
+            {
+                // Yes, save there
+                File.WriteAllText(folderName + "\\" + mapName + "_gp_hangar_VFS.json", jsonUpdated);
+            }
+            else
+            {
+                // No, save where exe lives
+                File.WriteAllText(mapName + "_gp_hangar_VFS.json", jsonUpdated);
+            }
+           
         }
     }
 

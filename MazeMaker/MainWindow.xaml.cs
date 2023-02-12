@@ -1,6 +1,8 @@
 ﻿using MazeMakerUtilities;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Forms;
+using MessageBox = System.Windows.MessageBox;
 
 namespace MazeMaker
 {
@@ -9,19 +11,19 @@ namespace MazeMaker
     /// </summary>
     public partial class MainWindow : Window
     {
-        
+
 
         public MainWindow()
         {
             InitializeComponent();
-           
+
         }
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(txtName.Text))
             {
-                MessageBox.Show("You must enter a map name","Error",MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show("You must enter a map name", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
@@ -39,10 +41,18 @@ namespace MazeMaker
             }
             else
             {
-               Parameters parameters = Parameters.generateParameters((bool)btnVerticalWide.IsChecked, (bool)btnHorizontalWide.IsChecked, txtName.Text);
-               List<List<Room>> maze = Room.makeMaze(parameters);
-               Output.saveMap(maze, parameters.mapName);
-                MessageBox.Show("Maze Saved");
+                var dialog = new FolderBrowserDialog();                
+                
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    string selectedFolder = dialog.SelectedPath;
+                    Parameters parameters = Parameters.generateParameters((bool)btnVerticalWide.IsChecked, (bool)btnHorizontalWide.IsChecked, txtName.Text);
+                    List<List<Room>> maze = Room.makeMaze(parameters);
+                    Output.saveMap(maze, parameters.mapName, selectedFolder);
+                    MessageBox.Show("Maze Saved");
+                }
+
+               
             }
         }
 
