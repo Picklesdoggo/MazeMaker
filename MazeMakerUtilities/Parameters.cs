@@ -73,14 +73,14 @@ namespace MazeMakerUtilities
             // 3. Wide x Narrow
             else if (parameters.horizontalWide &&  !parameters.verticalWide)
             {
-                parameters.gridRows = 25;
+                parameters.gridColumns = 9;                
                 parameters.XVerticalStart = 13.5F;
                 parameters.XVerticalOffset = 1.2F;
                 parameters.ZVerticalStart = 14.0F;
                 parameters.ZVerticalOffset = 3.0F;
                 parameters.YVerticalStart = 0;
 
-                parameters.gridColumns = 9;
+                parameters.gridRows = 25;
                 parameters.XHorizontalAStart = 14.1F;
                 parameters.XHorizontalAOffset = 1.2F;
                 parameters.ZHorizontalAStart = 12.6F;
@@ -91,7 +91,19 @@ namespace MazeMakerUtilities
             // 4. Narrow x Wide
             else if (!parameters.horizontalWide && parameters.verticalWide)
             {
-                
+                parameters.gridColumns = 23;
+                parameters.XVerticalStart = 12.7F;
+                parameters.XVerticalOffset = 3.0F;
+                parameters.ZVerticalStart = 14.7F;
+                parameters.ZVerticalOffset = 1.2F;
+                parameters.YVerticalStart = 0;
+
+                parameters.gridRows = 9;
+                parameters.XHorizontalAStart = 14.3F;
+                parameters.XHorizontalAOffset = 3.0F;
+                parameters.ZHorizontalAStart = 14.1F;
+                parameters.ZHorizontalAOffset = 1.2F;
+                parameters.YHorizontalAStart = 0;
 
             }
             else
