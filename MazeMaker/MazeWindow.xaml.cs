@@ -335,8 +335,7 @@ namespace MazeMaker
             // Check for config file
             if (File.Exists("config.txt"))
             {
-                string selectedFolder = File.ReadAllText("config.txt");
-                List<List<Room>> maze = Room.makeMaze(parameters);
+                string selectedFolder = File.ReadAllText("config.txt");                
                 Output.saveMap(maze, parameters.mapName, selectedFolder);
                 MessageBox.Show("Maze Saved");
             }
@@ -346,7 +345,6 @@ namespace MazeMaker
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     string selectedFolder = dialog.SelectedPath;
-                    List<List<Room>> maze = Room.makeMaze(parameters);
                     Output.saveMap(maze, parameters.mapName, selectedFolder);
                     MessageBox.Show("Maze Saved");
                 }
