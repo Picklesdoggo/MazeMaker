@@ -125,26 +125,55 @@ namespace MazeMakerUtilities
 
     public class Element
     {
+        [JsonProperty(Order = 1)]
         public int Index { get; set; }
+
+        [JsonProperty(Order = 2)]
         public string ObjectID { get; set; }
+
+        [JsonProperty(Order = 3)]
         public string Type = "object";
+
+        [JsonProperty(Order = 4)]
         public Posoffset PosOffset { get; set; }
+
+        [JsonProperty(Order = 5)]
         public Orientationforward OrientationForward { get; set; }
 
+        [JsonProperty(Order = 6)]
         public Orientationup OrientationUp = new Orientationup
         {
             x = 0,
             y = 1,
             z = 0
         };
+
+        [JsonProperty(Order = 7)]
         public int ObjectAttachedTo = -1;
+
+        [JsonProperty(Order = 8)]
         public int MountAttachedTo = -1;
+
+        [JsonProperty(Order = 9)]
         public List<string> LoadedRoundsInChambers = new List<string>();
+
+        [JsonProperty(Order = 10)]
         public List<string> LoadedRoundsInMag = new List<string>();
+
+        [JsonProperty(Order = 11)]
         public List<string> GenericInts = new List<string>();
+
+        [JsonProperty(Order = 12)]
         public List<string> GenericStrings = new List<string>();
+
+        [JsonProperty(Order = 13)]
         public List<string> GenericVector3s = new List<string>();
+
+        [JsonProperty(Order = 14)]
         public List<string> GenericRotations = new List<string>();
+
+
+        [JsonProperty(Order = 15)]
         public Flags Flags = new Flags
         {
             _keys = new List<string>()
