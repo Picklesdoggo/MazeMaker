@@ -12,6 +12,8 @@ This option allows for full control over each individual wall within the Shoot H
     5. Low Competition Barrier
 If a "Narrow Wall" is selected it allows the user to simply toggle the wall on and off.
 
+To modify multiple walls at a time hold down ctrl and mouse over the walls. 
+
 # Random Maze Generation: 
 
 This options will automatically generate a random maze from the starting door to the exit door. If a "Wide Wall" is selected double doors will be used for the maze path. If a "Narrow Wall" is seletected the maze will be genearted by removing walls.
