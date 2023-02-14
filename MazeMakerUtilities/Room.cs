@@ -247,163 +247,22 @@ namespace MazeMakerUtilities
         public static void addTargets()
         {
             int targets = 0;
+            // Loop through all rooms and check what rooms can be moved into from current room
             for (int r = 0; r < maze.Count; r++)
             {
                 for (int c = 0; c < maze[r].Count; c++)
                 {
-                    // W X W
-                    if (parameters.horizontalWide && parameters.verticalWide)
+                    Room startingRoom = maze[r][c];
+                    List<string> validMoves = getValidMoves(startingRoom);
+                    if (validMoves.Count == 1)
                     {
-                        // Check top row
-                        if (r == 0)
-                        {
-                            // Left wall is a wall
-                            if (maze[r][c].left.element.ObjectID == "ShoothouseBarrierWall" && maze[r][c].left.render == true)
-                            {
-
-                            }
-                        }
-
-
-                        //Room currentRoom = maze[r][c];
-                        //// Room has a door at the top but not left, check room below
-                        //if (currentRoom.top.element.ObjectID == "ShoothouseBarrierDoorDouble" && currentRoom.top.render == true &&
-                        //    currentRoom.left.element.ObjectID == "ShoothouseBarrierWall" && currentRoom.left.render == true
-                        //    )
-                        //{
-                            
-                        //    if (r != maze.Count - 1)
-                        //    {
-                        //        Room roomBelow = maze[r + 1][c];
-                        //        // Room below has a wall at the top, check room to the right
-                        //        if (roomBelow.top.element.ObjectID == "ShoothouseBarrierWall" && roomBelow.top.render == true)
-                        //        {
-                        //            if (c != maze[r].Count - 1)
-                        //            {
-                        //                Room roomRight = maze[r][c + 1];
-                        //                if (roomRight.left.render == true && roomRight.left.element.ObjectID == "ShoothouseBarrierWall")
-                        //                {
-                        //                    Element target = Output.getTarget("North", "StandingSteelTargetClassicPop");
-                        //                    target.PosOffset.x = maze[r + 1][c].top.element.PosOffset.x + (parameters.XHorizontalOffset / 2 );
-                        //                    target.PosOffset.z = maze[r + 1][c].right.element.PosOffset.z + (parameters.ZHorizontalOffset /2 );
-                        //                    target.PosOffset.y = 3.5F;
-                        //                    maze[r + 1][c].target = target;
-                        //                    targets++;
-                        //                }
-                        //            }
-                                    
-                        //        }
-                        //    }
-                        //    else
-                        //    {
-                        //        if (c != maze[r].Count - 1)
-                        //        {
-                        //            Room roomRight = maze[r][c + 1];
-                        //            if (roomRight.left.render == true && roomRight.left.element.ObjectID == "ShoothouseBarrierWall")
-                        //            {
-                        //                Element target = Output.getTarget("North", "StandingSteelTargetClassicPop");
-                        //                target.PosOffset.x = maze[r][c].top.element.PosOffset.x + (parameters.XHorizontalOffset / 2);
-                        //                target.PosOffset.z = maze[r][c].right.element.PosOffset.z + (parameters.ZHorizontalOffset / 2);
-                        //                target.PosOffset.y = 3.5F;
-                        //                maze[r][c].target = target;
-                        //                targets++;
-                        //            }
-                        //        }
-                        //    }
-                            
-                        //}
-                        //// Room has a door on the left, but not on the top 
-                        //if (currentRoom.left.element.ObjectID == "ShoothouseBarrierDoorDouble" && currentRoom.left.render == true &&
-                        //  currentRoom.top.element.ObjectID == "ShoothouseBarrierWall" && currentRoom.top.render == true
-                        //  )
-                        //{
-
-                        //    if (r != maze.Count - 1)
-                        //    {
-                        //        Room roomBelow = maze[r + 1][c];
-                        //        // Room below has a wall at the top, check room to the right
-                        //        if (roomBelow.top.element.ObjectID == "ShoothouseBarrierWall" && roomBelow.top.render == true)
-                        //        {
-                        //            if (c != maze[r].Count - 1)
-                        //            {
-                        //                Room roomRight = maze[r][c + 1];
-                        //                if (roomRight.left.render == true && roomRight.left.element.ObjectID == "ShoothouseBarrierWall")
-                        //                {
-                        //                    Element target = Output.getTarget("West", "StandingSteelTargetClassicPop");
-                        //                    target.PosOffset.x = maze[r + 1][c].top.element.PosOffset.x + (parameters.XHorizontalOffset / 2);
-                        //                    target.PosOffset.z = maze[r + 1][c].right.element.PosOffset.z + (parameters.ZHorizontalOffset / 2);
-                        //                    target.PosOffset.y = 3.5F;
-                        //                    maze[r + 1][c].target = target;
-                        //                    targets++;
-                        //                }
-                        //            }
-
-                        //        }
-                        //    }
-                        //    else
-                        //    {
-                        //        if (c != maze[r].Count - 1)
-                        //        {
-                        //            Room roomRight = maze[r][c + 1];
-                        //            if (roomRight.left.render == true && roomRight.left.element.ObjectID == "ShoothouseBarrierWall")
-                        //            {
-                        //                Element target = Output.getTarget("West", "StandingSteelTargetClassicPop");
-                        //                target.PosOffset.x = maze[r][c].top.element.PosOffset.x + (parameters.XHorizontalOffset / 2);
-                        //                target.PosOffset.z = maze[r][c].right.element.PosOffset.z + (parameters.ZHorizontalOffset / 2);
-                        //                target.PosOffset.y = 3.5F;
-                        //                maze[r][c].target = target;
-                        //                targets++;
-                        //            }
-                        //        }
-                        //    }
-                        //}
-                        // both left and top walls are walls
-                        //if (currentRoom.left.element.ObjectID == "ShoothouseBarrierWall" && currentRoom.left.render == true &&
-                        // currentRoom.top.element.ObjectID == "ShoothouseBarrierWall" && currentRoom.top.render == true
-                        // )
-                        //{
-                        //    if (r != maze.Count - 1)
-                        //    {
-                        //        Room roomBelow = maze[r + 1][c];
-                        //        // Room below has a wall at the top, check room to the right
-                        //        if (roomBelow.top.element.ObjectID == "ShoothouseBarrierWall" && roomBelow.top.render == true)
-                        //        {
-                        //            if (c != maze[r].Count - 1)
-                        //            {
-                        //                Room roomRight = maze[r][c + 1];
-                        //                if (roomRight.left.render == true && roomRight.left.element.ObjectID == "ShoothouseBarrierWall")
-                        //                {
-                        //                    Element target = Output.getTarget("East", "StandingSteelTargetClassicPop");
-                        //                    target.PosOffset.x = maze[r + 1][c].top.element.PosOffset.x + (parameters.XHorizontalOffset / 2);
-                        //                    target.PosOffset.z = maze[r + 1][c].right.element.PosOffset.z + (parameters.ZHorizontalOffset / 2);
-                        //                    target.PosOffset.y = 3.5F;
-                        //                    maze[r + 1][c].target = target;
-                        //                    targets++;
-                        //                }
-                        //            }
-
-                        //        }
-                        //    }
-                        //    else
-                        //    {
-                        //        if (c != maze[r].Count - 1)
-                        //        {
-                        //            Room roomRight = maze[r][c + 1];
-                        //            if (roomRight.left.render == true && roomRight.left.element.ObjectID == "ShoothouseBarrierWall")
-                        //            {
-                        //                Element target = Output.getTarget("East", "StandingSteelTargetClassicPop");
-                        //                target.PosOffset.x = maze[r][c].top.element.PosOffset.x + (parameters.XHorizontalOffset / 2);
-                        //                target.PosOffset.z = maze[r][c].right.element.PosOffset.z + (parameters.ZHorizontalOffset / 2);
-                        //                target.PosOffset.y = 3.5F;
-                        //                maze[r][c].target = target;
-                        //                targets++;
-                        //            }
-                        //        }
-                        //    }
-                        //}
-
+                        Element target = Output.getTarget(validMoves[0], "StandingSteelTargetClassicPop");
+                        target.PosOffset.x = maze[r][c].top.element.PosOffset.x + (parameters.XHorizontalOffset / 2);
+                        target.PosOffset.z = maze[r][c].right.element.PosOffset.z + (parameters.ZHorizontalOffset / 2);
+                        target.PosOffset.y = 3.5F;
+                        maze[r][c].target = target;
+                        targets++;
                     }
-                   
                 }
             }
         }
@@ -450,6 +309,92 @@ namespace MazeMakerUtilities
             {
                 // Do nothing
             }
+        }
+
+        public static List<string> getValidMoves(Room startingRoom)
+        {
+            List<string> validRooms = new List<string>();
+            
+            // Check for valid move above current room if not in top row
+            if (startingRoom.row != 0)
+            {
+                if (parameters.horizontalWide)
+                {
+                    if (startingRoom.top.element.ObjectID != "ShoothouseBarrierWall")
+                    {
+                        validRooms.Add("North");
+                    }
+                }
+                else
+                {
+                    if (startingRoom.top.render == false)
+                    {
+                        validRooms.Add("North");
+                    }
+                }
+            }
+
+            // Check for valid move left of current room if not in left column
+            if (startingRoom.column != 0)
+            {
+                if (parameters.verticalWide)
+                {
+                    if (startingRoom.left.element.ObjectID != "ShoothouseBarrierWall")
+                    {
+                        validRooms.Add("West");
+                    }
+                }
+                else
+                {
+                    if (startingRoom.left.render == false)
+                    {
+                        validRooms.Add("West");
+                    }
+                }
+            }
+
+            // check for valid move below current room if not in last row
+            if (startingRoom.row != parameters.gridRows - 1)
+            {
+                Room below = maze[startingRoom.row + 1][startingRoom.column];
+                if (parameters.horizontalWide)
+                {
+                    
+                    if (below.top.element.ObjectID != "ShoothouseBarrierWall")
+                    {
+                        validRooms.Add("South");
+                    }
+                }
+                else
+                {
+                    if (below.top.render == false)
+                    {
+                        validRooms.Add("South");
+                    }
+                }
+            }
+
+            // check for valid move to the right of current room if not in last column
+            if (startingRoom.column != parameters.gridColumns -1)
+            {
+                Room left = maze[startingRoom.row][startingRoom.column + 1];
+                if (parameters.verticalWide)
+                {
+                    if (left.left.element.ObjectID != "ShoothouseBarrierWall")
+                    {
+                        validRooms.Add("East");
+                    }
+                }
+                else
+                {
+                    if (left.left.render == false)
+                    {
+                        validRooms.Add("East");
+                    }
+                }
+            }
+
+            return validRooms;
         }
 
         public static List<Tuple<Room, string>> getValidNeighbours(Room startingRoom)
