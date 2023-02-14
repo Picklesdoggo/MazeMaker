@@ -14,6 +14,8 @@ namespace MazeMakerUtilities
         public int row { get; set; }
         public int column { get; set; }
 
+        public Element target = null;
+
         public Room()
         {
             top = new Wall();
@@ -31,8 +33,8 @@ namespace MazeMakerUtilities
             maze = new List<List<Room>>();
             parameters = parametersInput;
 
-            float startingXHorizontals = parameters.XHorizontalAStart;
-            float startingYHorizontals = parameters.YHorizontalAStart;
+            float startingXHorizontals = parameters.XHorizontalStart;
+            float startingYHorizontals = parameters.YHorizontalStart;
             float startingZHorizontals;
 
             float startingXVerticals = parameters.XVerticalStart;
@@ -42,7 +44,7 @@ namespace MazeMakerUtilities
             for (int r = 0; r < parameters.gridRows; r++)
             {
                 List<Room> row = new List<Room>();
-                startingZHorizontals = parameters.ZHorizontalAStart;
+                startingZHorizontals = parameters.ZHorizontalStart;
                 startingZVerticals = parameters.ZVerticalStart;
 
                 for (int c = 0; c < parameters.gridColumns; c++)
@@ -97,7 +99,7 @@ namespace MazeMakerUtilities
                         y = 0,
                         z = 0
                     };
-                    bottom.PosOffset.x = top.PosOffset.x - parameters.XHorizontalAOffset;
+                    bottom.PosOffset.x = top.PosOffset.x - parameters.XHorizontalOffset;
 
                     // Render bottom wall
                     if (r == parameters.gridRows - 1)
@@ -137,7 +139,7 @@ namespace MazeMakerUtilities
                         y = 0,
                         z = 1
                     };
-                    right.PosOffset.z = left.PosOffset.z - parameters.ZHorizontalAOffset;
+                    right.PosOffset.z = left.PosOffset.z - parameters.ZHorizontalOffset;
 
                     room.top.element = top;
                     room.bottom.element = bottom;
@@ -145,11 +147,11 @@ namespace MazeMakerUtilities
                     room.right.element = right;
 
                     row.Add(room);
-                    startingZHorizontals -= parameters.ZHorizontalAOffset;
+                    startingZHorizontals -= parameters.ZHorizontalOffset;
                     startingZVerticals -= parameters.ZVerticalOffset;
                 }
 
-                startingXHorizontals -= parameters.XHorizontalAOffset;
+                startingXHorizontals -= parameters.XHorizontalOffset;
                 startingXVerticals -= parameters.XVerticalOffset;
 
                 maze.Add(row);
@@ -236,6 +238,63 @@ namespace MazeMakerUtilities
 
             }
 
+            removeEntranceAndExit();
+            addTargets();
+            return maze;
+
+        }
+
+        public static void addTargets()
+        {
+            int targets = 0;
+            for (int r = 0; r < maze.Count; r++)
+            {
+                for (int c = 0; c < maze[r].Count; c++)
+                {
+                    // W X W
+                    if (parameters.horizontalWide && parameters.verticalWide)
+                    {
+
+                        Room currentRoom = maze[r][c];
+                        // Room has a door at the top but not left, check room below
+                        if (currentRoom.top.element.ObjectID == "ShoothouseBarrierDoorDouble" && currentRoom.top.render == true &&
+                            currentRoom.left.element.ObjectID == "ShoothouseBarrierWall" && currentRoom.left.render == true
+                            )
+                        {
+                            
+                            if (r != maze.Count - 1)
+                            {
+                                Room roomBelow = maze[r + 1][c];
+                                // Room below has a wall at the top, check room to the right
+                                if (roomBelow.top.element.ObjectID == "ShoothouseBarrierWall" && roomBelow.top.render == true)
+                                {
+                                    if (c != maze[r].Count - 1)
+                                    {
+                                        Room roomRight = maze[r][c + 1];
+                                        if (roomRight.left.render == true && roomRight.left.element.ObjectID == "ShoothouseBarrierWall")
+                                        {
+                                            Element target = Output.getTarget("North", "StandingSteelTargetClassicPop");
+                                            target.PosOffset.x = maze[r + 1][c].top.element.PosOffset.x + (parameters.XHorizontalOffset / 2 );
+                                            target.PosOffset.z = maze[r + 1][c].right.element.PosOffset.z + (parameters.ZHorizontalOffset /2 );
+                                            target.PosOffset.y = 3.5F;
+                                            maze[r + 1][c].target = target;
+                                            targets++;
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                            
+                        }
+
+                    }
+                   
+                }
+            }
+        }
+
+        public static void removeEntranceAndExit()
+        {
             // Remove entrance and exit walls
 
             // 4 possible exit scenarios
@@ -245,8 +304,8 @@ namespace MazeMakerUtilities
                 // Entrance
                 maze[8][7].bottom.element.ObjectID = "ShoothouseBarrierDoorSingle";
                 // Exit
-                maze[0][0].left.element.ObjectID = "ShoothouseBarrierDoorSingle";            
-                
+                maze[0][0].left.element.ObjectID = "ShoothouseBarrierDoorSingle";
+
             }
             // 2. Narrow X Narrow
             else if (!parameters.horizontalWide && !parameters.verticalWide)
@@ -276,8 +335,6 @@ namespace MazeMakerUtilities
             {
                 // Do nothing
             }
-            return maze;
-
         }
 
         public static List<Tuple<Room, string>> getValidNeighbours(Room startingRoom)

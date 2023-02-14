@@ -94,6 +94,22 @@ namespace MazeMakerUtilities
                         generatedOutput.Objects.Add(right);
                         index++;
                     }
+                    
+                    if (mazeRooms[r][c].target != null)
+                    {
+                        Object target = new Object
+                        {
+                            IsContainedIn = -1,
+                            QuickbeltSlotIndex = -1,
+                            InSlotOfRootObjectIndex = -1,
+                            InSlotOfElementIndex = -1,
+                            Elements = new List<Element>(),
+                            Index = index
+                        };
+                        target.Elements.Add(mazeRooms[r][c].target);
+                        generatedOutput.Objects.Add(target);
+                        index++;
+                    }
 
                 }
             }
@@ -110,6 +126,77 @@ namespace MazeMakerUtilities
                 File.WriteAllText(mapName + "_gp_hangar_VFS.json", jsonUpdated);
             }
            
+        }
+        
+        public static Element getTarget (string direction, string targetType)
+        {
+            Element target = new Element();
+
+            #region Direction
+
+            if (direction == "West")
+            {
+                target.OrientationForward = new Orientationforward()
+                {
+                    x = 0,
+                    y = 0,
+                    z = 1
+                };
+            }
+            else if (direction == "East")
+            {
+                target.OrientationForward = new Orientationforward()
+                {
+                    x = 0,
+                    y = 0,
+                    z = -1
+                };
+            }
+            else if (direction == "North")
+            {
+                target.OrientationForward = new Orientationforward()
+                {
+                    x = 1,
+                    y = 0,
+                    z = 0
+                };
+            }
+            else if (direction == "South")
+            {
+                target.OrientationForward = new Orientationforward()
+                {
+                    x = -1,
+                    y = 0,
+                    z = 0
+                };
+            }
+
+            #endregion
+
+            target.ObjectID = targetType;
+
+            target.Flags = new Flags()
+            {
+                _keys = new List<string>()
+                            {
+                                "IsKinematicLocked",
+                                "IsPickupLocked",
+                                "QuickBeltSpecialStateEngaged",
+                                "SpringState"
+                            },
+
+                _values = new List<string>()
+                            {
+                                "True",
+                                "True",
+                                "False",
+                                "False"
+                            }
+            };
+
+            target.PosOffset = new Posoffset();
+
+            return target;
         }
     }
 
@@ -204,6 +291,11 @@ namespace MazeMakerUtilities
             }
         }
 
+        public Element()
+        {
+
+
+        }
     }
 
     public class Posoffset

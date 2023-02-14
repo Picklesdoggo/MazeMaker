@@ -2,11 +2,11 @@
 {
     public class Parameters
     {
-        public float XHorizontalAStart { get; set; }
-        public float XHorizontalAOffset { get; set; }
-        public float ZHorizontalAStart { get; set; }
-        public float ZHorizontalAOffset { get; set; }
-        public float YHorizontalAStart { get; set; }
+        public float XHorizontalStart { get; set; }
+        public float XHorizontalOffset { get; set; }
+        public float ZHorizontalStart { get; set; }
+        public float ZHorizontalOffset { get; set; }
+        public float YHorizontalStart { get; set; }
 
 
         public float XVerticalStart { get; set; }
@@ -41,11 +41,11 @@
                 parameters.YVerticalStart = 0;
 
                 parameters.gridRows = 9;
-                parameters.XHorizontalAStart = 14.1F;
-                parameters.XHorizontalAOffset = 3.2F;
-                parameters.ZHorizontalAStart = 12.8F;
-                parameters.ZHorizontalAOffset = 3F;
-                parameters.YHorizontalAStart = 0;
+                parameters.XHorizontalStart = 14.1F;
+                parameters.XHorizontalOffset = 3.2F;
+                parameters.ZHorizontalStart = 12.8F;
+                parameters.ZHorizontalOffset = 3F;
+                parameters.YHorizontalStart = 0;
             }
             // 2. Narrow x Narrow
             else if (!parameters.horizontalWide && !parameters.verticalWide)
@@ -58,11 +58,11 @@
                 parameters.YVerticalStart = 0;
 
                 parameters.gridRows = 25;
-                parameters.XHorizontalAStart = 14.1F;
-                parameters.XHorizontalAOffset = 1.2F;
-                parameters.ZHorizontalAStart = 14.3F;
-                parameters.ZHorizontalAOffset = 1F;
-                parameters.YHorizontalAStart = 0;
+                parameters.XHorizontalStart = 14.1F;
+                parameters.XHorizontalOffset = 1.2F;
+                parameters.ZHorizontalStart = 14.3F;
+                parameters.ZHorizontalOffset = 1F;
+                parameters.YHorizontalStart = 0;
             }
             // 3. Wide x Narrow
             else if (parameters.horizontalWide &&  !parameters.verticalWide)
@@ -75,11 +75,11 @@
                 parameters.YVerticalStart = 0;
 
                 parameters.gridRows = 25;
-                parameters.XHorizontalAStart = 14.1F;
-                parameters.XHorizontalAOffset = 1.2F;
-                parameters.ZHorizontalAStart = 12.6F;
-                parameters.ZHorizontalAOffset = 3F;
-                parameters.YHorizontalAStart = 0;
+                parameters.XHorizontalStart = 14.1F;
+                parameters.XHorizontalOffset = 1.2F;
+                parameters.ZHorizontalStart = 12.6F;
+                parameters.ZHorizontalOffset = 3F;
+                parameters.YHorizontalStart = 0;
 
             }
             // 4. Narrow x Wide
@@ -93,11 +93,11 @@
                 parameters.YVerticalStart = 0;
 
                 parameters.gridRows = 10;
-                parameters.XHorizontalAStart = 14.3F;
-                parameters.XHorizontalAOffset = 3.0F;
-                parameters.ZHorizontalAStart = 14.1F;
-                parameters.ZHorizontalAOffset = 1.2F;
-                parameters.YHorizontalAStart = 0;
+                parameters.XHorizontalStart = 14.3F;
+                parameters.XHorizontalOffset = 3.0F;
+                parameters.ZHorizontalStart = 14.1F;
+                parameters.ZHorizontalOffset = 1.2F;
+                parameters.YHorizontalStart = 0;
 
             }
             else
