@@ -16,7 +16,7 @@ To modify multiple walls at a time hold down ctrl and mouse over the walls.
 
 # Random Maze Generation: 
 
-This options will automatically generate a random maze from the starting door to the exit door. If a "Wide Wall" is selected double doors will be used for the maze path. If a "Narrow Wall" is seletected the maze will be genearted by removing walls.
+This options will automatically generate a random maze from the starting door to the exit door. Only wide walls are used in random maze generation. Targets will randomly be placed in dead-ends. Currently only "popper" targets are implemented, spring targets will not reset after being shot.
 
 # Save Location
 In order to streamline the saving process you may place a file called "config.txt" in the same folder as the exe, this file should contain a single line only consisting of the desired save location. The typical location where Game Planner Scene files are stored is "C:\Users\XXXX\Documents\My Games\H3VR\Vault\SceneConfigs\gp_hangar" with XXXX being the current user name.
