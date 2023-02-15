@@ -260,7 +260,7 @@ namespace MazeMakerUtilities
                         
                         target.PosOffset.x = maze[r][c].top.element.PosOffset.x - (parameters.XHorizontalOffset / 2);
                         target.PosOffset.z = maze[r][c].right.element.PosOffset.z + (parameters.ZHorizontalOffset / 2);
-                        target.PosOffset.y = 3.5F;
+                        target.PosOffset.y = 0;
                         maze[r][c].target = target;
                         targets++;
                     }
