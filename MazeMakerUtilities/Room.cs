@@ -246,7 +246,7 @@ namespace MazeMakerUtilities
 
         public static void addTargets()
         {
-            int targets = 0;
+            Random random = new Random();
             // Loop through all rooms and check what rooms can be moved into from current room
             for (int r = 0; r < maze.Count; r++)
             {
@@ -256,13 +256,14 @@ namespace MazeMakerUtilities
                     List<string> validMoves = getValidMoves(startingRoom);
                     if (validMoves.Count == 1)
                     {
-                        Element target = Output.getTarget(validMoves[0], "StandingSteelTargetClassicPop");
+                        string targetType = parameters.targets[random.Next(parameters.targets.Count)];
+                        Element target = Output.getTarget(validMoves[0], targetType);
                         
                         target.PosOffset.x = maze[r][c].top.element.PosOffset.x - (parameters.XHorizontalOffset / 2);
                         target.PosOffset.z = maze[r][c].right.element.PosOffset.z + (parameters.ZHorizontalOffset / 2);
                         target.PosOffset.y = 0;
                         maze[r][c].target = target;
-                        targets++;
+                       
                     }
                 }
             }

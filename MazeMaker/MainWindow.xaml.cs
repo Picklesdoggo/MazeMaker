@@ -47,7 +47,7 @@ namespace MazeMaker
                 if (File.Exists("config.txt"))
                 {
                     selectedFolder = File.ReadAllText("config.txt");
-                    Parameters parameters = Parameters.generateParameters((bool)btnVerticalWide.IsChecked, (bool)btnHorizontalWide.IsChecked, txtName.Text);
+                    Parameters parameters = Parameters.generateParameters(true, true, txtName.Text);
                     List<List<Room>> maze = Room.makeMaze(parameters);
                     Output.saveMap(maze, parameters.mapName, selectedFolder);
                    // MessageBox.Show("Maze Saved");
@@ -58,7 +58,7 @@ namespace MazeMaker
                     if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
                         selectedFolder = dialog.SelectedPath;
-                        Parameters parameters = Parameters.generateParameters((bool)btnVerticalWide.IsChecked, (bool)btnHorizontalWide.IsChecked, txtName.Text);
+                        Parameters parameters = Parameters.generateParameters(true, true, txtName.Text);
                         List<List<Room>> maze = Room.makeMaze(parameters);
                         Output.saveMap(maze, parameters.mapName, selectedFolder);
                         MessageBox.Show("Maze Saved");
