@@ -257,7 +257,8 @@ namespace MazeMakerUtilities
                     if (validMoves.Count == 1)
                     {
                         Element target = Output.getTarget(validMoves[0], "StandingSteelTargetClassicPop");
-                        target.PosOffset.x = maze[r][c].top.element.PosOffset.x + (parameters.XHorizontalOffset / 2);
+                        
+                        target.PosOffset.x = maze[r][c].top.element.PosOffset.x - (parameters.XHorizontalOffset / 2);
                         target.PosOffset.z = maze[r][c].right.element.PosOffset.z + (parameters.ZHorizontalOffset / 2);
                         target.PosOffset.y = 3.5F;
                         maze[r][c].target = target;
@@ -276,45 +277,55 @@ namespace MazeMakerUtilities
             if (parameters.horizontalWide && parameters.verticalWide)
             {
                 // Entrance
-                maze[8][7].bottom.element.ObjectID = "ShoothouseBarrierDoorSingle";
+                maze[parameters.entranceRow][parameters.entranceColumn].bottom.element.ObjectID = "ShoothouseBarrierDoorSingle";
                 // Exit
-                maze[0][0].left.element.ObjectID = "ShoothouseBarrierDoorSingle";
-
+                maze[parameters.exitRow][parameters.exitColumn].left.element.ObjectID = "ShoothouseBarrierDoorSingle";
+                
             }
             // 2. Narrow X Narrow
             else if (!parameters.horizontalWide && !parameters.verticalWide)
             {
                 // Entrance
-                maze[24][23].bottom.render = false;
+                maze[parameters.entranceRow][parameters.entranceColumn].bottom.render = false;
                 // Exit
-                maze[1][0].left.render = false;
+                maze[parameters.exitRow][parameters.exitColumn].left.render = false;               
             }
             // 3. Wide x Narrow
             else if (parameters.horizontalWide && !parameters.verticalWide)
             {
                 // Entrance
-                maze[24][7].bottom.element.ObjectID = "ShoothouseBarrierDoorSingle";
+                maze[parameters.entranceRow][parameters.entranceColumn].bottom.element.ObjectID = "ShoothouseBarrierDoorSingle";
                 // Exit
-                maze[1][0].left.render = false;
+                maze[parameters.exitRow][parameters.exitColumn].left.render = false;
             }
             // 4. Narrow x Wide
             else if (!parameters.horizontalWide && parameters.verticalWide)
             {
 
-                maze[9][18].bottom.render = false;
+                maze[parameters.entranceRow][parameters.entranceColumn].bottom.render = false;
                 // Exit
-                maze[0][0].left.element.ObjectID = "ShoothouseBarrierDoorSingle";
+                maze[parameters.exitRow][parameters.exitColumn].left.element.ObjectID = "ShoothouseBarrierDoorSingle";
             }
             else
             {
                 // Do nothing
             }
+
+            // room entrance and exit targets
+            maze[parameters.entranceRow][parameters.entranceColumn].target = null;
+            maze[parameters.exitRow][parameters.exitColumn].target = null;
         }
 
         public static List<string> getValidMoves(Room startingRoom)
         {
             List<string> validRooms = new List<string>();
             
+            // Skip the exit room
+            if (startingRoom.row == 0 && startingRoom.column == 0)
+            {
+                return validRooms;
+            }
+
             // Check for valid move above current room if not in top row
             if (startingRoom.row != 0)
             {

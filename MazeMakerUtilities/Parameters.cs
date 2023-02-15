@@ -18,6 +18,10 @@
         public int gridColumns { get; set; }
         public int gridRows { get; set; }
 
+        public int exitRow { get; set; }
+        public int exitColumn { get; set; }
+        public int entranceRow { get; set; }
+        public int entranceColumn { get; set; }
         public string mapName { get; set; }
         public bool horizontalWide { get; set; }
         public bool verticalWide { get; set; }
@@ -46,6 +50,12 @@
                 parameters.ZHorizontalStart = 12.8F;
                 parameters.ZHorizontalOffset = 3F;
                 parameters.YHorizontalStart = 0;
+
+                parameters.entranceRow = 8;
+                parameters.entranceColumn = 7;
+
+                parameters.exitRow = 0;
+                parameters.exitColumn = 0;
             }
             // 2. Narrow x Narrow
             else if (!parameters.horizontalWide && !parameters.verticalWide)
@@ -63,6 +73,12 @@
                 parameters.ZHorizontalStart = 14.3F;
                 parameters.ZHorizontalOffset = 1F;
                 parameters.YHorizontalStart = 0;
+
+                parameters.entranceRow = 24;
+                parameters.entranceColumn = 23;
+
+                parameters.exitRow = 1;
+                parameters.exitColumn = 0;
             }
             // 3. Wide x Narrow
             else if (parameters.horizontalWide &&  !parameters.verticalWide)
@@ -81,6 +97,12 @@
                 parameters.ZHorizontalOffset = 3F;
                 parameters.YHorizontalStart = 0;
 
+                parameters.entranceRow = 24;
+                parameters.entranceColumn = 27;
+
+                parameters.exitRow = 1;
+                parameters.exitColumn = 0;
+
             }
             // 4. Narrow x Wide
             else if (!parameters.horizontalWide && parameters.verticalWide)
@@ -98,6 +120,12 @@
                 parameters.ZHorizontalStart = 14.1F;
                 parameters.ZHorizontalOffset = 1.2F;
                 parameters.YHorizontalStart = 0;
+
+                parameters.entranceRow = 9;
+                parameters.entranceColumn = 18;
+
+                parameters.exitRow = 0;
+                parameters.exitColumn = 0;
 
             }
             else
