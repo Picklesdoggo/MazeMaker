@@ -114,53 +114,54 @@ namespace MazeMaker
                     };
 
                     // Only top row should have TOP element
-                    if (r == 0)
+
+                    Rectangle horizontalTop = new Rectangle();
+                    horizontalTop.MouseDown += WallClicked;
+                    horizontalTop.MouseEnter += WallHover;
+                    horizontalTop.Height = verticalLineThickness;
+                    horizontalTop.Fill = new SolidColorBrush(Colors.Black);
+                    horizontalTop.Name = "Top_" + r + "_" + c;
+                    DockPanel.SetDock(horizontalTop, Dock.Top);
+                    panel.Children.Add(horizontalTop);
+
+
+                    if (r == parameters.gridRows - 1)
                     {
-                        Rectangle horizontalTop = new Rectangle();
-                        horizontalTop.MouseDown += WallClicked;
-                        horizontalTop.MouseEnter += WallHover;
-                        horizontalTop.Height = verticalLineThickness;
-                        horizontalTop.Fill = new SolidColorBrush(Colors.Black);
-                        horizontalTop.Name = "Top_" + r + "_" + c;
-                        DockPanel.SetDock(horizontalTop, Dock.Top);
-                        panel.Children.Add(horizontalTop);
+                        // Add bottom element
+                        Rectangle horizontalBottom = new Rectangle();
+                        horizontalBottom.MouseDown += WallClicked;
+                        horizontalBottom.MouseEnter += WallHover;
+                        horizontalBottom.Height = verticalLineThickness;
+                        horizontalBottom.Fill = new SolidColorBrush(Colors.Black);
+                        horizontalBottom.Name = "Bottom_" + r + "_" + c;
+                        DockPanel.SetDock(horizontalBottom, Dock.Bottom);
+                        panel.Children.Add(horizontalBottom);
                     }
 
-                    // Add bottom element
-                    Rectangle horizontalBottom = new Rectangle();
-                    horizontalBottom.MouseDown += WallClicked;
-                    horizontalBottom.MouseEnter += WallHover;
-                    horizontalBottom.Height = verticalLineThickness;
-                    horizontalBottom.Fill = new SolidColorBrush(Colors.Black);
-                    horizontalBottom.Name = "Bottom_" + r + "_" + c;
-                    DockPanel.SetDock(horizontalBottom, Dock.Bottom);
-                    panel.Children.Add(horizontalBottom);
 
-                    // Only left column should have LEFT element
-                    if (c == 0)
-                    {
-                        Rectangle verticalLeft = new Rectangle();
-                        verticalLeft.MouseDown += WallClicked;
-                        verticalLeft.MouseEnter += WallHover;
-                        verticalLeft.Width = horizontalLineThickness;
-                        verticalLeft.Fill = new SolidColorBrush(Colors.Black);
-                        verticalLeft.Name = "Left_" + r + "_" + c;
-                        DockPanel.SetDock(verticalLeft, Dock.Left);
-                        panel.Children.Add(verticalLeft);
+                    Rectangle verticalLeft = new Rectangle();
+                    verticalLeft.MouseDown += WallClicked;
+                    verticalLeft.MouseEnter += WallHover;
+                    verticalLeft.Width = horizontalLineThickness;
+                    verticalLeft.Fill = new SolidColorBrush(Colors.Black);
+                    verticalLeft.Name = "Left_" + r + "_" + c;
+                    DockPanel.SetDock(verticalLeft, Dock.Left);
+                    panel.Children.Add(verticalLeft);
 
-                    }
+
 
                     // Add right element
-                    Rectangle verticalRight = new Rectangle();
-                    verticalRight.MouseDown += WallClicked;
-                    verticalRight.MouseEnter += WallHover;
-                    verticalRight.Width = horizontalLineThickness;
-                    verticalRight.Fill = new SolidColorBrush(Colors.Black);
-                    verticalRight.Name = "Right_" + r + "_" + c;
-
-                    DockPanel.SetDock(verticalRight, Dock.Right);
-                    panel.Children.Add(verticalRight);
-
+                    if (c == parameters.gridColumns - 1)
+                    {
+                        Rectangle verticalRight = new Rectangle();
+                        verticalRight.MouseDown += WallClicked;
+                        verticalRight.MouseEnter += WallHover;
+                        verticalRight.Width = horizontalLineThickness;
+                        verticalRight.Fill = new SolidColorBrush(Colors.Black);
+                        verticalRight.Name = "Right_" + r + "_" + c;
+                        DockPanel.SetDock(verticalRight, Dock.Right);
+                        panel.Children.Add(verticalRight);
+                    }
                     // Add middle cell
                     Rectangle middleCell = new Rectangle
                     {

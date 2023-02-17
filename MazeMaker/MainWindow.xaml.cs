@@ -50,7 +50,7 @@ namespace MazeMaker
                     Parameters parameters = Parameters.generateParameters(true, true, txtName.Text);
                     List<List<Room>> maze = Room.makeMaze(parameters);
                     Output.saveMap(maze, parameters.mapName, selectedFolder);
-                   // MessageBox.Show("Maze Saved");
+                    MessageBox.Show("Maze Saved");
                 }
                 else
                 {
