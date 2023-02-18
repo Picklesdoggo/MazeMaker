@@ -1,4 +1,6 @@
 ﻿using MazeMakerUtilities;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
@@ -31,7 +33,7 @@ namespace MazeMaker
             {
                 MazeWindow mazeWindow = new MazeWindow((bool)btnVerticalWide.IsChecked, (bool)btnHorizontalWide.IsChecked, txtName.Text);
                 mazeWindow.Show();
-                this.Close();
+                Close();
             }
         }
 
@@ -49,7 +51,7 @@ namespace MazeMaker
                     selectedFolder = File.ReadAllText("config.txt");
                     Parameters parameters = Parameters.generateParameters(true, true, txtName.Text);
                     List<List<Room>> maze = Room.makeMaze(parameters);
-                    Output.saveMap(maze, parameters.mapName, selectedFolder);
+                    Output.saveMap(maze, parameters, selectedFolder);
                     MessageBox.Show("Maze Saved");
                 }
                 else
@@ -60,7 +62,7 @@ namespace MazeMaker
                         selectedFolder = dialog.SelectedPath;
                         Parameters parameters = Parameters.generateParameters(true, true, txtName.Text);
                         List<List<Room>> maze = Room.makeMaze(parameters);
-                        Output.saveMap(maze, parameters.mapName, selectedFolder);
+                        Output.saveMap(maze, parameters, selectedFolder);
                         MessageBox.Show("Maze Saved");
                     }
                 }
@@ -70,6 +72,20 @@ namespace MazeMaker
             }
         }
 
+        private void btnLoad_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = AppContext.BaseDirectory;
+            openFileDialog.Filter = "Json files (*.json)|*.json";
+            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string json = File.ReadAllText(openFileDialog.FileName);
+                MazeSave mazeSave = JsonConvert.DeserializeObject<MazeSave>(json);
 
+                MazeWindow mazeWindow = new MazeWindow(mazeSave.parameters, mazeSave.maze);
+                mazeWindow.Show();
+                Close();
+            }
+        }
     }
 }

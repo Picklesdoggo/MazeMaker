@@ -14,12 +14,12 @@ namespace MazeMakerUtilities
         public List<Object> Objects { get; set; }
         public string QuickbeltLayoutName { get; set; }
 
-        public static void saveMap(List<List<Room>> mazeRooms, string mapName, string folderName)
+        public static void saveMap(List<List<Room>> mazeRooms, Parameters parameters, string folderName)
         {
             Output generatedOutput = new Output();
 
-            generatedOutput.FileName = mapName;
-            generatedOutput.ReferencePath = @"Vault\SceneConfigs\gp_hangar\" + mapName + "gp_hangar_VFS.json";
+            generatedOutput.FileName = parameters.mapName;
+            generatedOutput.ReferencePath = @"Vault\SceneConfigs\gp_hangar\" + parameters.mapName + "gp_hangar_VFS.json";
             generatedOutput.Creator = "picklesDoggo";
             generatedOutput.ModsUsed = new List<string>();
             generatedOutput.Objects = new List<Object>();
@@ -118,14 +118,18 @@ namespace MazeMakerUtilities
             if (folderName != "Default")
             {
                 // Yes, save there
-                File.WriteAllText(folderName + "\\" + mapName + "_gp_hangar_VFS.json", jsonUpdated);
+                File.WriteAllText(folderName + "\\" + parameters.mapName + "_gp_hangar_VFS.json", jsonUpdated);
             }
             else
             {
                 // No, save where exe lives
-                File.WriteAllText(mapName + "_gp_hangar_VFS.json", jsonUpdated);
+                File.WriteAllText(parameters.mapName + "_gp_hangar_VFS.json", jsonUpdated);
             }
-           
+            MazeSave mazeSave = new MazeSave();
+            mazeSave.maze = mazeRooms;
+            mazeSave.parameters = parameters;
+            string jsonMaze = JsonConvert.SerializeObject(mazeSave, Formatting.Indented);
+            File.WriteAllText(parameters.mapName + ".json", jsonMaze);
         }
         
         public static Element getTarget (string direction, string targetType)

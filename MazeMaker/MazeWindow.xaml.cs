@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -12,6 +13,7 @@ using System.Xml.Linq;
 using MazeMakerUtilities;
 using MessageBox = System.Windows.MessageBox;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
+using RadioButton = System.Windows.Controls.RadioButton;
 
 namespace MazeMaker
 {
@@ -45,6 +47,147 @@ namespace MazeMaker
             generateGrid();
         }
 
+
+        public MazeWindow(Parameters parametersInput, List<List<Room>> mazeInput)
+        {
+            InitializeComponent();
+            parameters = parametersInput;
+            maze = mazeInput;
+            displayControls();
+            generateGrid();
+            loadMaze();
+        }
+
+        private void loadMaze()
+        {
+            for (int r = 0; r < maze.Count; r++)
+            {
+                for (int c =0; c < maze[r].Count; c++)
+                {
+                    DockPanel room = grdMain.Children.Cast<DockPanel>().First(e => Grid.GetRow(e) == r && Grid.GetColumn(e) == c);
+                    foreach(UIElement child in room.Children)
+                    {
+                        Rectangle wall = (Rectangle)child;
+                        if (wall.Name.Contains("Top"))
+                        {
+                            if (parameters.horizontalWide)
+                            {
+                                string savedTop = getControlByObjectID(maze[r][c].top.element.ObjectID);
+                                foreach(UIElement element in btnsVertical.Children)
+                                {
+                                    if (element.GetType().Name == "RadioButton")
+                                    {
+                                        RadioButton rb = (RadioButton)element;
+                                        if (rb.Content.ToString() == savedTop)
+                                        {
+                                            SolidColorBrush solidColor = new SolidColorBrush();
+                                            solidColor = (SolidColorBrush)rb.Foreground;
+                                            wall.Fill = solidColor;
+                                        }
+                                    }
+
+                                }
+                            }
+                            
+                        }
+                        else if (wall.Name.Contains("Bottom"))
+                        {
+                            if (parameters.horizontalWide)
+                            {
+                                string savedTop = getControlByObjectID(maze[r][c].bottom.element.ObjectID);
+                                foreach (UIElement element in btnsVertical.Children)
+                                {
+                                    if (element.GetType().Name == "RadioButton")
+                                    {
+                                        RadioButton rb = (RadioButton)element;
+                                        if (rb.Content.ToString() == savedTop)
+                                        {
+                                            SolidColorBrush solidColor = new SolidColorBrush();
+                                            solidColor = (SolidColorBrush)rb.Foreground;
+                                            wall.Fill = solidColor;
+                                        }
+                                    }
+
+                                }
+                            }
+
+                        }
+                        else if (wall.Name.Contains("Left"))
+                        {
+                            if (parameters.verticalWide)
+                            {
+                                string savedTop = getControlByObjectID(maze[r][c].left.element.ObjectID);
+                                foreach (UIElement element in btnsHorizontal.Children)
+                                {
+                                    if (element.GetType().Name == "RadioButton")
+                                    {
+                                        RadioButton rb = (RadioButton)element;
+                                        if (rb.Content.ToString() == savedTop)
+                                        {
+                                            SolidColorBrush solidColor = new SolidColorBrush();
+                                            solidColor = (SolidColorBrush)rb.Foreground;
+                                            wall.Fill = solidColor;
+                                        }
+                                    }
+
+                                }
+                            }
+
+                        }
+                        else if (wall.Name.Contains("Right"))
+                        {
+                            if (parameters.verticalWide)
+                            {
+                                string savedTop = getControlByObjectID(maze[r][c].right.element.ObjectID);
+                                foreach (UIElement element in btnsHorizontal.Children)
+                                {
+                                    if (element.GetType().Name == "RadioButton")
+                                    {
+                                        RadioButton rb = (RadioButton)element;
+                                        if (rb.Content.ToString() == savedTop)
+                                        {
+                                            SolidColorBrush solidColor = new SolidColorBrush();
+                                            solidColor = (SolidColorBrush)rb.Foreground;
+                                            wall.Fill = solidColor;
+                                        }
+                                    }
+
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
+        private string getControlByObjectID(string objectID)
+        {
+            string control = "";
+
+            if (objectID == "ShoothouseBarrierWall")
+            {
+                control = "Wall";
+            }
+            else if (objectID == "ShoothouseBarrierDoorSingle")
+            {
+                control = "Single Door";
+            }
+            else if (objectID == "ShoothouseBarrierDoorDouble")
+            {
+                control = "Double Door";
+            }
+            else if (objectID == "ShoothouseBarrierWindowNarrow")
+            {
+                control = "Window";
+            }
+            else if (objectID == "CompBarrierLow")
+            {
+                control = "Low Barrier";
+            }
+
+            return control;
+        }
 
         private void displayControls()
         {
@@ -110,7 +253,8 @@ namespace MazeMaker
                 {
                     DockPanel panel = new DockPanel
                     {
-                        LastChildFill = true
+                        LastChildFill = true,
+                        Name = "Room_" + r + "_" + c
                     };
 
                     // Only top row should have TOP element
@@ -402,7 +546,7 @@ namespace MazeMaker
             if (File.Exists("config.txt"))
             {
                 string selectedFolder = File.ReadAllText("config.txt");                
-                Output.saveMap(maze, parameters.mapName, selectedFolder);
+                Output.saveMap(maze, parameters, selectedFolder);
                 MessageBox.Show("Maze Saved");
             }
             else
@@ -411,7 +555,7 @@ namespace MazeMaker
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     string selectedFolder = dialog.SelectedPath;
-                    Output.saveMap(maze, parameters.mapName, selectedFolder);
+                    Output.saveMap(maze, parameters, selectedFolder);
                     MessageBox.Show("Maze Saved");
                 }
             }           
