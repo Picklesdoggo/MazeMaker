@@ -28,5 +28,5 @@ The code which actually generates the mazes is free for anyone who wishes to int
 3. `void saveMap(List<List<Room>> mazeRooms, string mapName, string folderName)` this takes in the maze from method two, a map name and a folder name. If the folder name of "default" is provided it will save the json file in the same location as the exe
 
 # Future Plans
-
-In the future there is a plan to randomly place targets within the maze as well as allowing user to manually place targets.
+1. Allow user placed targets 
+2. Loading of saved maps 
