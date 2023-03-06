@@ -145,7 +145,7 @@ namespace MazeMakerUtilities
             string jsonMaze = JsonConvert.SerializeObject(mazeSave, Formatting.Indented);
             File.WriteAllText(parameters.mapName + ".json", jsonMaze);
         }
-        
+
         public static Element getTarget (string direction, string targetType)
         {
             Element target = new Element();
@@ -279,33 +279,54 @@ namespace MazeMakerUtilities
 
 
         [JsonProperty(Order = 15)]
-        public Flags Flags = new Flags
-        {
-            _keys = new List<string>()
-                            {
-                                "IsKinematicLocked",
-                                "IsPickupLocked",
-                                "QuickBeltSpecialStateEngaged"
-                            },
-
-            _values = new List<string>()
-                            {
-                                "True",
-                                "True",
-                                "False"
-                            }
-        };
-
-
+        public Flags Flags { get;set; }
+  
         public Element(bool wide)
         {
             if (wide)
             {
                 ObjectID = "ShoothouseBarrierWall";
+                Flags = new Flags()
+                {
+                    _keys = new List<string>()
+                            {
+                                "IsKinematicLocked",
+                                "IsPickupLocked",
+                                "QuickBeltSpecialStateEngaged",
+                                "SpringState"
+                            },
+
+                    _values = new List<string>()
+                            {
+                                "True",
+                                "True",
+                                "False",
+                                "False"
+                            }
+                };
+
             }
             else
             {
                 ObjectID = "ShoothouseBarrierWallNarrow";
+                Flags = new Flags()
+                {
+                    _keys = new List<string>()
+                            {
+                                "IsKinematicLocked",
+                                "IsPickupLocked",
+                                "QuickBeltSpecialStateEngaged",
+                                "SpringState"
+                            },
+
+                    _values = new List<string>()
+                            {
+                                "True",
+                                "True",
+                                "False",
+                                "False"
+                            }
+                };
             }
         }
 
@@ -318,38 +339,38 @@ namespace MazeMakerUtilities
 
     public class Posoffset
     {
-        public float x { get; set; }
-        public float y { get; set; }
-        public float z { get; set; }
+        public decimal x { get; set; }
+        public decimal y { get; set; }
+        public decimal z { get; set; }
     }
 
     public class Orientationforward
     {
-        public float x { get; set; }
-        public float y { get; set; }
-        public float z { get; set; }
+        public decimal x { get; set; }
+        public decimal y { get; set; }
+        public decimal z { get; set; }
     }
 
     public class GenericVector3s
     {
-        public float x { get; set; }
-        public float y { get; set; }
-        public float z { get; set; }
+        public decimal x { get; set; }
+        public decimal y { get; set; }
+        public decimal z { get; set; }
     }
 
     public class GenericRotations
     {
-        public float x { get; set; }
-        public float y { get; set; }
-        public float z { get; set; }
-        public float w { get; set; }
+        public decimal x { get; set; }
+        public decimal y { get; set; }
+        public decimal z { get; set; }
+        public decimal w { get; set; }
     }
 
     public class Orientationup
     {
-        public float x { get; set; }
-        public float y { get; set; }
-        public float z { get; set; }
+        public decimal x { get; set; }
+        public decimal y { get; set; }
+        public decimal z { get; set; }
     }
 
     public class Flags

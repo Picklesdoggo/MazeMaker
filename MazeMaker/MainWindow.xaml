@@ -42,7 +42,7 @@
 
 		<Button Name="btnRandom" Content="Randomly Generate Maze" Grid.Row="5" Click="btnRandom_Click" Margin="10"/>
 
-		<Button Name="btnLoad" Content="Load Saved Maze" Grid.Row="6" Click="btnLoad_Click" Margin="10"/>
+		<Button Name="btnLoad" Content="Load Saved Maze" Grid.Row="6" Click="btnLoad_Click" Margin="10" Visibility="Collapsed"/>
 
 		<Button Name="btnBase" Content="Choose base file" Grid.Row="7" Click="btnBase_Click" Margin="10"/>
 	</Grid>

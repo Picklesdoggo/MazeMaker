@@ -33,13 +33,13 @@ namespace MazeMakerUtilities
             maze = new List<List<Room>>();
             parameters = parametersInput;
 
-            float startingXHorizontals = parameters.XHorizontalStart;
-            float startingYHorizontals = parameters.YHorizontalStart;
-            float startingZHorizontals;
+            decimal startingXHorizontals = parameters.XHorizontalStart;
+            decimal startingYHorizontals = parameters.YHorizontalStart;
+            decimal startingZHorizontals;
 
-            float startingXVerticals = parameters.XVerticalStart;
-            float startingYVerticals = parameters.YVerticalStart;
-            float startingZVerticals;
+            decimal startingXVerticals = parameters.XVerticalStart;
+            decimal startingYVerticals = parameters.YVerticalStart;
+            decimal startingZVerticals;
 
             for (int r = 0; r < parameters.gridRows; r++)
             {

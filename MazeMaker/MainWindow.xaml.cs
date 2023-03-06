@@ -100,9 +100,6 @@ namespace MazeMaker
                 string json = File.ReadAllText(openFileDialog.FileName);
                 baseFile = JsonConvert.DeserializeObject<Output>(json);
 
-                //MazeWindow mazeWindow = new MazeWindow(mazeSave.parameters, mazeSave.maze);
-                //mazeWindow.Show();
-                //Close();
             }
         }
     }
