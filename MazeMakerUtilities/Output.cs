@@ -14,7 +14,7 @@ namespace MazeMakerUtilities
         public List<Object> Objects { get; set; }
         public string QuickbeltLayoutName { get; set; }
 
-        public static void saveMap(List<List<Room>> mazeRooms, Parameters parameters, string folderName)
+        public static void saveMap(List<List<Room>> mazeRooms, Parameters parameters, string folderName, Output baseFile)
         {
             Output generatedOutput = new Output();
 
@@ -25,6 +25,17 @@ namespace MazeMakerUtilities
             generatedOutput.Objects = new List<Object>();
 
             int index = 0;
+
+            if (baseFile != null)
+            {
+                // Loop through baseFile objects
+                foreach (Object o in baseFile.Objects)
+                {
+                    o.Index = index;
+                    index++;
+                    generatedOutput.Objects.Add(o);
+                }
+            }
 
             for (int r = 0; r < mazeRooms.Count; r++)
             {
@@ -113,6 +124,9 @@ namespace MazeMakerUtilities
 
                 }
             }
+            
+
+
             string jsonUpdated = JsonConvert.SerializeObject(generatedOutput, Formatting.Indented);
             // Did user select file path
             if (folderName != "Default")
@@ -258,10 +272,10 @@ namespace MazeMakerUtilities
         public List<string> GenericStrings = new List<string>();
 
         [JsonProperty(Order = 13)]
-        public List<string> GenericVector3s = new List<string>();
+        public List<GenericVector3s> GenericVector3s = new List<GenericVector3s>();
 
         [JsonProperty(Order = 14)]
-        public List<string> GenericRotations = new List<string>();
+        public List<GenericRotations> GenericRotations = new List<GenericRotations>();
 
 
         [JsonProperty(Order = 15)]
@@ -314,6 +328,21 @@ namespace MazeMakerUtilities
         public float x { get; set; }
         public float y { get; set; }
         public float z { get; set; }
+    }
+
+    public class GenericVector3s
+    {
+        public float x { get; set; }
+        public float y { get; set; }
+        public float z { get; set; }
+    }
+
+    public class GenericRotations
+    {
+        public float x { get; set; }
+        public float y { get; set; }
+        public float z { get; set; }
+        public float w { get; set; }
     }
 
     public class Orientationup

@@ -24,7 +24,8 @@ namespace MazeMaker
     {
 
 
-        public static Parameters parameters = new Parameters();        
+        public static Parameters parameters = new Parameters();
+        public static Output baseFile = null;
         public static int horizontalLineThickness = 4;
         public static int verticalLineThickness = 4;             
 
@@ -42,6 +43,19 @@ namespace MazeMaker
             parameters = Parameters.generateParameters(verticalWideInput, horizontalWideInput, mapNameInput);
 
             maze = Room.generateRooms(parameters);
+
+            displayControls();
+            generateGrid();
+        }
+
+        public MazeWindow(bool verticalWideInput, bool horizontalWideInput, string mapNameInput, Output outputInput)
+        {
+            InitializeComponent();
+
+            parameters = Parameters.generateParameters(verticalWideInput, horizontalWideInput, mapNameInput);
+
+            maze = Room.generateRooms(parameters);
+            baseFile  = outputInput;
 
             displayControls();
             generateGrid();
@@ -546,7 +560,7 @@ namespace MazeMaker
             if (File.Exists("config.txt"))
             {
                 string selectedFolder = File.ReadAllText("config.txt");                
-                Output.saveMap(maze, parameters, selectedFolder);
+                Output.saveMap(maze, parameters, selectedFolder, baseFile);
                 MessageBox.Show("Maze Saved");
             }
             else
@@ -555,7 +569,7 @@ namespace MazeMaker
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     string selectedFolder = dialog.SelectedPath;
-                    Output.saveMap(maze, parameters, selectedFolder);
+                    Output.saveMap(maze, parameters, selectedFolder, baseFile);
                     MessageBox.Show("Maze Saved");
                 }
             }           
