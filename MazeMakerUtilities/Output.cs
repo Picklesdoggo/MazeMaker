@@ -139,11 +139,11 @@ namespace MazeMakerUtilities
                 // No, save where exe lives
                 File.WriteAllText(parameters.mapName + "_gp_hangar_VFS.json", jsonUpdated);
             }
-            MazeSave mazeSave = new MazeSave();
-            mazeSave.maze = mazeRooms;
-            mazeSave.parameters = parameters;
-            string jsonMaze = JsonConvert.SerializeObject(mazeSave, Formatting.Indented);
-            File.WriteAllText(parameters.mapName + ".json", jsonMaze);
+            //MazeSave mazeSave = new MazeSave();
+            //mazeSave.maze = mazeRooms;
+            //mazeSave.parameters = parameters;
+            //string jsonMaze = JsonConvert.SerializeObject(mazeSave, Formatting.Indented);
+            //File.WriteAllText(parameters.mapName + ".json", jsonMaze);
         }
 
         public static Element getTarget (string direction, string targetType)
