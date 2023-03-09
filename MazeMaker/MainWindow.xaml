@@ -29,7 +29,7 @@
 
 		<StackPanel Margin="10" Grid.Row="2">
 			<Label FontWeight="Bold">Map Name</Label>
-			<TextBox Name="txtName" Background="DarkGray" Text="Shoot House"/>
+			<TextBox Name="txtName" Background="DarkGray" Text="Enter map name"/>
 		</StackPanel>
 
 		<StackPanel Margin="10" Grid.Row="3">

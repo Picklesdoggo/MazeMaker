@@ -1,7 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Valve.Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
-using Formatting = Newtonsoft.Json.Formatting;
 
 namespace MazeMakerUtilities
 {
@@ -127,7 +126,7 @@ namespace MazeMakerUtilities
             
 
 
-            string jsonUpdated = JsonConvert.SerializeObject(generatedOutput, Formatting.Indented);
+            string jsonUpdated = JsonConvert.SerializeObject(generatedOutput);
             // Did user select file path
             if (folderName != "Default")
             {
