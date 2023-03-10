@@ -261,8 +261,8 @@ namespace MazeMakerUtilities
 
             }
 
-            //solveMaze();
-            //carvePath();
+            solveMaze();
+            carvePath();
             removeEntranceAndExit();
             //addTargets();
             return maze;

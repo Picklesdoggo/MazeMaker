@@ -139,7 +139,7 @@ namespace MazeMakerUtilities
             //string jsonUpdated = Encoding.Default.GetString(ms.ToArray());
 
 
-            generatedOutput.Objects.Clear();
+            
             string jsonUpdated = JsonConvert.SerializeObject(generatedOutput);
             // Did user select file path
             if (folderName != "Default")
