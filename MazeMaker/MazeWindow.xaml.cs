@@ -199,6 +199,10 @@ namespace MazeMaker
             {
                 control = "Low Barrier";
             }
+            else if (objectID == "None")
+            {
+                control = "None";
+            }
 
             return control;
         }
@@ -325,6 +329,11 @@ namespace MazeMaker
                     {
                         Fill = new SolidColorBrush(Colors.LightGray)
                     };
+                    if (maze[r][c].path)
+                    {
+                        middleCell.Fill = new SolidColorBrush(Colors.White);
+                    }
+
                     panel.Children.Add(middleCell);
 
                     panel.SetValue(Grid.RowProperty, r);
@@ -356,10 +365,12 @@ namespace MazeMaker
                         if (selected.Name.Contains("Right"))
                         {
                             maze[r][c].right.element.ObjectID = selectedValues.Item2;
+                            maze[r][c].right.render = true;
                         }
                         else
                         {
                             maze[r][c].left.element.ObjectID = selectedValues.Item2;
+                            maze[r][c].left.render = true;
                         }
 
                     }
@@ -417,10 +428,12 @@ namespace MazeMaker
                         if (selected.Name.Contains("Top"))
                         {
                             maze[r][c].top.element.ObjectID = selectedValues.Item2;
+                            maze[r][c].top.render = true;
                         }
                         else
                         {
                             maze[r][c].bottom.element.ObjectID = selectedValues.Item2;
+                            maze[r][c].bottom.render = true;
                         }
 
                     }
@@ -500,6 +513,10 @@ namespace MazeMaker
                 solidColor = (SolidColorBrush)btnVerticalCompBarrierLow.Foreground;
                 objectID = "CompBarrierLow";
             }
+            else if (btnVerticalNone.IsChecked == true)
+            {
+                solidColor = (SolidColorBrush)btnVerticalNone.Foreground;                
+            }
            
             return new System.Tuple<SolidColorBrush, string>(solidColor, objectID);
         }
@@ -532,6 +549,10 @@ namespace MazeMaker
             {
                 solidColor = (SolidColorBrush)btnHorizontalCompBarrierLow.Foreground;
                 objectID = "CompBarrierLow";
+            }
+            else if (btnHorizontalNone.IsChecked == true)
+            {
+                solidColor = (SolidColorBrush)btnHorizontalNone.Foreground;
             }
 
             return new System.Tuple<SolidColorBrush, string>(solidColor, objectID);
@@ -573,6 +594,14 @@ namespace MazeMaker
                     MessageBox.Show("Maze Saved");
                 }
             }           
+        }
+
+        private void New_Click(object sender, RoutedEventArgs e)
+        {            
+            maze = Room.makeMaze(parameters);
+            MazeWindow mazeWindow = new MazeWindow(parameters, maze);
+            mazeWindow.Show();
+            Close();
         }
     }
 }

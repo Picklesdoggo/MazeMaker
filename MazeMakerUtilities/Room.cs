@@ -263,8 +263,9 @@ namespace MazeMakerUtilities
 
             solveMaze();
             carvePath();
+            hollowMaze();
             removeEntranceAndExit();
-            //addTargets();
+            addTargets();
             return maze;
 
         }
@@ -442,27 +443,159 @@ namespace MazeMakerUtilities
             }
         }
 
+        public static void hollowMaze()
+        {
+            // Loop through all the rooms
+            for (int r = 0; r < maze.Count; r++)
+            {
+                for (int c = 0; c < maze[r].Count; c++)
+                {
+                    Room current = maze[r][c];
+                    // Is room on the path?
+                    if (!current.path)
+                    {
+                        // check room above
+                        if (current.row != 0)
+                        {
+                            Room above = maze[current.row - 1][current.column];
+                            if (!above.path)
+                            {
+                                current.top.render = false;
+                                current.top.element.ObjectID = "None";
+
+                                above.bottom.render = false;
+                                above.bottom.element.ObjectID = "None";
+                                
+                            }
+                        }
+
+                        // check room right
+                        if (current.column != parameters.gridColumns - 1)
+                        {
+                            Room right = maze[current.row][current.column + 1];
+                            if (!right.path)
+                            {
+                                right.left.render = false;
+                                right.left.element.ObjectID = "None";
+
+                                current.right.render = false;
+                                current.right.element.ObjectID = "None";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         public static void addTargets()
         {
-            Random random = new Random();
+            Random targetChoice = new Random();
+            Random targetYesNo = new Random();
+            Random targetRoomChoice = new Random();
+            int targetPlacementPercentage = 25;
             // Loop through all rooms and check what rooms can be moved into from current room
             for (int r = 0; r < maze.Count; r++)
             {
                 for (int c = 0; c < maze[r].Count; c++)
                 {
                     Room startingRoom = maze[r][c];
-                    List<string> validMoves = getValidMoves(startingRoom);
-                    if (validMoves.Count == 1)
+                    //Is the room on the path?
+                    if (startingRoom.path)
                     {
-                        string targetType = parameters.targets[random.Next(parameters.targets.Count)];
-                        Element target = Output.getTarget(validMoves[0], targetType);
-                        
-                        target.PosOffset.x = maze[r][c].top.element.PosOffset.x - (parameters.XHorizontalOffset / 2);
-                        target.PosOffset.z = maze[r][c].right.element.PosOffset.z + (parameters.ZHorizontalOffset / 2);
-                        target.PosOffset.y = 0;
-                        maze[r][c].target = target;
-                       
+                        // Determine if we are placing a target
+                        int placeTarget = targetYesNo.Next(0, 100);
+                        if (placeTarget < targetPlacementPercentage)
+                        {
+                            List<Tuple<Room, string>> nonPathNeighbors = new List<Tuple<Room, string>>();
+                            // Get non path neighbors
+                            if (startingRoom.row != 0)
+                            {
+                                Room above = maze[startingRoom.row - 1][startingRoom.column];
+                                if (!above.path)
+                                {
+                                    nonPathNeighbors.Add(new Tuple<Room, string>(above, "Above"));
+                                }
+                            }
+                            if (startingRoom.row != parameters.gridRows - 1)
+                            {
+                                Room below = maze[startingRoom.row + 1][startingRoom.column];
+                                if (!below.path)
+                                {
+                                    nonPathNeighbors.Add(new Tuple<Room, string>(below, "Below"));
+                                }
+                            }
+                            // check room left
+                            if (startingRoom.column != 0)
+                            {
+                                Room left = maze[startingRoom.row][startingRoom.column - 1];
+                                if (!left.path)
+                                {
+                                    nonPathNeighbors.Add(new Tuple<Room, string>(left, "Left"));
+                                }
+                            }
+                            // check room right
+                            if (startingRoom.column != parameters.gridColumns - 1)
+                            {
+                                Room right = maze[startingRoom.row][startingRoom.column + 1];
+                                if (!right.path)
+                                {
+                                    nonPathNeighbors.Add(new Tuple<Room, string>(right, "Right"));
+                                }
+                            }
+
+
+                            if (nonPathNeighbors.Count != 0)
+                            {
+                                //for (int ni = 0; ni < nonPathNeighbors.Count; ni++)
+                                //{
+                                int neighborIndex = targetRoomChoice.Next(0, nonPathNeighbors.Count);
+                                Tuple<Room, string> chosenNeighor = nonPathNeighbors[neighborIndex];
+                                string targetType = parameters.targets[targetChoice.Next(parameters.targets.Count)];
+
+                                if (chosenNeighor.Item2 == "Above")
+                                {
+                                    startingRoom.top.render = true;
+                                    startingRoom.top.element.ObjectID = "CompBarrierLow";
+
+                                }
+                                else if (chosenNeighor.Item2 == "Below")
+                                {
+                                    chosenNeighor.Item1.top.render = true;
+                                    chosenNeighor.Item1.top.element.ObjectID = "CompBarrierLow";
+                                }
+                                else if (chosenNeighor.Item2 == "Left")
+                                {
+                                    startingRoom.left.render = true;
+                                    startingRoom.left.element.ObjectID = "CompBarrierLow";
+                                }
+                                else if (chosenNeighor.Item2 == "Right")
+                                {
+                                    chosenNeighor.Item1.left.render = true;
+                                    chosenNeighor.Item1.left.element.ObjectID = "CompBarrierLow";
+                                }
+                                Element target = getTarget(chosenNeighor.Item2, targetType);
+                                chosenNeighor.Item1.target = target;
+                                //}
+                               
+                              
+                            }
+                            
+                            
+                        }
                     }
+
+                    //List<string> validMoves = getValidMoves(startingRoom);
+                    //if (validMoves.Count == 1)
+                    //{
+                    //    string targetType = parameters.targets[random.Next(parameters.targets.Count)];
+                    //    Element target = Output.getTarget(validMoves[0], targetType);
+                        
+                    //    target.PosOffset.x = maze[r][c].top.element.PosOffset.x - (parameters.XHorizontalOffset / 2);
+                    //    target.PosOffset.z = maze[r][c].right.element.PosOffset.z + (parameters.ZHorizontalOffset / 2);
+                    //    target.PosOffset.y = 0;
+                    //    maze[r][c].target = target;
+                       
+                    //}
                 }
             }
         }
@@ -650,6 +783,77 @@ namespace MazeMakerUtilities
             }
 
             return validRooms;
+        }
+
+        public static Element getTarget(string direction, string targetType)
+        {
+            Element target = new Element();
+
+            #region Direction
+
+            if (direction == "Right")
+            {
+                target.OrientationForward = new Orientationforward()
+                {
+                    x = 0,
+                    y = 0,
+                    z = 1
+                };
+            }
+            else if (direction == "Left")
+            {
+                target.OrientationForward = new Orientationforward()
+                {
+                    x = 0,
+                    y = 0,
+                    z = -1
+                };
+            }
+            else if (direction == "Above")
+            {
+                target.OrientationForward = new Orientationforward()
+                {
+                    x = 1,
+                    y = 0,
+                    z = 0
+                };
+            }
+            else if (direction == "Below")
+            {
+                target.OrientationForward = new Orientationforward()
+                {
+                    x = -1,
+                    y = 0,
+                    z = 0
+                };
+            }
+
+            #endregion
+
+            target.ObjectID = targetType;
+
+            target.Flags = new Flags()
+            {
+                _keys = new List<string>()
+                            {
+                                "IsKinematicLocked",
+                                "IsPickupLocked",
+                                "QuickBeltSpecialStateEngaged",
+                                "SpringState"
+                            },
+
+                _values = new List<string>()
+                            {
+                                "True",
+                                "True",
+                                "False",
+                                "False"
+                            }
+            };
+
+            target.PosOffset = new Posoffset();
+
+            return target;
         }
     }
 }

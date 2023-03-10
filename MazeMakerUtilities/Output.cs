@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using Valve.Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System;
@@ -159,76 +159,7 @@ namespace MazeMakerUtilities
             //File.WriteAllText(parameters.mapName + ".json", jsonMaze);
         }
 
-        public static Element getTarget (string direction, string targetType)
-        {
-            Element target = new Element();
-
-            #region Direction
-
-            if (direction == "West")
-            {
-                target.OrientationForward = new Orientationforward()
-                {
-                    x = 0,
-                    y = 0,
-                    z = 1
-                };
-            }
-            else if (direction == "East")
-            {
-                target.OrientationForward = new Orientationforward()
-                {
-                    x = 0,
-                    y = 0,
-                    z = -1
-                };
-            }
-            else if (direction == "North")
-            {
-                target.OrientationForward = new Orientationforward()
-                {
-                    x = 1,
-                    y = 0,
-                    z = 0
-                };
-            }
-            else if (direction == "South")
-            {
-                target.OrientationForward = new Orientationforward()
-                {
-                    x = -1,
-                    y = 0,
-                    z = 0
-                };
-            }
-
-            #endregion
-
-            target.ObjectID = targetType;
-
-            target.Flags = new Flags()
-            {
-                _keys = new List<string>()
-                            {
-                                "IsKinematicLocked",
-                                "IsPickupLocked",
-                                "QuickBeltSpecialStateEngaged",
-                                "SpringState"
-                            },
-
-                _values = new List<string>()
-                            {
-                                "True",
-                                "True",
-                                "False",
-                                "False"
-                            }
-            };
-
-            target.PosOffset = new Posoffset();
-
-            return target;
-        }
+       
     }
 
     public class Object
