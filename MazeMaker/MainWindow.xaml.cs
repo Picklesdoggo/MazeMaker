@@ -1,11 +1,10 @@
 ﻿using MazeMakerUtilities;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
 using MessageBox = System.Windows.MessageBox;
+using Valve.Newtonsoft.Json;
 
 namespace MazeMaker
 {
@@ -76,7 +75,7 @@ namespace MazeMaker
         private void btnLoad_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = AppContext.BaseDirectory;
+            //openFileDialog.InitialDirectory = AppContext.BaseDirectory;
             openFileDialog.Filter = "Json files (*.json)|*.json";
             if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
@@ -92,7 +91,7 @@ namespace MazeMaker
         private void btnBase_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = AppContext.BaseDirectory;
+            //openFileDialog.InitialDirectory = AppContext.BaseDirectory;
             openFileDialog.Filter = "Json files (*.json)|*.json";
             if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {

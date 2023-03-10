@@ -500,8 +500,8 @@ namespace MazeMaker
                 solidColor = (SolidColorBrush)btnVerticalCompBarrierLow.Foreground;
                 objectID = "CompBarrierLow";
             }
-
-            return Tuple.Create(solidColor, objectID);
+           
+            return new Tuple<SolidColorBrush, string>(solidColor, objectID);
         }
 
         public Tuple<SolidColorBrush, string> GetSelectedHorizontalValues()
@@ -534,7 +534,7 @@ namespace MazeMaker
                 objectID = "CompBarrierLow";
             }
 
-            return Tuple.Create(solidColor, objectID);
+            return new Tuple<SolidColorBrush, string>(solidColor, objectID);
         }
 
         private void WallClicked(object sender, MouseButtonEventArgs e)

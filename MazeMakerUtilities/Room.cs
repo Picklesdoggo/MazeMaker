@@ -8,7 +8,7 @@ namespace MazeMakerUtilities
     {
         public T1 Item1 { get; private set; }
         public T2 Item2 { get; private set; }
-        internal Tuple(T1 first, T2 second)
+        public Tuple(T1 first, T2 second)
         {
             Item1 = first;
             Item2 = second;
