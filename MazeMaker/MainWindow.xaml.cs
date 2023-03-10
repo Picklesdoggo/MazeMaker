@@ -45,30 +45,36 @@ namespace MazeMaker
             }
             else
             {
-                string selectedFolder;
-                if (File.Exists("config.txt"))
-                {
-                    selectedFolder = File.ReadAllText("config.txt");
-                    Parameters parameters = Parameters.generateParameters(true, true, txtName.Text);
-                    List<List<Room>> maze = Room.makeMaze(parameters);
-                    Output.saveMap(maze, parameters, selectedFolder, baseFile);
-                    MessageBox.Show("Maze Saved");
-                }
-                else
-                {
-                    var dialog = new FolderBrowserDialog();
-                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    {
-                        selectedFolder = dialog.SelectedPath;
-                        Parameters parameters = Parameters.generateParameters(true, true, txtName.Text);
-                        List<List<Room>> maze = Room.makeMaze(parameters);
-                        Output.saveMap(maze, parameters, selectedFolder, baseFile);
-                        MessageBox.Show("Maze Saved");
-                    }
-                }
-                
+                Parameters parameters = Parameters.generateParameters(true, true, txtName.Text);
+                List<List<Room>> maze = Room.makeMaze(parameters);
+                MazeWindow mazeWindow = new MazeWindow(parameters, maze);
+                mazeWindow.Show();
+                Close();
 
-               
+                //string selectedFolder;
+                //if (File.Exists("config.txt"))
+                //{
+                //    selectedFolder = File.ReadAllText("config.txt");
+                //    Parameters parameters = Parameters.generateParameters(true, true, txtName.Text);
+                //    List<List<Room>> maze = Room.makeMaze(parameters);
+                //    Output.saveMap(maze, parameters, selectedFolder, baseFile);
+                //    MessageBox.Show("Maze Saved");
+                //}
+                //else
+                //{
+                //    var dialog = new FolderBrowserDialog();
+                //    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                //    {
+                //        selectedFolder = dialog.SelectedPath;
+                //        Parameters parameters = Parameters.generateParameters(true, true, txtName.Text);
+                //        List<List<Room>> maze = Room.makeMaze(parameters);
+                //        Output.saveMap(maze, parameters, selectedFolder, baseFile);
+                //        MessageBox.Show("Maze Saved");
+                //    }
+                //}
+
+
+
             }
         }
 

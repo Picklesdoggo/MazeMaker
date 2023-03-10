@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MazeMakerUtilities
 {
@@ -30,7 +31,9 @@ namespace MazeMakerUtilities
         public Wall left { get; set; }
         public Wall right { get; set; }
         public bool visited { get; set; }
+        public bool path { get; set; }
 
+        public List<Tuple<Room, string>> neighbors = new List<Tuple<Room, string>>();
         public int row { get; set; }
         public int column { get; set; }
 
@@ -258,10 +261,185 @@ namespace MazeMakerUtilities
 
             }
 
+            //solveMaze();
+            //carvePath();
             removeEntranceAndExit();
-            addTargets();
+            //addTargets();
             return maze;
 
+        }
+
+        public static void solveMaze()
+        {
+            // set all cells to not be visited
+            for (int r = 0; r < maze.Count; r++)
+            {
+                for (int c = 0; c < maze[r].Count; c++)
+                {
+                    maze[r][c].visited = false;
+                    getNeighbors(maze[r][c]);
+                }
+            }
+
+
+            List<Room> visited = new List<Room>();
+            List<Room> frontier = new List<Room>();
+
+            Dictionary<Room, Room> solution = new Dictionary<Room, Room>();
+
+            // Set current to Start Cell
+            Room current = maze[parameters.entranceRow][parameters.entranceColumn];
+            current.visited = true;
+
+            // Add current to frontier
+            frontier.Add(current);
+
+            // Add current to visited
+            visited.Add(current);
+
+            while (frontier.Count > 0)
+            {
+
+                foreach (Tuple<Room, string> room in current.neighbors)
+                {
+                    // Is cell to the left valid and not visited?
+                    if (room.Item2 == "Left" && !room.Item1.visited)
+                    {
+                        frontier.Add(room.Item1);
+                        solution.Add(room.Item1, current);
+                    }
+
+                    // Is cell to the right valid and not visited?
+                    if (room.Item2 == "Right" && !room.Item1.visited)
+                    {
+                        frontier.Add(room.Item1);
+                        solution.Add(room.Item1, current);
+                    }
+
+                    // Is cell above valid and not visited?
+                    if (room.Item2 == "Above" && !room.Item1.visited)
+                    {
+                        frontier.Add(room.Item1);
+                        solution.Add(room.Item1, current);
+                    }
+
+                    // Is cell below valid and not visited?
+                    if (room.Item2 == "Below" && !room.Item1.visited)
+                    {
+                        frontier.Add(room.Item1);
+                        solution.Add(room.Item1, current);
+                    }
+                }
+
+                current = frontier.Last();
+                current.visited = true;
+                frontier.Remove(frontier.Last());
+            }
+
+            current = maze[parameters.exitRow][parameters.exitColumn];
+            current.path = true;
+            while (current.row != parameters.entranceRow || current.column != parameters.entranceColumn)
+            {
+                current = solution[current];
+                current.path = true;
+            }
+
+
+
+        }
+
+        public static void getNeighbors(Room startingRoom)
+        {
+
+            // Check for valid move above current room if not in top row
+            if (startingRoom.row != 0)
+            {
+                Room above = maze[startingRoom.row - 1][startingRoom.column];
+                if (startingRoom.top.element.ObjectID != "ShoothouseBarrierWall")
+                {
+                    startingRoom.neighbors.Add(new Tuple<Room, string>(above, "Above"));
+                }
+            }
+
+            // Check for valid move below current room if not in bottom row
+            if (startingRoom.row != parameters.gridRows - 1)
+            {
+                Room below = maze[startingRoom.row + 1][startingRoom.column];
+                if (below.top.element.ObjectID != "ShoothouseBarrierWall")
+                {
+                    startingRoom.neighbors.Add(new Tuple<Room, string>(below, "Below"));
+                }
+            }
+
+            if (startingRoom.column != 0)
+            {
+                Room left = maze[startingRoom.row][startingRoom.column - 1];
+                if (startingRoom.left.element.ObjectID != "ShoothouseBarrierWall")
+                {
+                    startingRoom.neighbors.Add(new Tuple<Room, string>(left, "Left"));
+                }
+            }
+
+            if (startingRoom.column != parameters.gridColumns - 1)
+            {
+                Room right = maze[startingRoom.row][startingRoom.column + 1];
+                if (right.left.element.ObjectID != "ShoothouseBarrierWall")
+                {
+                    startingRoom.neighbors.Add(new Tuple<Room, string>(right, "Right"));
+                }
+            }
+        }
+
+        public static void carvePath()
+        {
+            // Reset all walls
+            for (int r = 0; r < maze.Count; r++)
+            {
+                for (int c = 0; c < maze[r].Count; c++)
+                {
+                    Room current = maze[r][c];
+                    current.top.element.ObjectID = "ShoothouseBarrierWall";
+                    current.bottom.element.ObjectID = "ShoothouseBarrierWall";
+                    current.left.element.ObjectID = "ShoothouseBarrierWall";
+                    current.right.element.ObjectID = "ShoothouseBarrierWall";
+                }
+            }
+
+            // Loop through all the rooms
+            for (int r = 0; r < maze.Count; r++)
+            {
+                for (int c = 0; c < maze[r].Count; c++)
+                {
+                    Room current = maze[r][c];
+                    // Is room on the path?
+                    if (current.path)
+                    {
+                        // loop through rooms neighbors
+                        foreach (Tuple<Room, string> neighbor in current.neighbors)
+                        {
+
+                            if (neighbor.Item2 == "Above" && neighbor.Item1.path)
+                            {
+                                current.top.element.ObjectID = "ShoothouseBarrierDoorDouble";
+
+                            }
+                            else if (neighbor.Item2 == "Below" && neighbor.Item1.path)
+                            {
+                                neighbor.Item1.top.element.ObjectID = "ShoothouseBarrierDoorDouble";
+                            }
+                            else if (neighbor.Item2 == "Left" && neighbor.Item1.path)
+                            {
+                                current.left.element.ObjectID = "ShoothouseBarrierDoorDouble";
+                            }
+
+                            else if (neighbor.Item2 == "Right" && neighbor.Item1.path)
+                            {
+                                neighbor.Item1.left.element.ObjectID = "ShoothouseBarrierDoorDouble";
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public static void addTargets()

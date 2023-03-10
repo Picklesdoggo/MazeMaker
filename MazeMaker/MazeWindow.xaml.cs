@@ -349,7 +349,7 @@ namespace MazeMaker
             {
                 if (parameters.verticalWide)
                 {
-                    Tuple<SolidColorBrush, string> selectedValues = GetSelectedVerticalValues();
+                    System.Tuple<SolidColorBrush, string> selectedValues = GetSelectedVerticalValues();
                     selected.Fill = selectedValues.Item1;
                     if (selectedValues.Item2 != "None")
                     {
@@ -410,7 +410,7 @@ namespace MazeMaker
             {
                 if (parameters.horizontalWide)
                 {
-                    Tuple<SolidColorBrush, string> selectedValues = GetSelectedHorizontalValues();
+                    System.Tuple<SolidColorBrush, string> selectedValues = GetSelectedHorizontalValues();
                     selected.Fill = selectedValues.Item1;
                     if (selectedValues.Item2 != "None")
                     {
@@ -471,7 +471,7 @@ namespace MazeMaker
 
         }
 
-        public Tuple<SolidColorBrush, string> GetSelectedVerticalValues()
+        public System.Tuple<SolidColorBrush, string> GetSelectedVerticalValues()
         {
             SolidColorBrush solidColor = new SolidColorBrush();
             string objectID = "None";
@@ -501,10 +501,10 @@ namespace MazeMaker
                 objectID = "CompBarrierLow";
             }
            
-            return new Tuple<SolidColorBrush, string>(solidColor, objectID);
+            return new System.Tuple<SolidColorBrush, string>(solidColor, objectID);
         }
 
-        public Tuple<SolidColorBrush, string> GetSelectedHorizontalValues()
+        public System.Tuple<SolidColorBrush, string> GetSelectedHorizontalValues()
         {
             SolidColorBrush solidColor = new SolidColorBrush();
             string objectID = "None";
@@ -534,7 +534,7 @@ namespace MazeMaker
                 objectID = "CompBarrierLow";
             }
 
-            return new Tuple<SolidColorBrush, string>(solidColor, objectID);
+            return new System.Tuple<SolidColorBrush, string>(solidColor, objectID);
         }
 
         private void WallClicked(object sender, MouseButtonEventArgs e)

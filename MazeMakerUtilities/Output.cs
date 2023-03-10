@@ -1,11 +1,20 @@
-﻿using Valve.Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
-
+using System;
+using System.Text;
 namespace MazeMakerUtilities
 {
+
+    [Serializable]
     public class Output
     {
+        
+
+        public Output()
+        {
+        }
+
         public string FileName { get; set; }
         public string ReferencePath { get; set; }
         public string Creator { get; set; }
@@ -22,6 +31,7 @@ namespace MazeMakerUtilities
             generatedOutput.Creator = "picklesDoggo";
             generatedOutput.ModsUsed = new List<string>();
             generatedOutput.Objects = new List<Object>();
+            generatedOutput.QuickbeltLayoutName = "";
 
             int index = 0;
 
@@ -120,12 +130,16 @@ namespace MazeMakerUtilities
                         generatedOutput.Objects.Add(target);
                         index++;
                     }
-
                 }
             }
-            
+
+            //System.Runtime.Serialization.Json.DataContractJsonSerializer serializer = new System.Runtime.Serialization.Json.DataContractJsonSerializer(generatedOutput.GetType());
+            //MemoryStream ms = new MemoryStream();
+            //serializer.WriteObject(ms, generatedOutput);
+            //string jsonUpdated = Encoding.Default.GetString(ms.ToArray());
 
 
+            generatedOutput.Objects.Clear();
             string jsonUpdated = JsonConvert.SerializeObject(generatedOutput);
             // Did user select file path
             if (folderName != "Default")
@@ -225,10 +239,22 @@ namespace MazeMakerUtilities
         public int InSlotOfRootObjectIndex { get; set; }
         public int InSlotOfElementIndex { get; set; }
         public List<Element> Elements { get; set; }
+
+        public Object()
+        {
+
+
+        }
     }
 
     public class Element
     {
+        public Element()
+        {
+
+
+        }
+
         [JsonProperty(Order = 1)]
         public int Index { get; set; }
 
@@ -329,15 +355,16 @@ namespace MazeMakerUtilities
             }
         }
 
-        public Element()
-        {
 
-
-        }
     }
 
     public class Posoffset
     {
+        public Posoffset()
+        {
+
+
+        }
         public decimal x { get; set; }
         public decimal y { get; set; }
         public decimal z { get; set; }
@@ -345,6 +372,11 @@ namespace MazeMakerUtilities
 
     public class Orientationforward
     {
+        public Orientationforward()
+        {
+
+
+        }
         public decimal x { get; set; }
         public decimal y { get; set; }
         public decimal z { get; set; }
@@ -352,6 +384,11 @@ namespace MazeMakerUtilities
 
     public class GenericVector3s
     {
+        public GenericVector3s()
+        {
+
+
+        }
         public decimal x { get; set; }
         public decimal y { get; set; }
         public decimal z { get; set; }
@@ -359,6 +396,11 @@ namespace MazeMakerUtilities
 
     public class GenericRotations
     {
+        public GenericRotations()
+        {
+
+
+        }
         public decimal x { get; set; }
         public decimal y { get; set; }
         public decimal z { get; set; }
@@ -367,6 +409,11 @@ namespace MazeMakerUtilities
 
     public class Orientationup
     {
+        public Orientationup()
+        {
+
+
+        }
         public decimal x { get; set; }
         public decimal y { get; set; }
         public decimal z { get; set; }
@@ -374,6 +421,11 @@ namespace MazeMakerUtilities
 
     public class Flags
     {
+        public Flags()
+        {
+
+
+        }
         public List<string> _keys { get; set; }
         public List<string> _values { get; set; }
     }
