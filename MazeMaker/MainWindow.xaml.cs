@@ -46,7 +46,7 @@ namespace MazeMaker
             else
             {
                 Parameters parameters = Parameters.generateParameters(true, true, txtName.Text);
-                List<List<Room>> maze = Room.makeMaze(parameters);
+                List<List<Room>> maze = Room.makeMaze(txtName.Text);
                 MazeWindow mazeWindow = new MazeWindow(parameters, maze);
                 mazeWindow.Show();
                 Close();

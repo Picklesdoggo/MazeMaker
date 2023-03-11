@@ -183,9 +183,9 @@ namespace MazeMakerUtilities
             return maze;
         }
 
-        public static List<List<Room>> makeMaze(Parameters parametersInput)
+        public static List<List<Room>> makeMaze(string mapNameInput)
         {
-            parameters = parametersInput;
+            parameters = Parameters.generateParameters(true,true,mapNameInput);
             maze = generateRooms(parameters);
 
             Stack<Room> rooms = new Stack<Room>();
