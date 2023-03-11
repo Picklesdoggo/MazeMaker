@@ -550,38 +550,99 @@ namespace MazeMakerUtilities
                                 //{
                                 int neighborIndex = targetRoomChoice.Next(0, nonPathNeighbors.Count);
                                 Tuple<Room, string> chosenNeighor = nonPathNeighbors[neighborIndex];
+                              
                                 string targetType = parameters.targets[targetChoice.Next(parameters.targets.Count)];
                                 string targetDirection = "";
 
                                 if (chosenNeighor.Item2 == "Above")
                                 {
+                                    // Convert to a barrier
                                     startingRoom.top.render = true;
-                                    startingRoom.top.element.ObjectID = "CompBarrierLow";
+                                    startingRoom.top.element.ObjectID = "CompBarrierLow";                    
                                     targetDirection = "Below";
 
+                                    // Add walls to chosen neighbor
+                                    chosenNeighor.Item1.left.render = true;
+                                    chosenNeighor.Item1.left.element.ObjectID = "ShoothouseBarrierWall";
+                                    chosenNeighor.Item1.top.render = true;
+                                    chosenNeighor.Item1.top.element.ObjectID = "ShoothouseBarrierWall";
+                                    if (chosenNeighor.Item1.column != parameters.gridColumns - 1)
+                                    {
+                                        Room chosenNeighborRight = maze[chosenNeighor.Item1.row][chosenNeighor.Item1.column + 1];
+                                        chosenNeighborRight.left.render = true;
+                                        chosenNeighborRight.left.element.ObjectID = "ShoothouseBarrierWall";
+                                    }
+                                    
+
+
                                 }
+
                                 else if (chosenNeighor.Item2 == "Below")
                                 {
                                     chosenNeighor.Item1.top.render = true;
                                     chosenNeighor.Item1.top.element.ObjectID = "CompBarrierLow";
+
+                                    // Add walls to chosen neighbor
+                                    chosenNeighor.Item1.left.render = true;
+                                    chosenNeighor.Item1.left.element.ObjectID = "ShoothouseBarrierWall";
+                                    if (chosenNeighor.Item1.column != parameters.gridColumns - 1)
+                                    {
+                                        Room chosenNeighborRight = maze[chosenNeighor.Item1.row][chosenNeighor.Item1.column + 1];
+                                        chosenNeighborRight.left.render = true;
+                                        chosenNeighborRight.left.element.ObjectID = "ShoothouseBarrierWall";
+                                    }
+                                    if (chosenNeighor.Item1.row != parameters.gridRows - 1)
+                                    {
+                                        Room chosenNeighborBelow = maze[chosenNeighor.Item1.row + 1][chosenNeighor.Item1.column];
+                                        chosenNeighborBelow.top.render = true;
+                                        chosenNeighborBelow.top.element.ObjectID = "ShoothouseBarrierWall";
+                                    }
                                     targetDirection = "Above";
                                 }
+
                                 else if (chosenNeighor.Item2 == "Left")
                                 {
                                     startingRoom.left.render = true;
-                                    startingRoom.left.element.ObjectID = "CompBarrierLow";
-                                    targetDirection = "Left";
+                                    startingRoom.left.element.ObjectID = "CompBarrierLow";targetDirection = "Left";
+
+                                    chosenNeighor.Item1.left.render = true;
+                                    chosenNeighor.Item1.left.element.ObjectID = "ShoothouseBarrierWall";
+                                    chosenNeighor.Item1.top.render = true;
+                                    chosenNeighor.Item1.top.element.ObjectID = "ShoothouseBarrierWall";
+                                    if (chosenNeighor.Item1.row != parameters.gridRows - 1)
+                                    {
+                                        Room chosenNeighborBelow = maze[chosenNeighor.Item1.row + 1][chosenNeighor.Item1.column];
+                                        chosenNeighborBelow.top.render = true;
+                                        chosenNeighborBelow.top.element.ObjectID = "ShoothouseBarrierWall";
+                                    }
+
                                 }
+
                                 else if (chosenNeighor.Item2 == "Right")
                                 {
                                     chosenNeighor.Item1.left.render = true;
                                     chosenNeighor.Item1.left.element.ObjectID = "CompBarrierLow";
                                     targetDirection = "Right";
+                                    chosenNeighor.Item1.top.render = true;
+                                    chosenNeighor.Item1.top.element.ObjectID = "ShoothouseBarrierWall";
+                                    if (chosenNeighor.Item1.column != parameters.gridColumns - 1)
+                                    {
+                                        Room chosenNeighborRight = maze[chosenNeighor.Item1.row][chosenNeighor.Item1.column + 1];
+                                        chosenNeighborRight.left.render = true;
+                                        chosenNeighborRight.left.element.ObjectID = "ShoothouseBarrierWall";
+                                    }
+                                    if (chosenNeighor.Item1.row != parameters.gridRows - 1)
+                                    {
+                                        Room chosenNeighborBelow = maze[chosenNeighor.Item1.row + 1][chosenNeighor.Item1.column];
+                                        chosenNeighborBelow.top.render = true;
+                                        chosenNeighborBelow.top.element.ObjectID = "ShoothouseBarrierWall";
+                                    }
+
                                 }
                                 Element target = getTarget(targetDirection, targetType);
                                 target.PosOffset.x = chosenNeighor.Item1.top.element.PosOffset.x - (parameters.XHorizontalOffset / 2);
                                 target.PosOffset.z = chosenNeighor.Item1.right.element.PosOffset.z + (parameters.ZHorizontalOffset / 2);
-                                target.PosOffset.y = 1;
+                                target.PosOffset.y = 0;
                                 chosenNeighor.Item1.target = target;
                                 //}
                                
@@ -592,18 +653,7 @@ namespace MazeMakerUtilities
                         }
                     }
 
-                    //List<string> validMoves = getValidMoves(startingRoom);
-                    //if (validMoves.Count == 1)
-                    //{
-                    //    string targetType = parameters.targets[random.Next(parameters.targets.Count)];
-                    //    Element target = Output.getTarget(validMoves[0], targetType);
-                        
-                    //    target.PosOffset.x = maze[r][c].top.element.PosOffset.x - (parameters.XHorizontalOffset / 2);
-                    //    target.PosOffset.z = maze[r][c].right.element.PosOffset.z + (parameters.ZHorizontalOffset / 2);
-                    //    target.PosOffset.y = 0;
-                    //    maze[r][c].target = target;
-                       
-                    //}
+                   
                 }
             }
         }
@@ -846,15 +896,14 @@ namespace MazeMakerUtilities
                             {
                                 "IsKinematicLocked",
                                 "IsPickupLocked",
-                                "QuickBeltSpecialStateEngaged",
-                                "SpringState"
+                                "QuickBeltSpecialStateEngaged"
+                                
                             },
 
                 _values = new List<string>()
                             {
                                 "True",
                                 "True",
-                                "False",
                                 "False"
                             }
             };

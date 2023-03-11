@@ -30,11 +30,9 @@ namespace MazeMakerUtilities
 
         public List<string> targets = new List<string>()
         {
-            "StandingSteelTargetSpeedPop",
-            "StandingSteelTargetMiniClassicPop",
-            "StandingSteelTargetClassicPop",
-            "StandingSteelTargetPepperPop",
-            "StandingSteelTargetMiniPepperPop"
+            "StandingSteelIPSCSimpleRed",
+            "StandingSteelIPSCMiniRed",
+            "StandingSteelIPSCClassicRed"
         };
 
         public static Parameters generateParameters(bool verticalWideInput, bool horizontalWideInput, string mapNameInput)
