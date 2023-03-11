@@ -551,29 +551,37 @@ namespace MazeMakerUtilities
                                 int neighborIndex = targetRoomChoice.Next(0, nonPathNeighbors.Count);
                                 Tuple<Room, string> chosenNeighor = nonPathNeighbors[neighborIndex];
                                 string targetType = parameters.targets[targetChoice.Next(parameters.targets.Count)];
+                                string targetDirection = "";
 
                                 if (chosenNeighor.Item2 == "Above")
                                 {
                                     startingRoom.top.render = true;
                                     startingRoom.top.element.ObjectID = "CompBarrierLow";
+                                    targetDirection = "Below";
 
                                 }
                                 else if (chosenNeighor.Item2 == "Below")
                                 {
                                     chosenNeighor.Item1.top.render = true;
                                     chosenNeighor.Item1.top.element.ObjectID = "CompBarrierLow";
+                                    targetDirection = "Above";
                                 }
                                 else if (chosenNeighor.Item2 == "Left")
                                 {
                                     startingRoom.left.render = true;
                                     startingRoom.left.element.ObjectID = "CompBarrierLow";
+                                    targetDirection = "Left";
                                 }
                                 else if (chosenNeighor.Item2 == "Right")
                                 {
                                     chosenNeighor.Item1.left.render = true;
                                     chosenNeighor.Item1.left.element.ObjectID = "CompBarrierLow";
+                                    targetDirection = "Right";
                                 }
-                                Element target = getTarget(chosenNeighor.Item2, targetType);
+                                Element target = getTarget(targetDirection, targetType);
+                                target.PosOffset.x = chosenNeighor.Item1.top.element.PosOffset.x - (parameters.XHorizontalOffset / 2);
+                                target.PosOffset.z = chosenNeighor.Item1.right.element.PosOffset.z + (parameters.ZHorizontalOffset / 2);
+                                target.PosOffset.y = 1;
                                 chosenNeighor.Item1.target = target;
                                 //}
                                
