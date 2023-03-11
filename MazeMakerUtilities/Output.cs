@@ -290,12 +290,7 @@ namespace MazeMakerUtilities
     }
 
     public class Posoffset
-    {
-        public Posoffset()
-        {
-
-
-        }
+    {       
         public decimal x { get; set; }
         public decimal y { get; set; }
         public decimal z { get; set; }
@@ -303,11 +298,6 @@ namespace MazeMakerUtilities
 
     public class Orientationforward
     {
-        public Orientationforward()
-        {
-
-
-        }
         public decimal x { get; set; }
         public decimal y { get; set; }
         public decimal z { get; set; }
@@ -315,11 +305,6 @@ namespace MazeMakerUtilities
 
     public class GenericVector3s
     {
-        public GenericVector3s()
-        {
-
-
-        }
         public decimal x { get; set; }
         public decimal y { get; set; }
         public decimal z { get; set; }
@@ -327,11 +312,6 @@ namespace MazeMakerUtilities
 
     public class GenericRotations
     {
-        public GenericRotations()
-        {
-
-
-        }
         public decimal x { get; set; }
         public decimal y { get; set; }
         public decimal z { get; set; }
@@ -340,11 +320,6 @@ namespace MazeMakerUtilities
 
     public class Orientationup
     {
-        public Orientationup()
-        {
-
-
-        }
         public decimal x { get; set; }
         public decimal y { get; set; }
         public decimal z { get; set; }
@@ -352,11 +327,6 @@ namespace MazeMakerUtilities
 
     public class Flags
     {
-        public Flags()
-        {
-
-
-        }
         public List<string> _keys { get; set; }
         public List<string> _values { get; set; }
     }

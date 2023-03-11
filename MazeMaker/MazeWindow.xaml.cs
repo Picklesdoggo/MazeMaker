@@ -598,7 +598,7 @@ namespace MazeMaker
 
         private void New_Click(object sender, RoutedEventArgs e)
         {            
-            maze = Room.makeMaze(parameters);
+            maze = Room.makeMaze(parameters.mapName);
             MazeWindow mazeWindow = new MazeWindow(parameters, maze);
             mazeWindow.Show();
             Close();

@@ -44,9 +44,9 @@ namespace MazeMaker
                 MessageBox.Show("You must enter a map name", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
-            {
-                Parameters parameters = Parameters.generateParameters(true, true, txtName.Text);
+            {                
                 List<List<Room>> maze = Room.makeMaze(txtName.Text);
+                Parameters parameters = Parameters.generateParameters(true, true, txtName.Text);
                 MazeWindow mazeWindow = new MazeWindow(parameters, maze);
                 mazeWindow.Show();
                 Close();
