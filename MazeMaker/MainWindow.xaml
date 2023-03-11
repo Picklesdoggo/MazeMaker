@@ -33,7 +33,7 @@
 		</StackPanel>
 
 		<StackPanel Margin="10" Grid.Row="3">
-			<Label FontWeight="Bold">Map Name</Label>
+			<Label FontWeight="Bold">Base Map Name</Label>
 			<Label Name="lblBase">Blank</Label>
 			
 		</StackPanel>
