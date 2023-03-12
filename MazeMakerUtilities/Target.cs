@@ -9,34 +9,46 @@ namespace MazeMakerUtilities
     {
         public Element element = null;
 
-        private static List<string> targets = new List<string>()
+        private static List<string> targetGroups = new List<string>()
         {
             "StandingSteelIPSCSimpleRed",
             "StandingSteelIPSCMiniRed",
             "StandingSteelIPSCClassicRed",
-            "CanOnPost"
+            "DestructableOnPost"
         };
+
+        private static List<string> destructableTypes = new List<string>()
+        {
+            "SodaCanSarge",
+            "Watermelon",
+            "ClayPotSmall",
+            "ClayPotLarge",
+            "Apple",
+            "GlassBeerBottleGutshot"
+        };
+
         private static Random targetChoice = new Random();
+        private static Random destructableChoice = new Random();
         public static List<Target> getTargets(string direction, Room targetRoom, Parameters inputParameters)
         {
             List<Target> chosenTargets = new List<Target>();
-            string targetType = targets[targetChoice.Next(0, targets.Count)];
+            string targetType = targetGroups[targetChoice.Next(0, targetGroups.Count)];
 
             if (targetType.Contains("StandingSteel"))
             {
                 chosenTargets.Add(getStandingTarget(direction,targetType,targetRoom,inputParameters));
             }
-            else if (targetType == "CanOnPost")
+            else if (targetType == "DestructableOnPost")
             {
-                chosenTargets = getCanOnPost(targetRoom, inputParameters);
+                chosenTargets = destructableOnPost(targetRoom, inputParameters);
             }
 
             return chosenTargets;
         }
 
-        private static List<Target> getCanOnPost(Room targetRoom, Parameters inputParameters)
+        private static List<Target> destructableOnPost(Room targetRoom, Parameters inputParameters)
         {
-            List<Target> canOnPost = new List<Target>();
+            List<Target> destructableOnPost = new List<Target>();
             
             // Left Post
             Target leftPost = new Target();
@@ -80,31 +92,31 @@ namespace MazeMakerUtilities
                                 "False"
                             }
             };
-            canOnPost.Add(leftPost);
+            destructableOnPost.Add(leftPost);
 
-            // Soda Can
-            Target sodaCan = new Target();
-            sodaCan.element = new Element();
-            sodaCan.element.PosOffset = new Posoffset()
+            // Destructable
+            string destructableType = destructableTypes[destructableChoice.Next(0, destructableTypes.Count)];
+            Target dessturcable = new Target();
+            dessturcable.element = new Element();
+            dessturcable.element.PosOffset = new Posoffset()
             {
-                x = targetRoom.top.element.PosOffset.x - (inputParameters.XHorizontalOffset / 2),
-                y = 1.26M,
+                x = targetRoom.top.element.PosOffset.x - (inputParameters.XHorizontalOffset / 2),               
                 z = targetRoom.right.element.PosOffset.z + (inputParameters.ZHorizontalOffset / 2)
             };
-            sodaCan.element.OrientationForward = new Orientationforward()
+            dessturcable.element.OrientationForward = new Orientationforward()
             {
                 x = 0,
                 y = 0,
                 z = 1
             };
-            sodaCan.element.OrientationUp = new Orientationup()
+            dessturcable.element.OrientationUp = new Orientationup()
             {
                 x = 0,
                 y = 1,
                 z = 0
             };
-            sodaCan.element.ObjectID = "SodaCanSarge";
-            sodaCan.element.Flags = new Flags()
+            
+            dessturcable.element.Flags = new Flags()
             {
                 _keys = new List<string>()
                             {
@@ -121,9 +133,36 @@ namespace MazeMakerUtilities
                                 "False"
                             }
             };
-            canOnPost.Add(sodaCan);
 
-            return canOnPost;
+            // Set Y offset
+            if (destructableType == "Watermelon")
+            {
+                dessturcable.element.PosOffset.y = 1.33M;
+            }
+            else if (destructableType == "ClayPotSmall")
+            {
+                dessturcable.element.PosOffset.y = 1.30M;
+            }
+            else if (destructableType == "ClayPotLarge")
+            {
+                dessturcable.element.PosOffset.y = 1.36M;
+            }
+            else if (destructableType == "Apple")
+            {
+                dessturcable.element.PosOffset.y = 1.25M;
+            }
+            else if (destructableType == "GlassBeerBottleGutshot")
+            {
+                dessturcable.element.PosOffset.y = 1.31M;
+            }
+            else if (destructableType == "SodaCanSarge")
+            {
+                dessturcable.element.PosOffset.y = 1.265M;
+            }
+            dessturcable.element.ObjectID = destructableType;
+            destructableOnPost.Add(dessturcable);
+
+            return destructableOnPost;
         }
 
         public static Target getStandingTarget(string direction, string targetType, Room targetRoom, Parameters inputParameters)

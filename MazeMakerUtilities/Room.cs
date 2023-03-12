@@ -693,7 +693,7 @@ namespace MazeMakerUtilities
                 // Do nothing
             }
 
-            // room entrance and exit targets
+            // room entrance and exit targetGroups
             maze[parameters.entranceRow][parameters.entranceColumn].targets = null;
             maze[parameters.exitRow][parameters.exitColumn].targets = null;
         }
