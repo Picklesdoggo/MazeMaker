@@ -641,15 +641,8 @@ namespace MazeMakerUtilities
                                 }
                                 #endregion
 
-                                List<Target> chosenTargets = Target.getTargets(targetDirection);
-                                foreach(Target target in chosenTargets)
-                                {                                    
-                                    target.element.PosOffset.x = chosenNeighor.Item1.top.element.PosOffset.x - (parameters.XHorizontalOffset / 2);
-                                    target.element.PosOffset.z = chosenNeighor.Item1.right.element.PosOffset.z + (parameters.ZHorizontalOffset / 2);
-                                    target.element.PosOffset.y = 0;
-                                    chosenNeighor.Item1.targets = new List<Target>();
-                                    chosenNeighor.Item1.targets.Add(target);
-                                }
+                                chosenNeighor.Item1.targets = Target.getTargets(targetDirection, chosenNeighor.Item1, parameters);
+                         
                             }
                         }
                     }
