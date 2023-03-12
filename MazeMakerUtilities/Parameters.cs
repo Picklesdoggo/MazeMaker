@@ -27,13 +27,7 @@ namespace MazeMakerUtilities
         public string mapName { get; set; }
         public bool horizontalWide { get; set; }
         public bool verticalWide { get; set; }
-
-        public List<string> targets = new List<string>()
-        {
-            "StandingSteelIPSCSimpleRed",
-            "StandingSteelIPSCMiniRed",
-            "StandingSteelIPSCClassicRed"
-        };
+               
 
         public static Parameters generateParameters(bool verticalWideInput, bool horizontalWideInput, string mapNameInput)
         {

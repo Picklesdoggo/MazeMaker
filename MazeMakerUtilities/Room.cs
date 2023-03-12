@@ -37,7 +37,7 @@ namespace MazeMakerUtilities
         public int row { get; set; }
         public int column { get; set; }
 
-        public Element target = null;
+        public List<Target> targets = null;
 
         public Room()
         {
@@ -506,6 +506,7 @@ namespace MazeMakerUtilities
                         int placeTarget = targetYesNo.Next(0, 100);
                         if (placeTarget < targetPlacementPercentage)
                         {
+                            #region Get Neighbors
                             List<Tuple<Room, string>> nonPathNeighbors = new List<Tuple<Room, string>>();
                             // Get non path neighbors
                             if (startingRoom.row != 0)
@@ -541,24 +542,23 @@ namespace MazeMakerUtilities
                                 {
                                     nonPathNeighbors.Add(new Tuple<Room, string>(right, "Right"));
                                 }
-                            }
+                            } 
+                            #endregion
 
 
                             if (nonPathNeighbors.Count != 0)
-                            {
-                                //for (int ni = 0; ni < nonPathNeighbors.Count; ni++)
-                                //{
+                            {                                
                                 int neighborIndex = targetRoomChoice.Next(0, nonPathNeighbors.Count);
                                 Tuple<Room, string> chosenNeighor = nonPathNeighbors[neighborIndex];
-                              
-                                string targetType = parameters.targets[targetChoice.Next(parameters.targets.Count)];
+
+                                #region Choose direction and change walls
                                 string targetDirection = "";
 
                                 if (chosenNeighor.Item2 == "Above")
                                 {
                                     // Convert to a barrier
                                     startingRoom.top.render = true;
-                                    startingRoom.top.element.ObjectID = "CompBarrierLow";                    
+                                    startingRoom.top.element.ObjectID = "CompBarrierLow";
                                     targetDirection = "Below";
 
                                     // Add walls to chosen neighbor
@@ -572,7 +572,7 @@ namespace MazeMakerUtilities
                                         chosenNeighborRight.left.render = true;
                                         chosenNeighborRight.left.element.ObjectID = "ShoothouseBarrierWall";
                                     }
-                                    
+
 
 
                                 }
@@ -603,7 +603,7 @@ namespace MazeMakerUtilities
                                 else if (chosenNeighor.Item2 == "Left")
                                 {
                                     startingRoom.left.render = true;
-                                    startingRoom.left.element.ObjectID = "CompBarrierLow";targetDirection = "Left";
+                                    startingRoom.left.element.ObjectID = "CompBarrierLow"; targetDirection = "Left";
 
                                     chosenNeighor.Item1.left.render = true;
                                     chosenNeighor.Item1.left.element.ObjectID = "ShoothouseBarrierWall";
@@ -639,21 +639,20 @@ namespace MazeMakerUtilities
                                     }
 
                                 }
-                                Element target = getTarget(targetDirection, targetType);
-                                target.PosOffset.x = chosenNeighor.Item1.top.element.PosOffset.x - (parameters.XHorizontalOffset / 2);
-                                target.PosOffset.z = chosenNeighor.Item1.right.element.PosOffset.z + (parameters.ZHorizontalOffset / 2);
-                                target.PosOffset.y = 0;
-                                chosenNeighor.Item1.target = target;
-                                //}
-                               
-                              
+                                #endregion
+
+                                List<Target> chosenTargets = Target.getTargets(targetDirection);
+                                foreach(Target target in chosenTargets)
+                                {                                    
+                                    target.element.PosOffset.x = chosenNeighor.Item1.top.element.PosOffset.x - (parameters.XHorizontalOffset / 2);
+                                    target.element.PosOffset.z = chosenNeighor.Item1.right.element.PosOffset.z + (parameters.ZHorizontalOffset / 2);
+                                    target.element.PosOffset.y = 0;
+                                    chosenNeighor.Item1.targets = new List<Target>();
+                                    chosenNeighor.Item1.targets.Add(target);
+                                }
                             }
-                            
-                            
                         }
                     }
-
-                   
                 }
             }
         }
@@ -702,8 +701,8 @@ namespace MazeMakerUtilities
             }
 
             // room entrance and exit targets
-            maze[parameters.entranceRow][parameters.entranceColumn].target = null;
-            maze[parameters.exitRow][parameters.exitColumn].target = null;
+            maze[parameters.entranceRow][parameters.entranceColumn].targets = null;
+            maze[parameters.exitRow][parameters.exitColumn].targets = null;
         }
 
         public static List<string> getValidMoves(Room startingRoom)
@@ -843,74 +842,6 @@ namespace MazeMakerUtilities
             return validRooms;
         }
 
-        public static Element getTarget(string direction, string targetType)
-        {
-            Element target = new Element();
-
-            #region Direction
-
-            if (direction == "Right")
-            {
-                target.OrientationForward = new Orientationforward()
-                {
-                    x = 0,
-                    y = 0,
-                    z = 1
-                };
-            }
-            else if (direction == "Left")
-            {
-                target.OrientationForward = new Orientationforward()
-                {
-                    x = 0,
-                    y = 0,
-                    z = -1
-                };
-            }
-            else if (direction == "Above")
-            {
-                target.OrientationForward = new Orientationforward()
-                {
-                    x = 1,
-                    y = 0,
-                    z = 0
-                };
-            }
-            else if (direction == "Below")
-            {
-                target.OrientationForward = new Orientationforward()
-                {
-                    x = -1,
-                    y = 0,
-                    z = 0
-                };
-            }
-
-            #endregion
-
-            target.ObjectID = targetType;
-
-            target.Flags = new Flags()
-            {
-                _keys = new List<string>()
-                            {
-                                "IsKinematicLocked",
-                                "IsPickupLocked",
-                                "QuickBeltSpecialStateEngaged"
-                                
-                            },
-
-                _values = new List<string>()
-                            {
-                                "True",
-                                "True",
-                                "False"
-                            }
-            };
-
-            target.PosOffset = new Posoffset();
-
-            return target;
-        }
+        
     }
 }

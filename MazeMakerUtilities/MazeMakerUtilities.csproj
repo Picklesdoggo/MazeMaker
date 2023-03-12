@@ -52,6 +52,7 @@
     <Compile Include="Parameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Room.cs" />
+    <Compile Include="Target.cs" />
     <Compile Include="Wall.cs" />
   </ItemGroup>
   <ItemGroup>

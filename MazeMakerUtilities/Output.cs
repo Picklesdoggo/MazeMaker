@@ -115,20 +115,24 @@ namespace MazeMakerUtilities
                         index++;
                     }
                     
-                    if (mazeRooms[r][c].target != null)
+                    if (mazeRooms[r][c].targets != null)
                     {
-                        Object target = new Object
+                        foreach(Target t in mazeRooms[r][c].targets)
                         {
-                            IsContainedIn = -1,
-                            QuickbeltSlotIndex = -1,
-                            InSlotOfRootObjectIndex = -1,
-                            InSlotOfElementIndex = -1,
-                            Elements = new List<Element>(),
-                            Index = index
-                        };
-                        target.Elements.Add(mazeRooms[r][c].target);
-                        generatedOutput.Objects.Add(target);
-                        index++;
+                            Object target = new Object
+                            {
+                                IsContainedIn = -1,
+                                QuickbeltSlotIndex = -1,
+                                InSlotOfRootObjectIndex = -1,
+                                InSlotOfElementIndex = -1,
+                                Elements = new List<Element>(),
+                                Index = index
+                            };
+                            target.Elements.Add(t.element);
+                            generatedOutput.Objects.Add(target);
+                            index++;
+                        }
+                       
                     }
                 }
             }
