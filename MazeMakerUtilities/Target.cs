@@ -14,10 +14,11 @@ namespace MazeMakerUtilities
             "StandingSteelIPSCSimpleRed",
             "StandingSteelIPSCMiniRed",
             "StandingSteelIPSCClassicRed",
-            "DestructableOnPost"
+            "DestructibleOnPost"
+             
         };
 
-        private static List<string> destructableTypes = new List<string>()
+        private static List<string> destructibleTypes = new List<string>()
         {
             "SodaCanSarge",
             "Watermelon",
@@ -28,7 +29,7 @@ namespace MazeMakerUtilities
         };
 
         private static Random targetChoice = new Random();
-        private static Random destructableChoice = new Random();
+        private static Random destructibleChoice = new Random();
         public static List<Target> getTargets(string direction, Room targetRoom, Parameters inputParameters)
         {
             List<Target> chosenTargets = new List<Target>();
@@ -38,17 +39,17 @@ namespace MazeMakerUtilities
             {
                 chosenTargets.Add(getStandingTarget(direction,targetType,targetRoom,inputParameters));
             }
-            else if (targetType == "DestructableOnPost")
+            else if (targetType == "DestructibleOnPost")
             {
-                chosenTargets = destructableOnPost(targetRoom, inputParameters);
+                chosenTargets = destructibleOnPost(targetRoom, inputParameters);
             }
 
             return chosenTargets;
         }
 
-        private static List<Target> destructableOnPost(Room targetRoom, Parameters inputParameters)
+        private static List<Target> destructibleOnPost(Room targetRoom, Parameters inputParameters)
         {
-            List<Target> destructableOnPost = new List<Target>();
+            List<Target> destructibleOnPost = new List<Target>();
             
             // Left Post
             Target leftPost = new Target();
@@ -92,31 +93,31 @@ namespace MazeMakerUtilities
                                 "False"
                             }
             };
-            destructableOnPost.Add(leftPost);
+            destructibleOnPost.Add(leftPost);
 
-            // Destructable
-            string destructableType = destructableTypes[destructableChoice.Next(0, destructableTypes.Count)];
-            Target dessturcable = new Target();
-            dessturcable.element = new Element();
-            dessturcable.element.PosOffset = new Posoffset()
+            // Destructible
+            string destructibleType = destructibleTypes[destructibleChoice.Next(0, destructibleTypes.Count)];
+            Target dessturcible = new Target();
+            dessturcible.element = new Element();
+            dessturcible.element.PosOffset = new Posoffset()
             {
                 x = targetRoom.top.element.PosOffset.x - (inputParameters.XHorizontalOffset / 2),               
                 z = targetRoom.right.element.PosOffset.z + (inputParameters.ZHorizontalOffset / 2)
             };
-            dessturcable.element.OrientationForward = new Orientationforward()
+            dessturcible.element.OrientationForward = new Orientationforward()
             {
                 x = 0,
                 y = 0,
                 z = 1
             };
-            dessturcable.element.OrientationUp = new Orientationup()
+            dessturcible.element.OrientationUp = new Orientationup()
             {
                 x = 0,
                 y = 1,
                 z = 0
             };
             
-            dessturcable.element.Flags = new Flags()
+            dessturcible.element.Flags = new Flags()
             {
                 _keys = new List<string>()
                             {
@@ -135,34 +136,34 @@ namespace MazeMakerUtilities
             };
 
             // Set Y offset
-            if (destructableType == "Watermelon")
+            if (destructibleType == "Watermelon")
             {
-                dessturcable.element.PosOffset.y = 1.33M;
+                dessturcible.element.PosOffset.y = 1.33M;
             }
-            else if (destructableType == "ClayPotSmall")
+            else if (destructibleType == "ClayPotSmall")
             {
-                dessturcable.element.PosOffset.y = 1.30M;
+                dessturcible.element.PosOffset.y = 1.30M;
             }
-            else if (destructableType == "ClayPotLarge")
+            else if (destructibleType == "ClayPotLarge")
             {
-                dessturcable.element.PosOffset.y = 1.36M;
+                dessturcible.element.PosOffset.y = 1.36M;
             }
-            else if (destructableType == "Apple")
+            else if (destructibleType == "Apple")
             {
-                dessturcable.element.PosOffset.y = 1.25M;
+                dessturcible.element.PosOffset.y = 1.25M;
             }
-            else if (destructableType == "GlassBeerBottleGutshot")
+            else if (destructibleType == "GlassBeerBottleGutshot")
             {
-                dessturcable.element.PosOffset.y = 1.31M;
+                dessturcible.element.PosOffset.y = 1.31M;
             }
-            else if (destructableType == "SodaCanSarge")
+            else if (destructibleType == "SodaCanSarge")
             {
-                dessturcable.element.PosOffset.y = 1.265M;
+                dessturcible.element.PosOffset.y = 1.265M;
             }
-            dessturcable.element.ObjectID = destructableType;
-            destructableOnPost.Add(dessturcable);
+            dessturcible.element.ObjectID = destructibleType;
+            destructibleOnPost.Add(dessturcible);
 
-            return destructableOnPost;
+            return destructibleOnPost;
         }
 
         public static Target getStandingTarget(string direction, string targetType, Room targetRoom, Parameters inputParameters)
