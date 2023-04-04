@@ -1,4 +1,4 @@
-# MazeMaker (Requires experimental branch)
+# MazeMaker
 
 A GUI application for creating "Shoot Houses" within the GP Hanger scene. There are 2 options of creating Shoot Houses:
 
