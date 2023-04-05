@@ -1,0 +1,29 @@
+﻿<Window x:Class="MazeMaker.EditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MazeMaker"
+        mc:Ignorable="d"
+        Title="EditWindow" Height="450" Width="800">
+    <Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<Button Name="newRec" Content="New Rectangle" Click="newRec_Click"/>
+		<Canvas Name="canvas" Grid.Row="1">
+			<Rectangle
+                Name="rect"
+                Width="50"
+                Height="50"
+                Canvas.Left="0"
+                Canvas.Top="0"
+                Fill="Red"
+                MouseLeftButtonDown="rect_MouseLeftButtonDown"
+                MouseLeftButtonUp="rect_MouseLeftButtonUp"
+                MouseMove="rect_MouseMove"
+                />
+		</Canvas>
+	</Grid>
+</Window>
