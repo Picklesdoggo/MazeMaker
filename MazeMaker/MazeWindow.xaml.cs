@@ -327,8 +327,10 @@ namespace MazeMaker
                     // Add middle cell
                     Rectangle middleCell = new Rectangle
                     {
-                        Fill = new SolidColorBrush(Colors.LightGray)
+                        Fill = new SolidColorBrush(Colors.LightGray),
+                        Name = "Room_" + r + "_" + c
                     };
+                    middleCell.MouseDown += middleCell_MouseDown;
                     if (maze[r][c].path)
                     {
                         middleCell.Fill = new SolidColorBrush(Colors.White);
@@ -342,6 +344,17 @@ namespace MazeMaker
                 }
             }
 
+        }
+
+        void middleCell_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Rectangle selectedRoom = (Rectangle)sender;
+            List<string> split = selectedRoom.Name.Split('_').ToList();
+            int r = Convert.ToInt32(split[1]);
+            int c = Convert.ToInt32(split[2]);
+           
+            EditWindow ew = new EditWindow(maze,r,c);
+            ew.ShowDialog();
         }
 
         private void fillRectangle(Rectangle selected)

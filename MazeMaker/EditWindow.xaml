@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MazeMaker"
         mc:Ignorable="d"
-        Title="EditWindow" Height="450" Width="800">
-    <Grid>
+        Title="EditWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+    <Grid Name="grdCanvas">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
