@@ -14,7 +14,8 @@ namespace MazeMaker
     /// </summary>
     public partial class EditWindow : Window
     {
-        private bool _isRectDragInProg;
+        
+        private bool _isSPDragInProg;
         private static int selectedRow;
         private static int selectedColumn;
         private static Room selectedRoom;
@@ -40,22 +41,80 @@ namespace MazeMaker
             right = selectedRoom.right.element.PosOffset;
         }
 
-        private void rect_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void newRec_Click(object sender, RoutedEventArgs e)
         {
-            _isRectDragInProg = true;
-            Rectangle selectedRectangle = (Rectangle)sender;
-            selectedRectangle.CaptureMouse();
+
+            StackPanel sp = new StackPanel();
+            sp.Orientation = Orientation.Horizontal;
+
+
+            Rectangle newRec = new Rectangle();
+            newRec.Height = 50;
+            newRec.Width = 50;
+            newRec.Fill = Brushes.Blue;
+
+            Border border = new Border();
+            border.Background = Brushes.Black;
+            border.BorderBrush = Brushes.Black;
+            border.BorderThickness = new Thickness(0, 3, 0, 0);
+            border.Child = newRec;
+
+
+            sp.Children.Add(border);
+            sp.MouseLeftButtonDown += Sp_MouseLeftButtonDown;
+            sp.MouseLeftButtonUp += Sp_MouseLeftButtonUp;
+            sp.MouseMove += Sp_MouseMove;
+          
+            
+
+
+            canvas.Children.Add(sp);
+            Canvas.SetLeft(sp, 50);
+            Canvas.SetTop(sp, 50);
         }
 
-        private void rect_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void Sp_MouseMove(object sender, MouseEventArgs e)
         {
-            _isRectDragInProg = false;
-            Rectangle selectedRectangle = (Rectangle)sender;
-            selectedRectangle.ReleaseMouseCapture();
+            if (!_isSPDragInProg) return;
+
+            // get the position of the mouse relative to the Canvas
+            var mousePos = e.GetPosition(canvas);
+
+            StackPanel selectedSP = (StackPanel)sender;
+
+            // center the rect on the mouse
+            double left = mousePos.X - (selectedSP.ActualWidth / 2);
+            double top = mousePos.Y - (selectedSP.ActualHeight / 2);
+            if (top >= grdCanvas.ActualHeight - (selectedSP.ActualHeight + newRec.ActualHeight))
+            {
+                top = grdCanvas.ActualHeight - (selectedSP.ActualHeight + newRec.ActualHeight);
+            }
+            if (top < 0)
+            {
+                top = 0;
+            }
+
+            if (left < 0)
+            {
+                left = 0;
+            }
+            if (left >= grdCanvas.ActualWidth - (selectedSP.ActualWidth))
+            {
+                left = grdCanvas.ActualWidth - (selectedSP.ActualWidth);
+            }
+            Canvas.SetLeft(selectedSP, left);
+            Canvas.SetTop(selectedSP, top);
+        }
+
+        private void Sp_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _isSPDragInProg = false;
+            StackPanel selectedStackPanel = (StackPanel)sender;
+            selectedStackPanel.ReleaseMouseCapture();
 
             // Get adjusted position y =mx +b
 
-            double rawX = Canvas.GetTop(selectedRectangle) + newRec.ActualHeight;
+            double rawX = Canvas.GetTop(selectedStackPanel) + newRec.ActualHeight;
             double rawBottom = grdCanvas.ActualHeight;
 
             double percentX = rawX / rawBottom;
@@ -65,7 +124,7 @@ namespace MazeMaker
             decimal adjustX = difX * (decimal)percentX;
             decimal adjustedX = roomTopX - adjustX;
 
-            double rawZ = Canvas.GetLeft(selectedRectangle);
+            double rawZ = Canvas.GetLeft(selectedStackPanel);
             double rawLeft = grdCanvas.ActualWidth;
 
             double percentZ = rawZ / rawLeft;
@@ -116,58 +175,15 @@ namespace MazeMaker
             {
                 selectedRoom.targets = new List<Target>();
             }
-            
+
             selectedRoom.targets.Add(target);
-
         }
 
-        private void rect_MouseMove(object sender, MouseEventArgs e)
+        private void Sp_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (!_isRectDragInProg) return;
-
-            // get the position of the mouse relative to the Canvas
-            var mousePos = e.GetPosition(canvas);
-
-            Rectangle selectedRectangle = (Rectangle)sender;
-
-            // center the rect on the mouse
-            double left = mousePos.X - (selectedRectangle.ActualWidth / 2);
-            double top = mousePos.Y - (selectedRectangle.ActualHeight / 2);
-            if (top >= grdCanvas.ActualHeight - (selectedRectangle.ActualHeight + newRec.ActualHeight))
-            {
-                top = grdCanvas.ActualHeight - (selectedRectangle.ActualHeight + newRec.ActualHeight);
-            }
-            if (top < 0)
-            {
-                top = 0;
-            }
-
-            if (left < 0)
-            {
-                left = 0;
-            }
-            if (left >= grdCanvas.ActualWidth - (selectedRectangle.ActualWidth))
-            {
-                left = grdCanvas.ActualWidth - (selectedRectangle.ActualWidth);
-            }
-            Canvas.SetLeft(selectedRectangle, left);
-            Canvas.SetTop(selectedRectangle, top);
-            
-        }
-
-        private void newRec_Click(object sender, RoutedEventArgs e)
-        {
-            Rectangle newRec = new Rectangle();
-            newRec.Height = 50;
-            newRec.Width = 50;
-            newRec.Fill = Brushes.Blue;
-            newRec.MouseLeftButtonDown += rect_MouseLeftButtonDown;
-            newRec.MouseLeftButtonUp += rect_MouseLeftButtonUp;
-            newRec.MouseMove += rect_MouseMove;
-
-            canvas.Children.Add(newRec);
-            Canvas.SetLeft(newRec, 0);
-            Canvas.SetTop(newRec, 0);
+            _isSPDragInProg = true;
+            StackPanel selectedStackPanel = (StackPanel)sender;
+            selectedStackPanel.CaptureMouse();            
         }
     }
 }

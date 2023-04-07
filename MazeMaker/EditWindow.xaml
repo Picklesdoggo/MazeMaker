@@ -12,18 +12,8 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<Button Name="newRec" Content="New Rectangle" Click="newRec_Click"/>
-		<Canvas Name="canvas" Grid.Row="1">
-			<Rectangle
-                Name="rect"
-                Width="50"
-                Height="50"
-                Canvas.Left="0"
-                Canvas.Top="0"
-                Fill="Red"
-                MouseLeftButtonDown="rect_MouseLeftButtonDown"
-                MouseLeftButtonUp="rect_MouseLeftButtonUp"
-                MouseMove="rect_MouseMove"
-                />
-		</Canvas>
+		<Canvas Name="canvas" Grid.Row="1"/>
+
+
 	</Grid>
 </Window>
