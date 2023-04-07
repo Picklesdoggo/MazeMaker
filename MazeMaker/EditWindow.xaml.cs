@@ -1,6 +1,7 @@
 ﻿using MazeMakerUtilities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -23,6 +24,8 @@ namespace MazeMaker
         private static Posoffset bottom;
         private static Posoffset left;
         private static Posoffset right;
+        private static int rotate = 0;
+        private static StackPanel rotateStackPanel;
         public EditWindow()
         {
             InitializeComponent();
@@ -52,6 +55,8 @@ namespace MazeMaker
             newRec.Height = 50;
             newRec.Width = 50;
             newRec.Fill = Brushes.Blue;
+           
+            
 
             Border border = new Border();
             border.Background = Brushes.Black;
@@ -64,7 +69,6 @@ namespace MazeMaker
             sp.MouseLeftButtonDown += Sp_MouseLeftButtonDown;
             sp.MouseLeftButtonUp += Sp_MouseLeftButtonUp;
             sp.MouseMove += Sp_MouseMove;
-          
             
 
 
@@ -73,8 +77,19 @@ namespace MazeMaker
             Canvas.SetTop(sp, 50);
         }
 
+      
+
         private void Sp_MouseMove(object sender, MouseEventArgs e)
         {
+
+            if (Mouse.RightButton == MouseButtonState.Pressed)
+            {
+                rotate++;
+                RotateTransform rt = new RotateTransform(rotate);
+                StackPanel selectedStackPanel = (StackPanel)sender;
+                selectedStackPanel.RenderTransform = rt;
+            }
+
             if (!_isSPDragInProg) return;
 
             // get the position of the mouse relative to the Canvas
