@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Security.AccessControl;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -17,34 +19,73 @@ namespace MazeMaker
     {
         
         private bool _isSPDragInProg;
-        private static int selectedRow;
-        private static int selectedColumn;
+        private bool _isSPRotateInProg;
+
         private static Room selectedRoom;
         private static Posoffset top;
         private static Posoffset bottom;
         private static Posoffset left;
         private static Posoffset right;
         private static int rotate = 0;
-        private static StackPanel rotateStackPanel;
+        private static Point mousePostion;
+        private static Point mousePositionPrevious;
+        private static int targetIndex;
+        private static List<Target> targets;
+
+        private double defaultX = 50;
+        private double defaultZ = 50;
         public EditWindow()
         {
             InitializeComponent();
         }
 
-        public EditWindow(List<List<Room>> maze, int r, int c)
+        public EditWindow(Room roomInput)
         {
             InitializeComponent();
-            selectedRow = r;
-            selectedColumn = c;
-            selectedRoom = maze[selectedRow][selectedColumn];
+            targets = new List<Target>();
+            selectedRoom = roomInput;
 
             top = selectedRoom.top.element.PosOffset;
             bottom = selectedRoom.bottom.element.PosOffset;
             left = selectedRoom.left.element.PosOffset;
             right = selectedRoom.right.element.PosOffset;
+
+            List<string> manualTargets = Target.getManualTargets();
+            foreach(string t in manualTargets)
+            {
+                cmbTargets.Items.Add(t);
+            }
+            cmbTargets.SelectedIndex = 0;
         }
 
-        private void newRec_Click(object sender, RoutedEventArgs e)
+        private decimal getAdjustedX(double rawX)
+        {
+            double rawBottom = grdCanvas.ActualHeight;
+
+            double percentX = rawX / rawBottom;
+            decimal roomTopX = top.x;
+            decimal roomBottomX = bottom.x;
+            decimal difX = Math.Abs(roomTopX - roomBottomX);
+            decimal adjustX = difX * (decimal)percentX;
+            decimal adjustedX = roomTopX - adjustX;
+            return adjustedX;
+        }
+
+        private decimal getAdjustedZ(double rawZ)
+        {
+            
+            double rawLeft = grdCanvas.ActualWidth;
+
+            double percentZ = rawZ / rawLeft;
+            decimal roomLeftZ = left.z;
+            decimal roomRightZ = right.z;
+            decimal difZ = Math.Abs(roomLeftZ - roomRightZ);
+            decimal adjustZ = difZ * (decimal)percentZ;
+            decimal adjustedZ = roomLeftZ - adjustZ;
+            return adjustedZ;
+        }
+
+        private void newTarget_Click(object sender, RoutedEventArgs e)
         {
 
             StackPanel sp = new StackPanel();
@@ -54,7 +95,7 @@ namespace MazeMaker
             Rectangle newRec = new Rectangle();
             newRec.Height = 50;
             newRec.Width = 50;
-            newRec.Fill = Brushes.Blue;
+            newRec.Fill = Brushes.Tan;
            
             
 
@@ -69,40 +110,61 @@ namespace MazeMaker
             sp.MouseLeftButtonDown += Sp_MouseLeftButtonDown;
             sp.MouseLeftButtonUp += Sp_MouseLeftButtonUp;
             sp.MouseMove += Sp_MouseMove;
-            
+            sp.MouseRightButtonDown += Sp_MouseRightButtonDown;
+            sp.MouseRightButtonUp += Sp_MouseRightButtonUp;
+            sp.Name = "sp_" + targetIndex;
+            targetIndex++;
 
+            Target newTarget = Target.getManualTarget((decimal)defaultX, (decimal)defaultZ, cmbTargets.SelectedItem.ToString());
+            targets.Add(newTarget);
 
             canvas.Children.Add(sp);
-            Canvas.SetLeft(sp, 50);
-            Canvas.SetTop(sp, 50);
+            Canvas.SetLeft(sp, defaultZ);
+            Canvas.SetTop(sp, defaultX);
         }
 
-      
+        private void Sp_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _isSPRotateInProg = false;
+        }
+
+        private void Sp_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _isSPRotateInProg = true;
+        }
 
         private void Sp_MouseMove(object sender, MouseEventArgs e)
         {
 
+            if (!_isSPDragInProg) return;
+
+            // get the position of the mouse relative to the Canvas
+            mousePostion = e.GetPosition(canvas);
+
             if (Mouse.RightButton == MouseButtonState.Pressed)
             {
-                rotate++;
+                if(mousePostion.X > mousePositionPrevious.X)
+                {
+                    rotate++;
+                }
+                else
+                {
+                    rotate--;
+                }
                 RotateTransform rt = new RotateTransform(rotate);
                 StackPanel selectedStackPanel = (StackPanel)sender;
                 selectedStackPanel.RenderTransform = rt;
             }
 
-            if (!_isSPDragInProg) return;
-
-            // get the position of the mouse relative to the Canvas
-            var mousePos = e.GetPosition(canvas);
 
             StackPanel selectedSP = (StackPanel)sender;
 
             // center the rect on the mouse
-            double left = mousePos.X - (selectedSP.ActualWidth / 2);
-            double top = mousePos.Y - (selectedSP.ActualHeight / 2);
-            if (top >= grdCanvas.ActualHeight - (selectedSP.ActualHeight + newRec.ActualHeight))
+            double left = mousePostion.X - (selectedSP.ActualWidth / 2);
+            double top = mousePostion.Y - (selectedSP.ActualHeight / 2);
+            if (top >= grdCanvas.ActualHeight - (selectedSP.ActualHeight + newTarget.ActualHeight))
             {
-                top = grdCanvas.ActualHeight - (selectedSP.ActualHeight + newRec.ActualHeight);
+                top = grdCanvas.ActualHeight - (selectedSP.ActualHeight + newTarget.ActualHeight);
             }
             if (top < 0)
             {
@@ -119,6 +181,7 @@ namespace MazeMaker
             }
             Canvas.SetLeft(selectedSP, left);
             Canvas.SetTop(selectedSP, top);
+            mousePositionPrevious = mousePostion;
         }
 
         private void Sp_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -127,71 +190,20 @@ namespace MazeMaker
             StackPanel selectedStackPanel = (StackPanel)sender;
             selectedStackPanel.ReleaseMouseCapture();
 
-            // Get adjusted position y =mx +b
+            // Get adjusted position          
+            decimal adjustedX = getAdjustedX(Canvas.GetTop(selectedStackPanel) + newTarget.ActualHeight);
+            decimal adjustedZ = getAdjustedZ(Canvas.GetLeft(selectedStackPanel));
 
-            double rawX = Canvas.GetTop(selectedStackPanel) + newRec.ActualHeight;
-            double rawBottom = grdCanvas.ActualHeight;
+            // Check to see if target exists
+            List<string> stackPanelName = selectedStackPanel.Name.Split('_').ToList();
 
-            double percentX = rawX / rawBottom;
-            decimal roomTopX = top.x;
-            decimal roomBottomX = bottom.x;
-            decimal difX = Math.Abs(roomTopX - roomBottomX);
-            decimal adjustX = difX * (decimal)percentX;
-            decimal adjustedX = roomTopX - adjustX;
+            int targetIndex = Convert.ToInt32(stackPanelName[1]);
 
-            double rawZ = Canvas.GetLeft(selectedStackPanel);
-            double rawLeft = grdCanvas.ActualWidth;
+            Target selectedTarget = targets[targetIndex];
+            selectedTarget.element.PosOffset.x = adjustedX;
+            selectedTarget.element.PosOffset.z = adjustedZ;
 
-            double percentZ = rawZ / rawLeft;
-            decimal roomLeftZ = left.z;
-            decimal roomRightZ = right.z;
-            decimal difZ = Math.Abs(roomLeftZ - roomRightZ);
-            decimal adjustZ = difZ * (decimal)percentZ;
-            decimal adjustedZ = roomLeftZ - adjustZ;
 
-            Target target = new Target();
-            Element element = new Element();
-            element.PosOffset = new Posoffset()
-            {
-                x = adjustedX,
-                y = 0,
-                z = adjustedZ
-            };
-
-            element.OrientationForward = new Orientationforward()
-            {
-                x = -1,
-                y = 0,
-                z = 0
-            };
-
-            element.ObjectID = "StandingSteelIPSCSimpleRed";
-
-            element.Flags = new Flags()
-            {
-                _keys = new List<string>()
-                            {
-                                "IsKinematicLocked",
-                                "IsPickupLocked",
-                                "QuickBeltSpecialStateEngaged"
-
-                            },
-
-                _values = new List<string>()
-                            {
-                                "True",
-                                "True",
-                                "False"
-                            }
-            };
-
-            target.element = element;
-            if (selectedRoom.targets == null)
-            {
-                selectedRoom.targets = new List<Target>();
-            }
-
-            selectedRoom.targets.Add(target);
         }
 
         private void Sp_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -199,6 +211,15 @@ namespace MazeMaker
             _isSPDragInProg = true;
             StackPanel selectedStackPanel = (StackPanel)sender;
             selectedStackPanel.CaptureMouse();            
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            selectedRoom.targets = new List<Target>();
+            foreach (Target target in targets)
+            {
+                selectedRoom.targets.Add(target);
+            }
         }
     }
 }

@@ -348,13 +348,22 @@ namespace MazeMaker
 
         void middleCell_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Rectangle selectedRoom = (Rectangle)sender;
-            List<string> split = selectedRoom.Name.Split('_').ToList();
+            Rectangle selectedRoomRectangle = (Rectangle)sender;
+            List<string> split = selectedRoomRectangle.Name.Split('_').ToList();
             int r = Convert.ToInt32(split[1]);
             int c = Convert.ToInt32(split[2]);
-           
-            EditWindow ew = new EditWindow(maze,r,c);
+            Room selectedRoom = maze[r][c];
+            EditWindow ew = new EditWindow(selectedRoom);
             ew.ShowDialog();
+
+            if (selectedRoom.targets != null)
+            {
+                if (selectedRoom.targets.Count != 0)
+                {
+                    selectedRoomRectangle.Fill = Brushes.BlanchedAlmond;
+                }
+            }
+           
         }
 
         private void fillRectangle(Rectangle selected)

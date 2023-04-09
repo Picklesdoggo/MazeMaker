@@ -18,6 +18,34 @@ namespace MazeMakerUtilities
              
         };
 
+        private static List<string> manualTargets = new List<string>()
+        {
+            "StandingSteelDuelingTree",
+            "StandingSteelIPSCClassic",
+            "StandingSteelIPSCClassicBlue",
+            "StandingSteelIPSCClassicRed",
+            "StandingSteelIPSCMini",
+            "StandingSteelIPSCMiniBlue",
+            "StandingSteelIPSCMiniRed",
+            "StandingSteelIPSCSimple",
+            "StandingSteelIPSCSimpleBlue",
+            "StandingSteelIPSCSimpleRed",
+            "StandingSteelSpinner",
+            "StandingSteelTargetClassicPop",
+            "StandingSteelTargetMiniClassicPop",
+            "StandingSteelTargetMiniPepperPop",
+            "StandingSteelTargetPepperPop",
+            "StandingSteelTargetSpeedPop",
+            "WoodStandeeSoldierLeft",
+            "WoodStandeeSoldierRight",
+            "WoodStandeeUncleSpam"
+        };
+
+        public static List<string> getManualTargets()
+        {
+            return manualTargets;
+        }
+
         private static List<string> destructibleTypes = new List<string>()
         {
             "SodaCanSarge",
@@ -220,6 +248,48 @@ namespace MazeMakerUtilities
             #endregion
 
             element.ObjectID = targetType;
+
+            element.Flags = new Flags()
+            {
+                _keys = new List<string>()
+                            {
+                                "IsKinematicLocked",
+                                "IsPickupLocked",
+                                "QuickBeltSpecialStateEngaged"
+
+                            },
+
+                _values = new List<string>()
+                            {
+                                "True",
+                                "True",
+                                "False"
+                            }
+            };
+
+            target.element = element;
+            return target;
+        }
+
+        public static Target getManualTarget(decimal xOffset, decimal ZOffset, string objectID)
+        {
+            Target target = new Target();
+            Element element = new Element();
+            element.PosOffset = new Posoffset()
+            {
+                x = xOffset,
+                y = 0,
+                z = ZOffset
+            };
+
+            element.OrientationForward = new Orientationforward()
+            {
+                x = -1,
+                y = 0,
+                z = 0
+            };
+
+            element.ObjectID = objectID;
 
             element.Flags = new Flags()
             {

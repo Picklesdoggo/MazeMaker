@@ -5,14 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MazeMaker"
         mc:Ignorable="d"
-        Title="EditWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="EditWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen" Closing="Window_Closing">
     <Grid Name="grdCanvas">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<Button Name="newRec" Content="New Rectangle" Click="newRec_Click"/>
-		<Canvas Name="canvas" Grid.Row="1"/>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="auto"/>
+		</Grid.ColumnDefinitions>
+		<ComboBox Name="cmbTargets"/>
+		<Button Name="newTarget" Content="Spawn" Click="newTarget_Click" Grid.Column="1"/>
+		
+		<Canvas Name="canvas" Grid.Row="1" Grid.ColumnSpan="2"/>
 
 
 	</Grid>
