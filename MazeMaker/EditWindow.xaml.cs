@@ -17,7 +17,7 @@ namespace MazeMaker
     /// </summary>
     public partial class EditWindow : Window
     {
-        
+
         private bool _isSPDragInProg;
         private bool _isSPRotateInProg;
 
@@ -51,7 +51,7 @@ namespace MazeMaker
             right = selectedRoom.right.element.PosOffset;
 
             List<string> manualTargets = Target.getManualTargets();
-            foreach(string t in manualTargets)
+            foreach (string t in manualTargets)
             {
                 cmbTargets.Items.Add(t);
             }
@@ -73,7 +73,7 @@ namespace MazeMaker
 
         private decimal getAdjustedZ(double rawZ)
         {
-            
+
             double rawLeft = grdCanvas.ActualWidth;
 
             double percentZ = rawZ / rawLeft;
@@ -96,8 +96,8 @@ namespace MazeMaker
             newRec.Height = 50;
             newRec.Width = 50;
             newRec.Fill = Brushes.Tan;
-           
-            
+
+
 
             Border border = new Border();
             border.Background = Brushes.Black;
@@ -143,7 +143,7 @@ namespace MazeMaker
 
             if (Mouse.RightButton == MouseButtonState.Pressed)
             {
-                if(mousePostion.X > mousePositionPrevious.X)
+                if (mousePostion.X > mousePositionPrevious.X)
                 {
                     rotate++;
                 }
@@ -210,7 +210,7 @@ namespace MazeMaker
         {
             _isSPDragInProg = true;
             StackPanel selectedStackPanel = (StackPanel)sender;
-            selectedStackPanel.CaptureMouse();            
+            selectedStackPanel.CaptureMouse();
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -221,5 +221,60 @@ namespace MazeMaker
                 selectedRoom.targets.Add(target);
             }
         }
+
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.Left) || Keyboard.IsKeyDown(Key.Right))
+            {
+                
+                bool overElement = false;
+                foreach (var spChild in canvas.Children)
+                {
+
+                    StackPanel sp = (StackPanel)spChild;
+                    // Are we over the stackPanel?
+                    if (Mouse.DirectlyOver == sp)
+                    {
+                        
+                    }
+                    // Are we over the border
+                    foreach (var borderChild in sp.Children)
+                    {
+                        Border border = (Border)borderChild;
+                        if (Mouse.DirectlyOver == border)
+                        {
+                            
+                            overElement = true;
+                            break;
+                        }
+                        // Are we over the rectange
+                        if (Mouse.DirectlyOver == border.Child)
+                        {
+                            
+                            overElement = true;
+                            break;
+                        }
+                    }
+
+                    if (overElement)
+                    {
+                        if (Keyboard.IsKeyDown(Key.Left))
+                        {
+                            rotate--;
+                        }
+                        if (Keyboard.IsKeyDown(Key.Right))
+                        {
+                            rotate++;
+                        }
+                        RotateTransform rt = new RotateTransform(rotate);
+                        sp.RenderTransform = rt;
+                        e.Handled = true;
+                        break;
+                    }
+
+                }
+            }
+        }
+
     }
 }
