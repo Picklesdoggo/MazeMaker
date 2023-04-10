@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 
 namespace MazeMaker
 {
@@ -258,16 +259,54 @@ namespace MazeMaker
 
                     if (overElement)
                     {
+                        RotateTransform rotation = sp.RenderTransform as RotateTransform;
+                        if (rotation != null)
+                        {
+                            rotate = (int)rotation.Angle;
+                        }
+                        else
+                        {
+                            rotate = 0;
+                        }
+                        
                         if (Keyboard.IsKeyDown(Key.Left))
                         {
                             rotate--;
+                            if (rotate < 0)
+                            {
+                                rotate = 359;
+                            }
+                            
                         }
                         if (Keyboard.IsKeyDown(Key.Right))
                         {
                             rotate++;
+                            if (rotate >= 359)
+                            {
+                                rotate = 0;
+                            }
                         }
                         RotateTransform rt = new RotateTransform(rotate);
                         sp.RenderTransform = rt;
+                        rotation = sp.RenderTransform as RotateTransform;
+
+                        // Check to see if target exists
+                        List<string> stackPanelName = sp.Name.Split('_').ToList();
+
+                        int targetIndex = Convert.ToInt32(stackPanelName[1]);
+
+                        Target selectedTarget = targets[targetIndex];
+
+                        double xRotate = Math.Sin((Math.PI / 180) * rotation.Angle);
+                        double zRotate = Math.Cos((Math.PI / 180) * rotation.Angle);
+
+
+                        selectedTarget.element.OrientationForward.x = (decimal)xRotate;
+                        selectedTarget.element.OrientationForward.y = 0;
+                        selectedTarget.element.OrientationForward.z = (decimal)zRotate;
+
+
+                        var temp = rotation.Angle;
                         e.Handled = true;
                         break;
                     }
