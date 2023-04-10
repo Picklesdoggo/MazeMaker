@@ -297,16 +297,20 @@ namespace MazeMaker
 
                         Target selectedTarget = targets[targetIndex];
 
-                        double xRotate = Math.Sin((Math.PI / 180) * rotation.Angle);
-                        double zRotate = Math.Cos((Math.PI / 180) * rotation.Angle);
+                        double adjustedAngle = rotation.Angle + 90;
+                        if (adjustedAngle >= 360)
+                        {
+                            adjustedAngle -= 360;
+                        }    
+
+                        double xRotate = Math.Sin((Math.PI / 180) * adjustedAngle);
+                        double zRotate = Math.Cos((Math.PI / 180) * adjustedAngle);
 
 
                         selectedTarget.element.OrientationForward.x = (decimal)xRotate;
                         selectedTarget.element.OrientationForward.y = 0;
                         selectedTarget.element.OrientationForward.z = (decimal)zRotate;
 
-
-                        var temp = rotation.Angle;
                         e.Handled = true;
                         break;
                     }
