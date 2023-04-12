@@ -5,6 +5,13 @@ using System.Text;
 
 namespace MazeMakerUtilities
 {
+    public class ManualTarget
+    {
+        public string targetName { get; set; }
+        public double width { get; set; }
+        public double height { get; set; }
+    }
+
     public class Target
     {
         public Element element = null;
@@ -18,30 +25,30 @@ namespace MazeMakerUtilities
              
         };
 
-        private static List<string> manualTargets = new List<string>()
+        private static List<ManualTarget> manualTargets = new List<ManualTarget>()
         {
-            "StandingSteelDuelingTree",
-            "StandingSteelIPSCClassic",
-            "StandingSteelIPSCClassicBlue",
-            "StandingSteelIPSCClassicRed",
-            "StandingSteelIPSCMini",
-            "StandingSteelIPSCMiniBlue",
-            "StandingSteelIPSCMiniRed",
-            "StandingSteelIPSCSimple",
-            "StandingSteelIPSCSimpleBlue",
-            "StandingSteelIPSCSimpleRed",
-            "StandingSteelSpinner",
-            "StandingSteelTargetClassicPop",
-            "StandingSteelTargetMiniClassicPop",
-            "StandingSteelTargetMiniPepperPop",
-            "StandingSteelTargetPepperPop",
-            "StandingSteelTargetSpeedPop",
-            "WoodStandeeSoldierLeft",
-            "WoodStandeeSoldierRight",
-            "WoodStandeeUncleSpam"
+            new ManualTarget{targetName = "StandingSteelDuelingTree", height = 0.75, width = 0.75},
+            new ManualTarget{targetName = "StandingSteelIPSCClassic", height = 0.55, width = 0.55},
+            new ManualTarget{targetName = "StandingSteelIPSCClassicBlue", height = 0.55, width = 0.55},
+            new ManualTarget{targetName = "StandingSteelIPSCClassicRed", height = 0.55, width = 0.55},
+            new ManualTarget{targetName = "StandingSteelIPSCMini", height = 0.55, width = 0.55},
+            new ManualTarget{targetName = "StandingSteelIPSCMiniBlue", height = 0.55, width = 0.55},
+            new ManualTarget{targetName = "StandingSteelIPSCMiniRed", height = 0.55, width = 0.55},
+            new ManualTarget{targetName = "StandingSteelIPSCSimple", height = 0.55, width = 0.55},
+            new ManualTarget{targetName = "StandingSteelIPSCSimpleBlue", height = 0.55, width = 0.55},
+            new ManualTarget{targetName = "StandingSteelIPSCSimpleRed", height = 0.55, width = 0.55},
+            new ManualTarget{targetName = "StandingSteelSpinner", height = 0.30, width = 0.30},
+            new ManualTarget{targetName = "StandingSteelTargetClassicPop", height = 0.25, width = 0.95},
+            new ManualTarget{targetName = "StandingSteelTargetMiniClassicPop", height = 0.25, width = 0.65},
+            new ManualTarget{targetName = "StandingSteelTargetMiniPepperPop", height = 0.25, width = 0.80},
+            new ManualTarget{targetName = "StandingSteelTargetPepperPop", height = 0.25, width = 1.15},
+            new ManualTarget{targetName = "StandingSteelTargetSpeedPop", height = 0.25, width = 0.80},
+            new ManualTarget{targetName = "WoodStandeeSoldierLeft", height = 0.55, width = 0.55},
+            new ManualTarget{targetName = "WoodStandeeSoldierRight", height = 0.55, width = 0.55},
+            new ManualTarget{targetName = "WoodStandeeUncleSpam", height = 0.55, width = 0.55}
         };
 
-        public static List<string> getManualTargets()
+        public static List<ManualTarget> getManualTargets()
         {
             return manualTargets;
         }

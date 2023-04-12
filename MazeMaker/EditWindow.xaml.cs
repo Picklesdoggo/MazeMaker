@@ -35,6 +35,7 @@ namespace MazeMaker
 
         private double defaultX = 50;
         private double defaultZ = 50;
+        private decimal wallThickness = 0.2M;
         public EditWindow()
         {
             InitializeComponent();
@@ -51,10 +52,10 @@ namespace MazeMaker
             left = selectedRoom.left.element.PosOffset;
             right = selectedRoom.right.element.PosOffset;
 
-            List<string> manualTargets = Target.getManualTargets();
-            foreach (string t in manualTargets)
+            List<ManualTarget> manualTargets = Target.getManualTargets();
+            foreach (ManualTarget t in manualTargets)
             {
-                cmbTargets.Items.Add(t);
+                cmbTargets.Items.Add(t.targetName);
             }
             cmbTargets.SelectedIndex = 0;
         }
@@ -64,12 +65,25 @@ namespace MazeMaker
             double rawBottom = grdCanvas.ActualHeight;
 
             double percentX = rawX / rawBottom;
-            decimal roomTopX = top.x;
+            decimal roomTopX = top.x - wallThickness;
             decimal roomBottomX = bottom.x;
             decimal difX = Math.Abs(roomTopX - roomBottomX);
             decimal adjustX = difX * (decimal)percentX;
             decimal adjustedX = roomTopX - adjustX;
             return adjustedX;
+        }
+
+        private double getTargetHeight(double rawHeight)
+        {
+            double rawRoomHeight= grdCanvas.ActualHeight;
+            double adjustedHeight = 0;
+            // get room height
+            decimal roomTopX = top.x - wallThickness; ;
+            decimal roomBottomX = bottom.x;
+            decimal roomHeight = Math.Abs(roomTopX - roomBottomX);
+            double percentHeight = rawHeight / (double)roomHeight;
+            adjustedHeight = rawRoomHeight * percentHeight;
+            return adjustedHeight;
         }
 
         private decimal getAdjustedZ(double rawZ)
@@ -78,12 +92,25 @@ namespace MazeMaker
             double rawLeft = grdCanvas.ActualWidth;
 
             double percentZ = rawZ / rawLeft;
-            decimal roomLeftZ = left.z;
+            decimal roomLeftZ = left.z + wallThickness;
             decimal roomRightZ = right.z;
             decimal difZ = Math.Abs(roomLeftZ - roomRightZ);
             decimal adjustZ = difZ * (decimal)percentZ;
             decimal adjustedZ = roomLeftZ - adjustZ;
             return adjustedZ;
+        }
+
+        private double getTargetWidth(double rawWidth)
+        {
+            double rawRoomWidth = grdCanvas.ActualWidth;
+            double adjustedWidth = 0;
+            // get room width, adjusted for wall thickness
+            decimal roomLeftZ = left.z + wallThickness;
+            decimal roomRightZ = right.z;
+            decimal roomWidth = Math.Abs(roomLeftZ - roomRightZ);
+            double percentWidth = rawWidth / (double)roomWidth;
+            adjustedWidth = rawRoomWidth * percentWidth;
+            return adjustedWidth;
         }
 
         private void newTarget_Click(object sender, RoutedEventArgs e)
@@ -92,10 +119,12 @@ namespace MazeMaker
             StackPanel sp = new StackPanel();
             sp.Orientation = Orientation.Horizontal;
 
+            // Get manual target
+            ManualTarget selectedManualTarget = Target.getManualTargets().Where(t => t.targetName == cmbTargets.SelectedItem.ToString()).FirstOrDefault();
 
             Rectangle newRec = new Rectangle();
-            newRec.Height = 50;
-            newRec.Width = 50;
+            newRec.Height = getTargetHeight(selectedManualTarget.height);
+            newRec.Width = getTargetWidth(selectedManualTarget.width);
             newRec.Fill = Brushes.Tan;
 
 
@@ -103,7 +132,7 @@ namespace MazeMaker
             Border border = new Border();
             border.Background = Brushes.Black;
             border.BorderBrush = Brushes.Black;
-            border.BorderThickness = new Thickness(0, 3, 0, 0);
+            border.BorderThickness = new Thickness(3, 0, 0, 0);
             border.Child = newRec;
 
 
@@ -111,8 +140,6 @@ namespace MazeMaker
             sp.MouseLeftButtonDown += Sp_MouseLeftButtonDown;
             sp.MouseLeftButtonUp += Sp_MouseLeftButtonUp;
             sp.MouseMove += Sp_MouseMove;
-            sp.MouseRightButtonDown += Sp_MouseRightButtonDown;
-            sp.MouseRightButtonUp += Sp_MouseRightButtonUp;
             sp.Name = "sp_" + targetIndex;
             targetIndex++;
 
@@ -124,15 +151,7 @@ namespace MazeMaker
             Canvas.SetTop(sp, defaultX);
         }
 
-        private void Sp_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            _isSPRotateInProg = false;
-        }
-
-        private void Sp_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            _isSPRotateInProg = true;
-        }
+       
 
         private void Sp_MouseMove(object sender, MouseEventArgs e)
         {
@@ -296,15 +315,9 @@ namespace MazeMaker
                         int targetIndex = Convert.ToInt32(stackPanelName[1]);
 
                         Target selectedTarget = targets[targetIndex];
-
-                        double adjustedAngle = rotation.Angle + 90;
-                        if (adjustedAngle >= 360)
-                        {
-                            adjustedAngle -= 360;
-                        }    
-
-                        double xRotate = Math.Sin((Math.PI / 180) * adjustedAngle);
-                        double zRotate = Math.Cos((Math.PI / 180) * adjustedAngle);
+                        
+                        double xRotate = Math.Sin((Math.PI / 180) * rotation.Angle);
+                        double zRotate = Math.Cos((Math.PI / 180) * rotation.Angle);
 
 
                         selectedTarget.element.OrientationForward.x = (decimal)xRotate;
